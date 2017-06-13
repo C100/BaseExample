@@ -21,7 +21,7 @@
     self=[super initWithFrame:frame];
     if (self) {
         [self.topbarview setTitleLabel:SECONDTAB_TITLE TextColor:[UIColor whiteColor]];
-        SegmentViewControl *segmentView = [SegmentViewControl segmentTitles:@[@"京东",@"天猫",@"淘宝",@"亚马逊"] withViews:@[@"TestView1",@"TestView2",@"TestView1",@"TestView2"] withFrame:CGRectMake(0, 64, SCREEN_WIDTH, SCREEN_HEIGHT-113)];
+        SegmentViewControl *segmentView = [SegmentViewControl segmentTitles:@[@"京东",@"天猫",@"淘宝",@"亚马逊",@"京东2",@"天猫2",@"淘宝2",@"亚马逊2"] withViews:@[@"TestView1",@"TestView2",@"TestView1",@"TestView2",@"TestView1",@"TestView2",@"TestView1",@"TestView2"] withFrame:CGRectMake(0, 64, SCREEN_WIDTH, SCREEN_HEIGHT-113)];
         
         [self addSubview:segmentView];
 //        [segmentView makeConstraints:^(MASConstraintMaker *make) {

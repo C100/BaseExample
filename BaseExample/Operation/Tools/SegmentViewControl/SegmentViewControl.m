@@ -7,12 +7,13 @@
 //
 
 #import "SegmentViewControl.h"
-
+#import "CalculateSize.h"
 #define TITLESFONT [UIFont systemFontOfSize:16]
 #define TITLESCOLOR [UIColor colorWithWhite:0.200 alpha:1.000]
 #define TITLESSELECTEDCOLOR [UIColor greenColor]
 static const CGFloat titlesHeight = 44;
-
+static const CGFloat edgmargin = 14;///外边距
+static const CGFloat inmargin = 15;///内边距
 @interface SegmentViewControl ()<UIScrollViewDelegate>
 /**
  标题栏
@@ -23,9 +24,18 @@ static const CGFloat titlesHeight = 44;
 
 @property(weak,nonatomic)UIButton *previousClickedTitleButton;
 
+
 @property (nonatomic,assign)CGFloat lastPosition;
 
+/**
+ 大scrollView
+ */
 @property(weak,nonatomic)UIScrollView *scrollView;
+
+/**
+ 标题栏上的scrollView
+ */
+@property (weak,nonatomic)UIScrollView *titlesScrollView;
 @end
 
 @implementation SegmentViewControl
@@ -49,7 +59,9 @@ static const CGFloat titlesHeight = 44;
 - (void)setupTitlesViewWithTitles:(NSArray *)titles
 {
     UIScrollView *scrollView = [[UIScrollView alloc] init];
+    scrollView.showsHorizontalScrollIndicator = NO;
     [self addSubview:scrollView];
+    self.titlesScrollView = scrollView;
     UIView *titlesView = [[UIView alloc] init];
     [scrollView makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.top.equalTo(self);
@@ -81,38 +93,64 @@ static const CGFloat titlesHeight = 44;
     
     
 }
-#warning todo
 /**
  *  标题栏按钮
  */
 - (void)setupTitlesButtonsInView:(UIView *)view withTitles:(NSArray *)titles
 {
+    // 计算titlesButton需要占多大的宽度
+    __block CGFloat needWith = 0.0;
+    [titles enumerateObjectsUsingBlock:^(NSString *  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        CGSize size = [CalculateSize sizeForNoticeTitle:obj font:TITLESFONT maxW:SCREEN_WIDTH];
+        
+        needWith += size.width+inmargin*2;
+    }];
+    needWith += edgmargin*2;
+    
+    CGFloat realinmargin;
+    if (needWith <SCREEN_WIDTH) {//不适用设置的内边距
+        CGFloat remander = SCREEN_WIDTH - needWith;
+        realinmargin = remander/(titles.count*2)+inmargin;
+    }else{
+        realinmargin = inmargin;
+    }
+    
     // 标题文字
     NSUInteger count = titles.count;
-    
-    // 标题按钮的尺寸
-    CGFloat titleButtonW = 80;
-    CGFloat titleButtonH = 44;
-    
+    UIButton *lastButton;
     // 创建标题按钮
     for (NSUInteger i = 0; i < count; i++) {
         UIButton *titleButton = [UIButton buttonWithType:UIButtonTypeCustom];
         titleButton.tag = i;
-        [titleButton addTarget:self action:@selector(titleButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        [view addSubview:titleButton];
-        // frame
-        [titleButton makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(view).offset(i*titleButtonW+14);
-            make.top.equalTo(view);
-            make.size.sizeOffset(CGSizeMake(titleButtonW, titleButtonH));
-        }];
         // 文字
         titleButton.titleLabel.font = TITLESFONT;
         
         [titleButton setTitle:titles[i] forState:UIControlStateNormal];
         [titleButton setTitleColor:TITLESCOLOR forState:UIControlStateNormal];
         [titleButton setTitleColor:TITLESSELECTEDCOLOR forState:UIControlStateSelected];
+        [titleButton addTarget:self action:@selector(titleButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [view addSubview:titleButton];
+        // frame
+        CGSize size = [CalculateSize sizeForNoticeTitle:titles[i] font:TITLESFONT maxW:SCREEN_WIDTH];
+        if (i == 0) {
+            [titleButton makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(view).offset(edgmargin);
+                make.top.equalTo(view);
+                make.size.sizeOffset(CGSizeMake(size.width+realinmargin*2, titlesHeight));
+            }];
+            lastButton = titleButton;
+        }else{
+            [titleButton makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(lastButton.right);
+                make.top.equalTo(view);
+                make.size.sizeOffset(CGSizeMake(size.width+realinmargin*2, titlesHeight));
+            }];
+            lastButton = titleButton;
+        }
     }
+    [view makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(lastButton.right).offset(edgmargin);
+    }];
 }
 /**
  *  标题下划线
@@ -199,11 +237,23 @@ static const CGFloat titlesHeight = 44;
     // 滚动scrollView
     CGFloat offsetX = self.scrollView.frame.size.width * index;
     [UIView animateWithDuration:0.25 animations:^{
-        
+        if (titleButton.center.x>self.center.x&&self.titlesView.frame.size.width - titleButton.center.x>self.center.x) {
+            CGFloat offsetx = titleButton.center.x - self.center.x;
+            self.titlesScrollView.contentOffset = CGPointMake(offsetx, self.scrollView.contentOffset.y);
+        }else{
+            if (titleButton.center.x<self.center.x&&self.titlesScrollView.contentOffset.x!=0) {
+                self.titlesScrollView.contentOffset = CGPointMake(0, self.scrollView.contentOffset.y);
+            }else if (self.titlesView.frame.size.width - titleButton.center.x<self.center.x&&self.titlesScrollView.contentOffset.x<self.titlesView.frame.size.width-self.frame.size.width){
+                self.titlesScrollView.contentOffset = CGPointMake(self.titlesView.frame.size.width-self.frame.size.width, self.scrollView.contentOffset.y);
+            }
+        }
         CGPoint center = self.titleUnderline.center;
         center.x = titleButton.center.x;
         self.titleUnderline.center = center;
-        
+        CGFloat wirth = titleButton.frame.size.width;
+        CGRect rect = self.titleUnderline.bounds;
+        rect.size.width = wirth;
+        self.titleUnderline.bounds = rect;
         self.scrollView.contentOffset = CGPointMake(offsetX, self.scrollView.contentOffset.y);
     } completion:^(BOOL finished) {
         // 添加子控制器的view
@@ -234,17 +284,32 @@ static const CGFloat titlesHeight = 44;
     _lastPosition = scrollView.contentOffset.x;
 }
 - (void)dealTitleButton:(UIButton *)titleButton{
+    
     // 切换按钮状态
     self.previousClickedTitleButton.selected = NO;
     titleButton.selected = YES;
     self.previousClickedTitleButton = titleButton;
     [UIView animateWithDuration:0.25 animations:^{
-        
+        if (titleButton.center.x>self.center.x&&self.titlesView.frame.size.width - titleButton.center.x>self.center.x) {
+            CGFloat offsetx = titleButton.center.x - self.center.x;
+            self.titlesScrollView.contentOffset = CGPointMake(offsetx, self.scrollView.contentOffset.y);
+        }else{
+            if (titleButton.center.x<self.center.x&&self.titlesScrollView.contentOffset.x!=0) {
+                self.titlesScrollView.contentOffset = CGPointMake(0, self.scrollView.contentOffset.y);
+            }else if (self.titlesView.frame.size.width - titleButton.center.x<self.center.x&&self.titlesScrollView.contentOffset.x<self.titlesView.frame.size.width-self.frame.size.width){
+                self.titlesScrollView.contentOffset = CGPointMake(self.titlesView.frame.size.width-self.frame.size.width, self.scrollView.contentOffset.y);
+            }
+        }
         CGPoint center = self.titleUnderline.center;
         center.x = titleButton.center.x;
         self.titleUnderline.center = center;
+        CGFloat wirth = titleButton.frame.size.width;
+        CGRect rect = self.titleUnderline.bounds;
+        rect.size.width = wirth;
+        self.titleUnderline.bounds = rect;
+        
     } completion:^(BOOL finished) {
-        // 添加子控制器的view
+        
     }];
 }
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
@@ -264,7 +329,7 @@ static const CGFloat titlesHeight = 44;
     [UIView animateWithDuration:0.25 animations:^{
         self.scrollView.contentOffset = CGPointMake(offsetX, self.scrollView.contentOffset.y);
     } completion:^(BOOL finished) {
-        // 添加子控制器的view
+        
     }];
 }
 @end
