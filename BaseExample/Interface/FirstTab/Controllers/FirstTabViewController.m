@@ -8,7 +8,6 @@
 
 #import "FirstTabViewController.h"
 #import "WebViewController.h"
-#import "UMShare.h"
 @interface FirstTabViewController ()
 
 @end
@@ -21,9 +20,6 @@
     _firstTabView=[[FirstTabView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-TabBarHeight)];
     [self.view addSubview:_firstTabView];
     
-    [self.firstTabView.topbarview leftViewClick:^(UIView *view) {
-        
-    }];
 }
 
 

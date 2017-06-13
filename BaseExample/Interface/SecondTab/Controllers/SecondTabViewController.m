@@ -19,6 +19,7 @@
     // Do any additional setup after loading the view.
     _secondTabView=[[SecondTabView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-TabBarHeight)];
     [self.view addSubview:_secondTabView];
+    
 }
 
 

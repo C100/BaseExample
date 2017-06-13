@@ -10,6 +10,6 @@
 #define Notification_________h
 
 
-#define NOTIFICATION(name,object,userInfo) [NSNotification notificationWithName:name object:object userInfo:userInfo]
+#define NOTIFICATION(a,b,c) [NSNotification notificationWithName:a object:b userInfo:c]
 
 #endif /* Notification_________h */

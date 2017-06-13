@@ -20,7 +20,7 @@
 -(id)initWithFrame:(CGRect)frame{
     self=[super initWithFrame:frame];
     if (self) {
-        [self.topbarview setTitleLabel:THIRDTAB_TITLE TextColor:[UIColor whiteColor]];
+        [self.topbarview setTitleLabel:THIRDTAB_TITLE TextColor:[UIColor blackColor]];
     }
     return self;
 }

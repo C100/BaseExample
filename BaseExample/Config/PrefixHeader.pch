@@ -14,6 +14,9 @@
 #import "Const.h"
 #import "Macro.h"
 #import "Notification.h"
+
+#define MAS_SHORTHAND
+#define MAS_SHORTHAD_GLOBALS
 #import <Masonry.h>
 #import <POP.h>
 #import <MJRefresh/MJRefresh.h>

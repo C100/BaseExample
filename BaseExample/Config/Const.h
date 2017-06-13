@@ -9,13 +9,24 @@
 #ifndef Const_______h
 #define Const_______h
 
-/*errorcode*/
+/**errorcode*/
 static NSString* const NETWORK_ERROR = @"10000";
 
-/*api请求地址*/
+/**api请求地址*/
 static NSString* const BASE_URL=@"http://www.yuantiku.com";
 
-/*友盟appkey*/
+/**友盟appkey*/
 static NSString* const USHARE_APPKEY=@"";
+
+#pragma mark - reuseIdentifier - 重用标识
+/**cell重用标识*/
+static NSString* const CELLCOMMON = @"CELLCOMMON_IDENTIFIER";
+static NSString* const CELLCOMMON_EDIT = @"CELLCOMMON_EDIT_IDENTIFIER";
+
+#pragma mark - FONT_name_size
+/**COMMON_NAME*/
+static NSString* const FONT_NAME = @"STHeitiSC-Light";
+/**COMMON_SIZE*/
+static CGFloat const FONT_SIZE = 16;
 
 #endif /* Const_______h */

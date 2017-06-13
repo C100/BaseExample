@@ -22,7 +22,7 @@
 +(float)countCache{
     NSString *path = [NSSearchPathForDirectoriesInDomains (NSCachesDirectory ,NSUserDomainMask , YES ) firstObject];
     NSFileManager *fileManager=[NSFileManager defaultManager];
-    float folderSize;
+    float folderSize = 0.0;
     if ([fileManager fileExistsAtPath:path]) {
         NSArray *childerFiles=[fileManager subpathsAtPath:path];
         for (NSString *fileName in childerFiles) {

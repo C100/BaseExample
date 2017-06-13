@@ -11,6 +11,22 @@
 @interface UIImage (tool)
 
 /**
+ 显示原始图片
+
+ @param imageName 图片名字
+ @return image
+ */
++ (instancetype)imageWithOringalName:(NSString *)imageName;
+
+/**
+ 拉升图片
+
+ @param imageName 图片名字
+ @return image
+ */
++ (instancetype)imageWithStretchableName:(NSString *)imageName;
+
+/**
  *  等比缩放
  *
  *  @param size 设置尺寸

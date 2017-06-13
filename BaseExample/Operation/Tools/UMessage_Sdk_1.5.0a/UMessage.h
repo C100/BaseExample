@@ -89,7 +89,7 @@ typedef void (^UMPlaunchFinishBlock)();
 /** 注册RemoteNotification的类型
  @brief 分别针对iOS8以下版本及iOS8及以上开启推送消息推送。
  默认的时候是sound，badge ,alert三个功能全部打开。
- @param categories 交互式推送行为分类。可以具体查看demo。
+ @param categories8 交互式推送行为分类。可以具体查看demo。
  */
 + (void)registerForRemoteNotifications:(nullable NSSet<UIUserNotificationCategory *> *)categories8;
 
@@ -107,7 +107,7 @@ typedef void (^UMPlaunchFinishBlock)();
 
 
 /** 解除RemoteNotification的注册（关闭消息推送，实际调用：[[UIApplication sharedApplication] unregisterForRemoteNotifications]）
- @param types 消息类型，参见`UIRemoteNotificationType`
+ param types 消息类型，参见`UIRemoteNotificationType`
  */
 + (void)unregisterForRemoteNotifications;
 
@@ -227,7 +227,7 @@ typedef void (^UMPlaunchFinishBlock)();
 
 /** 添加一个启动页的开屏通知
  @param window 当前window
- @param window 结束后要显示的ViewController
+ @param ViewController 结束后要显示的ViewController
  */
 +(void)addLaunchMessageWithWindow:(UIWindow *__nonnull)window finishViewController:(UIViewController *__nonnull)ViewController;
 

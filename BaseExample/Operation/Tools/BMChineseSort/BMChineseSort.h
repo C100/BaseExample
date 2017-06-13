@@ -67,7 +67,7 @@
 /**
  *  给对象数组排序
  *
- *  @param stringArr 需要排序的对象数组
+ *  @param objectArray 需要排序的对象数组
  *  @param key       需要比较的对象的字段
  *
  *  @return 根据字段排序后的对象数组(同首写字母的在一个数组中)

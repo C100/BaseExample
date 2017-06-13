@@ -6,8 +6,8 @@
 //  Copyright © 2017年 james. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "BaseSettingViewController.h"
 #import "FourthTabView.h"
-@interface FourthTabViewController : BaseViewController
+@interface FourthTabViewController : BaseSettingViewController
 @property (nonatomic) FourthTabView *fourthTabView;
 @end

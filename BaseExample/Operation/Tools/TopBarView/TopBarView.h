@@ -11,9 +11,6 @@ typedef void (^LeftViewClickBlock)(UIView *view);
 typedef void (^RightViewClickBlock)(UIView *view);
 @interface TopBarView : UIView
 
-#define SCREEN_WIDTH [UIScreen mainScreen].bounds.size.width
-#define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
-
 #define FONT_LEFTLABEL [UIFont fontWithName:@"Helcetica" size:15];
 #define FONT_TITLELABEL [UIFont fontWithName:@"Helvetica" size:18];
 #define FONT_RIGHTLABEL [UIFont fontWithName:@"Helvetica" size:15];
