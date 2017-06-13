@@ -11,6 +11,7 @@
 #define TITLESFONT [UIFont systemFontOfSize:16]
 #define TITLESCOLOR [UIColor colorWithWhite:0.200 alpha:1.000]
 #define TITLESSELECTEDCOLOR [UIColor greenColor]
+static const CGFloat titlesHeight = 44;
 
 @interface SegmentViewControl ()<UIScrollViewDelegate>
 /**
@@ -47,19 +48,21 @@
 
 - (void)setupTitlesViewWithTitles:(NSArray *)titles
 {
-//    UIScrollView *scrollView = [[UIScrollView alloc] init];
-//    [self addSubview:scrollView];
+    UIScrollView *scrollView = [[UIScrollView alloc] init];
+    [self addSubview:scrollView];
     UIView *titlesView = [[UIView alloc] init];
-//    [scrollView addSubview:titlesView];
-    titlesView.backgroundColor = [UIColor whiteColor];
-    [self addSubview:titlesView];
-    self.titlesView = titlesView;
-    [titlesView makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self);
-        make.right.equalTo(self);
-        make.top.equalTo(self);
-        make.height.offset(44);
+    [scrollView makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.top.equalTo(self);
+        make.height.offset(titlesHeight);
     }];
+    [scrollView addSubview:titlesView];
+    [titlesView makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.and.right.equalTo(scrollView).with.insets(UIEdgeInsetsZero);
+        make.height.equalTo(scrollView);
+    }];
+    titlesView.backgroundColor = [UIColor whiteColor];
+    self.titlesView = titlesView;
+    
     
     // 标题栏按钮
     [self setupTitlesButtonsInView:titlesView withTitles:titles];
@@ -78,6 +81,7 @@
     
     
 }
+#warning todo
 /**
  *  标题栏按钮
  */
@@ -87,7 +91,7 @@
     NSUInteger count = titles.count;
     
     // 标题按钮的尺寸
-    CGFloat titleButtonW = (SCREEN_WIDTH - 28) / count;
+    CGFloat titleButtonW = 80;
     CGFloat titleButtonH = 44;
     
     // 创建标题按钮
