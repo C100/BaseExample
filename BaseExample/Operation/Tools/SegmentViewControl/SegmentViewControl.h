@@ -70,9 +70,10 @@ typedef NS_ENUM(NSUInteger,SegmentViewControlIsLazyLoadType){
  @param item 模型对象用来设置颜色样式等。。。
  @param views UIView数组
  @param rect 改控件的frame
+ @param rgCellEdit 是否识别tableViewCell编辑
  @return 对象本身
  */
-+ (instancetype _Nonnull)segmentTitles:(NSArray * _Nonnull)titles withItem:(SegmentViewItem * _Nullable)item withViews:(NSArray *_Nonnull)views withFrame:(CGRect)rect;
++ (instancetype _Nonnull)segmentTitles:(NSArray * _Nonnull)titles withItem:(SegmentViewItem * _Nullable)item withViews:(NSArray *_Nonnull)views withFrame:(CGRect)rect recognizerTableCellEdit:(BOOL)rgCellEdit;
 
 
 /**
@@ -83,9 +84,10 @@ typedef NS_ENUM(NSUInteger,SegmentViewControlIsLazyLoadType){
  @param viewControllers viewControllers数组
  @param rect 改控件的frame
  @param type 懒加载枚举类型
+ @param rgCellEdit 是否识别tableViewCell编辑
  @return 对象本身
  */
-+ (instancetype _Nonnull)segmentTitles:(NSArray * _Nonnull)titles withItem:(SegmentViewItem * _Nullable)item withViewControllers:(NSArray *_Nonnull)viewControllers withFrame:(CGRect)rect loadType:(SegmentViewControlIsLazyLoadType)type;
++ (instancetype _Nonnull)segmentTitles:(NSArray * _Nonnull)titles withItem:(SegmentViewItem * _Nullable)item withViewControllers:(NSArray *_Nonnull)viewControllers withFrame:(CGRect)rect loadType:(SegmentViewControlIsLazyLoadType)type recognizerTableCellEdit:(BOOL)rgCellEdit;
 
 /**
  将scrollView上的子视图传递出去

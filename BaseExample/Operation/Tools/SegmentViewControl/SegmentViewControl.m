@@ -42,14 +42,13 @@
 
 @implementation FrameObj
 
-
-
 @end
 
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 
 #import "CalculateSize.h"
+#import "ZXXScrollView.h"
 #define TITLESFONT [UIFont systemFontOfSize:16]
 #define TITLESCOLOR [UIColor colorWithWhite:0.200 alpha:1.000]
 #define TITLESSELECTEDCOLOR [UIColor greenColor]
@@ -89,7 +88,7 @@ static const CGFloat padding = 15;///内边距
 /**
  大scrollView
  */
-@property(weak,nonatomic)UIScrollView *scrollView;
+@property(weak,nonatomic)__kindof UIScrollView *scrollView;
 
 /**
  标题栏上的scrollView
@@ -116,22 +115,22 @@ static const CGFloat padding = 15;///内边距
     return _array;
 }
 
-+ (instancetype)segmentTitles:(NSArray *_Nonnull)titles withItem:(SegmentViewItem * _Nullable)item withViews:(NSArray * _Nonnull)views withFrame:(CGRect)rect{
++ (instancetype)segmentTitles:(NSArray *_Nonnull)titles withItem:(SegmentViewItem * _Nullable)item withViews:(NSArray * _Nonnull)views withFrame:(CGRect)rect recognizerTableCellEdit:(BOOL)rgCellEdit{
     SegmentViewControl *segmentViewControl = [[self alloc] init];
     segmentViewControl.frame = rect;
     segmentViewControl.item = item;
     [segmentViewControl setupTitlesViewWithTitles:titles withItem:item];
     
-    [segmentViewControl setupScrollViewWithViews:views withItem:item];
+    [segmentViewControl setupScrollViewWithViews:views withItem:item recognizerTableCellEdit:rgCellEdit];
     return segmentViewControl;
 }
-+ (instancetype)segmentTitles:(NSArray *)titles withItem:(SegmentViewItem *)item withViewControllers:(NSArray *)viewControllers withFrame:(CGRect)rect loadType:(SegmentViewControlIsLazyLoadType)type{
++ (instancetype)segmentTitles:(NSArray *)titles withItem:(SegmentViewItem *)item withViewControllers:(NSArray *)viewControllers withFrame:(CGRect)rect loadType:(SegmentViewControlIsLazyLoadType)type recognizerTableCellEdit:(BOOL)rgCellEdit{
     SegmentViewControl *segmentViewControl = [[self alloc] init];
     segmentViewControl.frame = rect;
     segmentViewControl.item = item;
     [segmentViewControl setupTitlesViewWithTitles:titles withItem:item];
     
-    [segmentViewControl setupScrollViewWithViewControllers:viewControllers withItem:item type:type];
+    [segmentViewControl setupScrollViewWithViewControllers:viewControllers withItem:item type:type recognizerTableCellEdit:rgCellEdit];
     return segmentViewControl;
 }
 - (void)setupTitlesViewWithTitles:(NSArray *)titles withItem:(SegmentViewItem *)item
@@ -349,10 +348,15 @@ static const CGFloat padding = 15;///内边距
 /**
  *  scrollView 创建子视图
  */
-- (void)setupScrollViewWithViews:(NSArray *)views withItem:(SegmentViewItem *)item
+- (void)setupScrollViewWithViews:(NSArray *)views withItem:(SegmentViewItem *)item recognizerTableCellEdit:(BOOL)rgCellEdit
 {
     _isViewControllers = NO;
-    UIScrollView *scrollView = [[UIScrollView alloc] init];
+    UIScrollView *scrollView;
+    if (rgCellEdit==YES) {
+        scrollView = [[ZXXScrollView alloc] init];
+    }else{
+        scrollView = [[UIScrollView alloc] init];
+    }
     scrollView.backgroundColor = [UIColor whiteColor];
     scrollView.showsHorizontalScrollIndicator = NO;
     scrollView.showsVerticalScrollIndicator = NO;
@@ -389,11 +393,16 @@ static const CGFloat padding = 15;///内边距
 /**
  *  scrollView 创建子控制器
  */
-- (void)setupScrollViewWithViewControllers:(NSArray *)viewControllers withItem:(SegmentViewItem *)item type:(SegmentViewControlIsLazyLoadType)type
+- (void)setupScrollViewWithViewControllers:(NSArray *)viewControllers withItem:(SegmentViewItem *)item type:(SegmentViewControlIsLazyLoadType)type recognizerTableCellEdit:(BOOL)rgCellEdit
 {
     _type = type;
     _isViewControllers = YES;
-    UIScrollView *scrollView = [[UIScrollView alloc] init];
+    UIScrollView *scrollView;
+    if (rgCellEdit==YES) {
+        scrollView = [[ZXXScrollView alloc] init];
+    }else{
+        scrollView = [[UIScrollView alloc] init];
+    }
     scrollView.backgroundColor = [UIColor whiteColor];
     scrollView.showsHorizontalScrollIndicator = NO;
     scrollView.showsVerticalScrollIndicator = NO;
@@ -587,4 +596,5 @@ static const CGFloat padding = 15;///内边距
         
     }];
 }
+
 @end

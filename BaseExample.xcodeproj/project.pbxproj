@@ -80,6 +80,7 @@
 		8D660E251EEF7FD2002AC348 /* TestView2.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D660E241EEF7FD2002AC348 /* TestView2.m */; };
 		8D660E281EF1177A002AC348 /* Test1ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D660E271EF1177A002AC348 /* Test1ViewController.m */; };
 		8D660E2B1EF11785002AC348 /* Test2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D660E2A1EF11785002AC348 /* Test2ViewController.m */; };
+		8D660E2E1EF13B6B002AC348 /* ZXXScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D660E2D1EF13B6B002AC348 /* ZXXScrollView.m */; };
 		8DF3B3EE1EE65C2C0066C8C3 /* UIView+Layout.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DF3B3EB1EE65C2C0066C8C3 /* UIView+Layout.m */; };
 		8DF3B3EF1EE65C2C0066C8C3 /* ZXXImageCropManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DF3B3ED1EE65C2C0066C8C3 /* ZXXImageCropManager.m */; };
 		8DF3B3F21EE65D320066C8C3 /* NSDate+MJ.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DF3B3F11EE65D320066C8C3 /* NSDate+MJ.m */; };
@@ -252,6 +253,8 @@
 		8D660E271EF1177A002AC348 /* Test1ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Test1ViewController.m; sourceTree = "<group>"; };
 		8D660E291EF11785002AC348 /* Test2ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Test2ViewController.h; sourceTree = "<group>"; };
 		8D660E2A1EF11785002AC348 /* Test2ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Test2ViewController.m; sourceTree = "<group>"; };
+		8D660E2C1EF13B6B002AC348 /* ZXXScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZXXScrollView.h; sourceTree = "<group>"; };
+		8D660E2D1EF13B6B002AC348 /* ZXXScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZXXScrollView.m; sourceTree = "<group>"; };
 		8DF3B3EA1EE65C2C0066C8C3 /* UIView+Layout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Layout.h"; sourceTree = "<group>"; };
 		8DF3B3EB1EE65C2C0066C8C3 /* UIView+Layout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Layout.m"; sourceTree = "<group>"; };
 		8DF3B3EC1EE65C2C0066C8C3 /* ZXXImageCropManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZXXImageCropManager.h; sourceTree = "<group>"; };
@@ -907,6 +910,8 @@
 		8D660E161EEE2624002AC348 /* SegmentViewControl */ = {
 			isa = PBXGroup;
 			children = (
+				8D660E2C1EF13B6B002AC348 /* ZXXScrollView.h */,
+				8D660E2D1EF13B6B002AC348 /* ZXXScrollView.m */,
 				8D660E171EEE2652002AC348 /* SegmentViewControl.h */,
 				8D660E181EEE2652002AC348 /* SegmentViewControl.m */,
 			);
@@ -1197,6 +1202,7 @@
 				8D660E0E1EEC3D80002AC348 /* ZXXSetItem.m in Sources */,
 				1AE6F9381E852265007D96B2 /* WelComeViewController.m in Sources */,
 				1ADB80AA1EB3271300F952ED /* QDCommonUI.m in Sources */,
+				8D660E2E1EF13B6B002AC348 /* ZXXScrollView.m in Sources */,
 				8D660DEC1EEC3AC4002AC348 /* SettingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
