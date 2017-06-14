@@ -17,6 +17,12 @@
     // Drawing code
 }
 */
+- (instancetype)init{
+    if (self=[super init]) {
+        self.backgroundColor = [UIColor purpleColor];
+    }
+    return self;
+}
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self=[super initWithFrame:frame]) {
         self.backgroundColor = [UIColor blueColor];

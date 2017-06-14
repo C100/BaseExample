@@ -78,6 +78,8 @@
 		8D660E1F1EEE738A002AC348 /* ZXXAttributeItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D660E1E1EEE738A002AC348 /* ZXXAttributeItem.m */; };
 		8D660E221EEF7FC0002AC348 /* TestView1.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D660E211EEF7FC0002AC348 /* TestView1.m */; };
 		8D660E251EEF7FD2002AC348 /* TestView2.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D660E241EEF7FD2002AC348 /* TestView2.m */; };
+		8D660E281EF1177A002AC348 /* Test1ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D660E271EF1177A002AC348 /* Test1ViewController.m */; };
+		8D660E2B1EF11785002AC348 /* Test2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D660E2A1EF11785002AC348 /* Test2ViewController.m */; };
 		8DF3B3EE1EE65C2C0066C8C3 /* UIView+Layout.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DF3B3EB1EE65C2C0066C8C3 /* UIView+Layout.m */; };
 		8DF3B3EF1EE65C2C0066C8C3 /* ZXXImageCropManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DF3B3ED1EE65C2C0066C8C3 /* ZXXImageCropManager.m */; };
 		8DF3B3F21EE65D320066C8C3 /* NSDate+MJ.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DF3B3F11EE65D320066C8C3 /* NSDate+MJ.m */; };
@@ -246,6 +248,10 @@
 		8D660E211EEF7FC0002AC348 /* TestView1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestView1.m; sourceTree = "<group>"; };
 		8D660E231EEF7FD2002AC348 /* TestView2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestView2.h; sourceTree = "<group>"; };
 		8D660E241EEF7FD2002AC348 /* TestView2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestView2.m; sourceTree = "<group>"; };
+		8D660E261EF1177A002AC348 /* Test1ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Test1ViewController.h; sourceTree = "<group>"; };
+		8D660E271EF1177A002AC348 /* Test1ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Test1ViewController.m; sourceTree = "<group>"; };
+		8D660E291EF11785002AC348 /* Test2ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Test2ViewController.h; sourceTree = "<group>"; };
+		8D660E2A1EF11785002AC348 /* Test2ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Test2ViewController.m; sourceTree = "<group>"; };
 		8DF3B3EA1EE65C2C0066C8C3 /* UIView+Layout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Layout.h"; sourceTree = "<group>"; };
 		8DF3B3EB1EE65C2C0066C8C3 /* UIView+Layout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Layout.m"; sourceTree = "<group>"; };
 		8DF3B3EC1EE65C2C0066C8C3 /* ZXXImageCropManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZXXImageCropManager.h; sourceTree = "<group>"; };
@@ -654,6 +660,10 @@
 			children = (
 				1A8E7D891E66C42A0044AC48 /* SecondTabViewController.h */,
 				1A8E7D8A1E66C42A0044AC48 /* SecondTabViewController.m */,
+				8D660E261EF1177A002AC348 /* Test1ViewController.h */,
+				8D660E271EF1177A002AC348 /* Test1ViewController.m */,
+				8D660E291EF11785002AC348 /* Test2ViewController.h */,
+				8D660E2A1EF11785002AC348 /* Test2ViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1147,6 +1157,7 @@
 				1AE6F9351E85224A007D96B2 /* WebViewController.m in Sources */,
 				8DF3B3F41EE65D8F0066C8C3 /* Foundation+Log.m in Sources */,
 				1A8E7D701E666F1A0044AC48 /* BaseModel.m in Sources */,
+				8D660E2B1EF11785002AC348 /* Test2ViewController.m in Sources */,
 				1ADB80A01EB3205000F952ED /* RootNavigationController.m in Sources */,
 				1A81B25F1E6A64DE004AF8DA /* ShowBigImage.m in Sources */,
 				8D660E081EEC3D80002AC348 /* BaseSettingViewController.m in Sources */,
@@ -1157,6 +1168,7 @@
 				1A81B2731E6A6D7E004AF8DA /* NSObject+Unicode.m in Sources */,
 				8D660E151EEE2338002AC348 /* ImageEditViewController.m in Sources */,
 				1A81B2721E6A6D7E004AF8DA /* FileManageTool.m in Sources */,
+				8D660E281EF1177A002AC348 /* Test1ViewController.m in Sources */,
 				1A8E7D6D1E666EC60044AC48 /* BaseView.m in Sources */,
 				8D660E0B1EEC3D80002AC348 /* ZXXCheakItem.m in Sources */,
 				8D660E111EEC3D80002AC348 /* ZXXBadgeView.m in Sources */,
