@@ -34,8 +34,8 @@
         textSize = rect.size;
     }
     else{
-        textSize = [text sizeWithFont:font constrainedToSize:maxSize lineBreakMode:NSLineBreakByCharWrapping];
-//        [text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:nil context:nil];
+//        textSize = [text sizeWithFont:font constrainedToSize:maxSize lineBreakMode:NSLineBreakByCharWrapping];
+        [text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:font} context:nil];
     }
     
     return textSize;

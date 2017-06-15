@@ -65,3 +65,4 @@
 + (void) setTitleFont: (UIFont *) titleFont;
 
 @end
+

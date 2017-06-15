@@ -81,6 +81,9 @@
 		8D660E281EF1177A002AC348 /* Test1ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D660E271EF1177A002AC348 /* Test1ViewController.m */; };
 		8D660E2B1EF11785002AC348 /* Test2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D660E2A1EF11785002AC348 /* Test2ViewController.m */; };
 		8D660E2E1EF13B6B002AC348 /* ZXXScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D660E2D1EF13B6B002AC348 /* ZXXScrollView.m */; };
+		8D660E391EF2F3D2002AC348 /* ApiReqestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D660E371EF2F3D2002AC348 /* ApiReqestManager.m */; };
+		8D660E3A1EF2F3D2002AC348 /* ErrorInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D660E381EF2F3D2002AC348 /* ErrorInfo.plist */; };
+		8D660E3D1EF2F419002AC348 /* YTKUrlArgumentsFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D660E3C1EF2F419002AC348 /* YTKUrlArgumentsFilter.m */; };
 		8DF3B3EE1EE65C2C0066C8C3 /* UIView+Layout.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DF3B3EB1EE65C2C0066C8C3 /* UIView+Layout.m */; };
 		8DF3B3EF1EE65C2C0066C8C3 /* ZXXImageCropManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DF3B3ED1EE65C2C0066C8C3 /* ZXXImageCropManager.m */; };
 		8DF3B3F21EE65D320066C8C3 /* NSDate+MJ.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DF3B3F11EE65D320066C8C3 /* NSDate+MJ.m */; };
@@ -255,6 +258,11 @@
 		8D660E2A1EF11785002AC348 /* Test2ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Test2ViewController.m; sourceTree = "<group>"; };
 		8D660E2C1EF13B6B002AC348 /* ZXXScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZXXScrollView.h; sourceTree = "<group>"; };
 		8D660E2D1EF13B6B002AC348 /* ZXXScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZXXScrollView.m; sourceTree = "<group>"; };
+		8D660E361EF2F3D2002AC348 /* ApiReqestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApiReqestManager.h; sourceTree = "<group>"; };
+		8D660E371EF2F3D2002AC348 /* ApiReqestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApiReqestManager.m; sourceTree = "<group>"; };
+		8D660E381EF2F3D2002AC348 /* ErrorInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ErrorInfo.plist; sourceTree = "<group>"; };
+		8D660E3B1EF2F419002AC348 /* YTKUrlArgumentsFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YTKUrlArgumentsFilter.h; sourceTree = "<group>"; };
+		8D660E3C1EF2F419002AC348 /* YTKUrlArgumentsFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YTKUrlArgumentsFilter.m; sourceTree = "<group>"; };
 		8DF3B3EA1EE65C2C0066C8C3 /* UIView+Layout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Layout.h"; sourceTree = "<group>"; };
 		8DF3B3EB1EE65C2C0066C8C3 /* UIView+Layout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Layout.m"; sourceTree = "<group>"; };
 		8DF3B3EC1EE65C2C0066C8C3 /* ZXXImageCropManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZXXImageCropManager.h; sourceTree = "<group>"; };
@@ -523,6 +531,7 @@
 		1A8E7D5D1E66679B0044AC48 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				8D660E351EF2F3D2002AC348 /* ApiReqestManeger */,
 				1ADB80581EAB2EBF00F952ED /* ExpandableTableView */,
 				1AE6F9311E85224A007D96B2 /* WelcomeViewController */,
 				8DF3B49F1EE90D240066C8C3 /* kxmenu */,
@@ -918,6 +927,18 @@
 			path = SegmentViewControl;
 			sourceTree = "<group>";
 		};
+		8D660E351EF2F3D2002AC348 /* ApiReqestManeger */ = {
+			isa = PBXGroup;
+			children = (
+				8D660E3B1EF2F419002AC348 /* YTKUrlArgumentsFilter.h */,
+				8D660E3C1EF2F419002AC348 /* YTKUrlArgumentsFilter.m */,
+				8D660E361EF2F3D2002AC348 /* ApiReqestManager.h */,
+				8D660E371EF2F3D2002AC348 /* ApiReqestManager.m */,
+				8D660E381EF2F3D2002AC348 /* ErrorInfo.plist */,
+			);
+			path = ApiReqestManeger;
+			sourceTree = "<group>";
+		};
 		8DF3B3E91EE65C2C0066C8C3 /* UIImageTool */ = {
 			isa = PBXGroup;
 			children = (
@@ -1064,6 +1085,7 @@
 				1AB925261E953A0500A52F66 /* welcome_image2.png in Resources */,
 				1AB925241E953A0500A52F66 /* welcome_image0.png in Resources */,
 				1AB925251E953A0500A52F66 /* welcome_image3.png in Resources */,
+				8D660E3A1EF2F3D2002AC348 /* ErrorInfo.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1155,6 +1177,7 @@
 				1A8E7D8E1E66C43A0044AC48 /* ThirdTabViewController.m in Sources */,
 				1AB9941B1EA855F2006D9B19 /* UIViewController+Example.m in Sources */,
 				8D660E221EEF7FC0002AC348 /* TestView1.m in Sources */,
+				8D660E3D1EF2F419002AC348 /* YTKUrlArgumentsFilter.m in Sources */,
 				8D660E0C1EEC3D80002AC348 /* ZXXGroupItem.m in Sources */,
 				1A8E7D6A1E666E9A0044AC48 /* BaseViewController.m in Sources */,
 				1A8E7D881E66C40D0044AC48 /* FirstTabViewController.m in Sources */,
@@ -1176,6 +1199,7 @@
 				8D660E281EF1177A002AC348 /* Test1ViewController.m in Sources */,
 				1A8E7D6D1E666EC60044AC48 /* BaseView.m in Sources */,
 				8D660E0B1EEC3D80002AC348 /* ZXXCheakItem.m in Sources */,
+				8D660E391EF2F3D2002AC348 /* ApiReqestManager.m in Sources */,
 				8D660E111EEC3D80002AC348 /* ZXXBadgeView.m in Sources */,
 				8D660E121EEC3D80002AC348 /* ZXXSettingCell.m in Sources */,
 				1A8E7D911E66C4510044AC48 /* FourthTabViewController.m in Sources */,
