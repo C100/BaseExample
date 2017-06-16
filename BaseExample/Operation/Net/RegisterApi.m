@@ -29,9 +29,17 @@
 }
 
 - (id)requestArgument {
-    return @{
-             @"username": _username,
-             @"password": _password
-             };
+    NSMutableDictionary *dict=[super requestArgument];
+    NSDictionary *dd=@{
+                       @"username": _username,
+                       @"password": _password
+                       };
+    [dict addEntriesFromDictionary:dd];
+    return dict;
 }
+
+- (NSDictionary<NSString *,NSString *> *)requestHeaderFieldValueDictionary{
+    return @{@"token":_token};
+}
+
 @end

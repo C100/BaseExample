@@ -20,8 +20,6 @@
 
 @property (nonatomic,copy,nonnull)RequestBlock chainFailedBlck;
 
-@property (assign,nonatomic)BOOL isFirst;
-
 @end
 
 @implementation ApiReqestManager
@@ -66,15 +64,15 @@ static id _instance;
     
     [api startWithCompletionBlockWithSuccess:^(__kindof YTKBaseRequest * _Nonnull request) {
         
-        [self pritfReturnCodeStatus:request];
-        
         successBlock(request);
+        
+        [self pritfReturnCodeStatus:request];
         
     } failure:^(__kindof YTKBaseRequest * _Nonnull request) {
         
-        [self pritfReturnCodeStatus:request];
-        
         failureBlock(request);
+        
+        [self pritfReturnCodeStatus:request];
     }];
 }
 
@@ -90,13 +88,12 @@ static id _instance;
 }
 
 - (void)requestFinished:(__kindof BaseRequestApi *)request {
-    
-    [self pritfReturnCodeStatus:request];
     self.successBlock(request);
+    [self pritfReturnCodeStatus:request];
 }
 - (void)requestFailed:(__kindof BaseRequestApi *)request {
-    [self pritfReturnCodeStatus:request];
     self.failureBlock(request);
+    [self pritfReturnCodeStatus:request];
 }
 #pragma mark - 批量网络请求处理
 - (void)batchRequestWithRequestArray:(NSArray <BaseRequestApi *> *)apiArray startWithCompletionBlockWithSuccess:(BatchBlock)successBlock failure:(BatchBlock)failureBlock failedRequest:(RequestBlock)failedRequestBlock{
@@ -106,15 +103,15 @@ static id _instance;
     YTKBatchRequest *batchRequest = [[YTKBatchRequest alloc] initWithRequestArray:apiArray];
     [batchRequest startWithCompletionBlockWithSuccess:^(YTKBatchRequest *batchRequest) {
         NSArray *requests = batchRequest.requestArray;
-        [MBProgressHUD hideHUDForView:keyWindow animated:YES];
         successBlock(requests);
-        
+        BaseRequestApi * lastRequest = requests.lastObject;
+        [self pritfReturnCodeStatus:lastRequest];
     } failure:^(YTKBatchRequest *batchRequest) {
         NSArray *requests = batchRequest.requestArray;
         failureBlock(requests);
         __kindof YTKRequest *failedRq = batchRequest.failedRequest;
-        [self pritfReturnCodeStatus:failedRq];
         failedRequestBlock(failedRq);
+        [self pritfReturnCodeStatus:failedRq];
     }];
 }
 
@@ -128,11 +125,17 @@ static id _instance;
         hud.labelText = @"初级请求成功";
         @WeakObj(self);
         __kindof BaseRequestApi *secondReq = blockthenSecondApi(baseRequest);
-        [chainRequest addRequest:secondReq callback:^(YTKChainRequest * _Nonnull chainRequest,__kindof YTKBaseRequest * _Nonnull baseRequest) {
-            @StrongObj(self);
+        if(secondReq!=nil){
+            
+            [chainRequest addRequest:secondReq callback:^(YTKChainRequest * _Nonnull chainRequest,__kindof YTKBaseRequest * _Nonnull baseRequest) {
+                @StrongObj(self);
+                blockSecond(baseRequest);
+                [self pritfReturnCodeStatus:baseRequest];
+            }];
+        }else{
             [self pritfReturnCodeStatus:baseRequest];
-            blockSecond(baseRequest);
-        }];
+        }
+        
     }];
     [chainReq start];
 }
@@ -145,12 +148,14 @@ static id _instance;
     [chainReq addRequest:baseApi callback:^(YTKChainRequest * _Nonnull chainRequest,__kindof YTKBaseRequest * _Nonnull baseRequest) {
         hud.labelText = @"初级请求成功";
         NSArray <__kindof BaseRequestApi *> *arrRequest = blockthenApiArray(baseRequest);
-        [arrRequest enumerateObjectsUsingBlock:^(__kindof BaseRequestApi * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            [chainRequest addRequest:obj callback:nil];
-        }];
-        self.chainArrayBlock = blockArray;
-        self.chainFailedArrayBlock = failedblockArray;
-        self.chainFailedBlck = failedblock;
+        if (arrRequest!=nil) {            
+            [arrRequest enumerateObjectsUsingBlock:^(__kindof BaseRequestApi * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                [chainRequest addRequest:obj callback:nil];
+            }];
+            self.chainArrayBlock = blockArray;
+            self.chainFailedArrayBlock = failedblockArray;
+            self.chainFailedBlck = failedblock;
+        }
     }];
     chainReq.delegate = self;
     [chainReq start];
@@ -164,8 +169,8 @@ static id _instance;
         }
     }];
     __kindof YTKBaseRequest *lastApi = chainRequest.requestArray.lastObject;
-    [self pritfReturnCodeStatus:lastApi];
     self.chainArrayBlock(arrayM);
+    [self pritfReturnCodeStatus:lastApi];
 }
 
 - (void)chainRequestFailed:(YTKChainRequest *)chainRequest failedBaseRequest:(__kindof YTKBaseRequest*)request {
@@ -176,8 +181,8 @@ static id _instance;
         }
     }];
     self.chainFailedArrayBlock(arrayM);
-    [self pritfReturnCodeStatus:request];
     self.chainFailedBlck(request);
+    [self pritfReturnCodeStatus:request];
     // some one of request is failed
 }
 
@@ -189,11 +194,11 @@ static id _instance;
     UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
     [MBProgressHUD showHUDAddedTo:keyWindow animated:YES];
     [api startWithCompletionBlockWithSuccess:^(__kindof YTKBaseRequest *request) {
-        [self pritfReturnCodeStatus:request];
         successBlock(request);
-    } failure:^(__kindof YTKBaseRequest *request) {
         [self pritfReturnCodeStatus:request];
+    } failure:^(__kindof YTKBaseRequest *request) {
         failureBlock(request);
+        [self pritfReturnCodeStatus:request];
     }];
 }
 
@@ -223,5 +228,8 @@ static id _instance;
         [MBProgressHUD hideHUDForView:keyWindow animated:YES];
     });
     ZXXLog(@"%@",errorStr);
+}
+- (void)setIsFirst:(BOOL)isFirst{
+    _isFirst = isFirst;
 }
 @end

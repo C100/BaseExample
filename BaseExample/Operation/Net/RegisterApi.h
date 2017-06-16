@@ -6,9 +6,18 @@
 //  Copyright © 2017年 james. All rights reserved.
 //
 
-#import <YTKNetwork/YTKNetwork.h>
+#import "BaseRequestApi.h"
 
-@interface RegisterApi : YTKRequest
+@interface RegisterApi : BaseRequestApi
+
+/**
+ 请求头参数
+ */
+@property (nonatomic) NSString *token;
+
+/**
+ 请求体参数
+ */
 @property (nonatomic) NSString *username;
 @property (nonatomic) NSString *password;
 

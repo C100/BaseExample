@@ -42,6 +42,10 @@ typedef NSArray<__kindof BaseRequestApi *> *_Nullable(^ChainBlock_returnArrayApi
 @interface ApiReqestManager : NSObject
 
 /**
+ 标识是否是第一次使用
+ */
+@property (assign,nonatomic,readonly)BOOL isFirst;
+/**
  界面还没展示时，为了让界面显示有菊花加载效果使用这个方法
 
  @return 单粒对象
