@@ -49,7 +49,10 @@
     //配置rootViewController
     [self initRootViewController];
     
-
+    //配置微信
+    [WXApi registerApp:@"wxf52ad75c5c060b9e" withDescription:@"demo 2.0"];
+    
+    
     //第一次打开app，进入欢迎页面
     if ([CommonUtil isFirstOpen]) {
         [self.window.rootViewController presentViewController:[[RootNavigationController alloc] initWithRootViewController:self.welcomeViewController] animated:true completion:nil];
@@ -133,14 +136,61 @@
     return _welcomeViewController;
 }
 
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url{
+    return [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];
+}
+
 // 支持所有iOS系统
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation{
-    //6.3的新的API调用，是为了兼容国外平台(例如:新版facebookSDK,VK等)的调用[如果用6.2的api调用会没有回调],对国内平台没有影响
-    BOOL result = [[UMSocialManager defaultManager] handleOpenURL:url sourceApplication:sourceApplication annotation:annotation];
-    if (!result) {
-        // 其他如支付等SDK的回调
+    
+    if ([url.host isEqualToString:@"safepay"]) {
+        //跳转支付宝钱包进行支付，处理支付结果
+        [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
+            
+            NSLog(@"result = %@",resultDic);
+            if ([resultDic[@"resultStatus"] isEqualToString:@"9000"]) {
+                //支付成功
+                self.AlipayCallBack(YES, resultDic);
+            }else{
+                //支付失败
+                self.AlipayCallBack(NO, resultDic);
+            }
+        }];
+    }else if([url.host isEqualToString:@"pay"]){
+        //微信支付
+        
+        return [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];
+        
+    }else{
+        //6.3的新的API调用，是为了兼容国外平台(例如:新版facebookSDK,VK等)的调用[如果用6.2的api调用会没有回调],对国内平台没有影响
+        BOOL result = [[UMSocialManager defaultManager] handleOpenURL:url sourceApplication:sourceApplication annotation:annotation];
+        if (!result) {
+            // 其他如支付等SDK的回调
+        }
+        return result;
+        
     }
-    return result;
+    return YES;
+}
+
+// NOTE: 9.0以后使用新API接口
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options
+{
+    if ([url.host isEqualToString:@"safepay"]) {
+        //跳转支付宝钱包进行支付，处理支付结果
+        [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
+            NSLog(@"result = %@",resultDic);
+            if ([resultDic[@"resultStatus"] isEqualToString:@"9000"]) {
+                //支付成功
+                self.AlipayCallBack(YES, resultDic);
+            }else{
+                //支付失败
+                self.AlipayCallBack(NO, resultDic);
+            }
+        }];
+    }
+    
+    return YES;
 }
 
 //iOS10以下使用这个方法接收通知

@@ -12,6 +12,8 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
+//返回支付宝支付结果是否成功（方法里的回调不会走了，自己写）
+@property (nonatomic) void(^AlipayCallBack) (BOOL isSucceed, NSDictionary *resultDic);
 
 @end
 

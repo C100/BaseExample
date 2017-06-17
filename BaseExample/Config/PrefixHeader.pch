@@ -22,6 +22,10 @@
 #import <MJRefresh/MJRefresh.h>
 #import <QMUIKit/QMUIKit.h>
 
+#import <AlipaySDK/AlipaySDK.h>
+#import <WXApi.h>
+#import "WXApiManager.h"
+
 #import "QDCommonUI.h"
 #import "QDUIHelper.h"
 
