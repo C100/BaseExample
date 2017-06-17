@@ -92,8 +92,15 @@ typedef NS_ENUM(NSUInteger,SegmentViewControlIsLazyLoadType){
 /**
  将scrollView上的子视图传递出去
 
- @return scrollView上的子视图
+ @return scrollView上的子视图或子控制器
  */
 - (NSArray<__kindof UIView *> *_Nonnull)viewsOtherwiseViewControllers;
+
+/**
+ 大scrollView上的当前视图或控制器;
+
+ @return View或ViewController
+ */
+- (id _Nonnull )currentViewOrViewControllor;
 
 @end

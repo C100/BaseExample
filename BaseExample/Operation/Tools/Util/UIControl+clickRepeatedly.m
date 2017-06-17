@@ -47,9 +47,10 @@ static char *IgnoreClick;
     }
     if (self.clickInterval > 0)
     {
+        self.ignoreClick = YES;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.clickInterval * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self setIgnoreClick:NO];
-        });   
+        });
     }
 }
 

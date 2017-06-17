@@ -102,8 +102,8 @@ static const CGFloat padding = 15;///内边距
     NSArray *_arrayFrame;
     SegmentViewControlIsLazyLoadType _type;
     BOOL _isViewControllers;
+    id _currentViewOrViewControllor;
 }
-
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
@@ -113,6 +113,9 @@ static const CGFloat padding = 15;///内边距
 */
 - (NSArray<__kindof UIView *> *)viewsOtherwiseViewControllers{
     return _array;
+}
+- (id)currentViewOrViewControllor{
+    return _currentViewOrViewControllor;
 }
 
 + (instancetype)segmentTitles:(NSArray *_Nonnull)titles withItem:(SegmentViewItem * _Nullable)item withViews:(NSArray * _Nonnull)views withFrame:(CGRect)rect recognizerTableCellEdit:(BOOL)rgCellEdit{
@@ -387,6 +390,9 @@ static const CGFloat padding = 15;///内边距
         id view=[[class alloc] initWithFrame:CGRectMake(idx*rect.size.width, 0, rect.size.width, realHeight)];
         [scrollView addSubview:view];
         [arrayM addObject:view];
+        if (idx == 0) {
+            _currentViewOrViewControllor = view;
+        }
     }];
     _array = arrayM;
 }
@@ -439,6 +445,8 @@ static const CGFloat padding = 15;///内边距
         if (idx==0) {
             controller.view.frame = rct;
             [scrollView addSubview:controller.view];
+            
+            _currentViewOrViewControllor = controller;
         }else{
             if (type == SegmentViewControlNotLazyLoad) {
                 controller.view.frame = rct;
@@ -474,6 +482,7 @@ static const CGFloat padding = 15;///内边距
     titleButton.selected = YES;
     self.previousClickedTitleButton = titleButton;
     NSUInteger index = titleButton.tag;
+    _currentViewOrViewControllor = _array[index];
     // 滚动scrollView
     CGFloat offsetX = self.scrollView.frame.size.width * index;
     [UIView animateWithDuration:0.25 animations:^{
@@ -542,6 +551,7 @@ static const CGFloat padding = 15;///内边距
     titleButton.selected = YES;
     self.previousClickedTitleButton = titleButton;
     NSUInteger index = titleButton.tag;
+    _currentViewOrViewControllor = _array[index];
     [UIView animateWithDuration:0.25 animations:^{
         if (titleButton.center.x>self.center.x&&self.titlesView.frame.size.width - titleButton.center.x>self.center.x) {
             CGFloat offsetx = titleButton.center.x - self.center.x;

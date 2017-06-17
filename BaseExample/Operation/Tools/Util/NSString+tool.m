@@ -176,7 +176,7 @@
                 [attributedStr addAttribute:NSForegroundColorAttributeName value:color range:range];
             }
             else{
-                NSLog(@"index:%ld",idx);
+                NSLog(@"index:%lud",(unsigned long)idx);
             }
             
         }];
@@ -196,7 +196,7 @@
                 [attributedStr addAttribute:NSFontAttributeName value:font range:range];
             }
             else{
-                NSLog(@"index:%ld",idx);
+                NSLog(@"index:%lud",(unsigned long)idx);
             }
             
         }];
@@ -214,10 +214,10 @@
         UIFont *font = obj[XCFontKey];
         NSArray<NSValue *> *ranges = obj[XCRangeKey];
         if (!color) {
-            NSLog(@"warning: NSColorKey -> nil! index:%ld",idx);
+            NSLog(@"warning: NSColorKey -> nil! index:%ld",(unsigned long)idx);
         }
         if (!font) {
-            NSLog(@"warning: NSFontKey -> nil! index:%ld",idx);
+            NSLog(@"warning: NSFontKey -> nil! index:%ld",(unsigned long)idx);
         }
         if (ranges.count>0) {
             [ranges enumerateObjectsUsingBlock:^(NSValue * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -231,13 +231,13 @@
                     }
                 }
                 else{
-                    NSLog(@"index:%ld",idx);
+                    NSLog(@"index:%ld",(unsigned long)idx);
                 }
                 
             }];
         }
         else{
-            NSLog(@"warning: NSRangeKey -> nil! index:%ld",idx);
+            NSLog(@"warning: NSRangeKey -> nil! index:%ld",(unsigned long)idx);
         }
     }];
     return attributedStr;
