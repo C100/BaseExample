@@ -9,12 +9,12 @@
 #import "UIControl+clickRepeatedly.h"
 #import <objc/runtime.h>
 
-static const char *ClickIntervalKey;
-static const char *IgnoreClick;
+static char *ClickIntervalKey;
+static char *IgnoreClick;
 @implementation UIControl (clickRepeatedly)
 
 - (void)setClickInterval:(NSTimeInterval)clickInterval{
-    objc_setAssociatedObject(self, &ClickIntervalKey, @(clickInterval), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, &ClickIntervalKey, @(clickInterval), OBJC_ASSOCIATION_ASSIGN);
 }
 
 - (NSTimeInterval)clickInterval{
@@ -23,7 +23,7 @@ static const char *IgnoreClick;
 }
 
 - (void)setIgnoreClick:(BOOL)ignoreClick{
-    objc_setAssociatedObject(self, &IgnoreClick, @(ignoreClick), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, &IgnoreClick, @(ignoreClick), OBJC_ASSOCIATION_ASSIGN);
 }
 
 - (BOOL)ignoreClick{
@@ -40,16 +40,16 @@ static const char *IgnoreClick;
 
 - (void)rc_sendAction:(SEL)action to:(id)target forEvent:(UIEvent *)event
 {
-    if (self.ignoreClick) {
+    if (self.ignoreClick==YES) {
         return;
-    }
-    else{
+    }else{
         [self rc_sendAction:action to:target forEvent:event];
     }
     if (self.clickInterval > 0)
     {
-        self.ignoreClick = YES;
-        [self performSelector:@selector(setIgnoreClick:) withObject:@(NO) afterDelay:self.clickInterval];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.clickInterval * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self setIgnoreClick:NO];
+        });   
     }
 }
 

@@ -8,6 +8,7 @@
 
 #import "FirstTabViewController.h"
 #import "WebViewController.h"
+#import "UIControl+clickRepeatedly.h"
 @interface FirstTabViewController ()
 
 @end
@@ -19,9 +20,22 @@
     // Do any additional setup after loading the view.
     _firstTabView=[[FirstTabView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-TabBarHeight)];
     [self.view addSubview:_firstTabView];
+    UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_firstTabView addSubview:but];
+    [but makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.right.equalTo(_firstTabView);
+        make.size.sizeOffset(CGSizeMake(100, 100));
+    }];
+    but.backgroundColor = [UIColor blueColor];
+    but.clickInterval = 5;
+    [but addTarget:self action:@selector(test) forControlEvents:UIControlEventTouchUpInside];
     
 }
 
+- (void)test{
+    
+    ZXXLog(@"点击了button");
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
