@@ -10,15 +10,15 @@
 #import <MBProgressHUD.h>
 @interface ApiReqestManager()<YTKRequestDelegate,YTKChainRequestDelegate>
 
-@property (copy,nonatomic,nonnull)RequestBlock successBlock;
+@property (copy,nonatomic,nullable)RequestBlock successBlock;
 
-@property (copy,nonatomic,nonnull)RequestBlock failureBlock;
+@property (copy,nonatomic,nullable)RequestBlock failureBlock;
 
-@property (copy,nonatomic,nonnull)BatchBlock chainArrayBlock;
+@property (copy,nonatomic,nullable)BatchBlock chainArrayBlock;
 
-@property (copy,nonatomic,nonnull)BatchBlock chainFailedArrayBlock;
+@property (copy,nonatomic,nullable)BatchBlock chainFailedArrayBlock;
 
-@property (nonatomic,copy,nonnull)RequestBlock chainFailedBlck;
+@property (copy,nonatomic,nullable)RequestBlock chainFailedBlck;
 
 @end
 
@@ -63,15 +63,16 @@ static id _instance;
     [MBProgressHUD showHUDAddedTo:keyWindow animated:YES];
     
     [api startWithCompletionBlockWithSuccess:^(__kindof YTKBaseRequest * _Nonnull request) {
-        
-        successBlock(request);
+        if (successBlock!=nil) {
+            successBlock(request);
+        }
         
         [self pritfReturnCodeStatus:request];
         
     } failure:^(__kindof YTKBaseRequest * _Nonnull request) {
-        
-        failureBlock(request);
-        
+        if (failureBlock!=nil) {
+            failureBlock(request);
+        }
         [self pritfReturnCodeStatus:request];
     }];
 }
@@ -88,11 +89,15 @@ static id _instance;
 }
 
 - (void)requestFinished:(__kindof BaseRequestApi *)request {
-    self.successBlock(request);
+    if (self.successBlock!=nil) {
+        self.successBlock(request);
+    }
     [self pritfReturnCodeStatus:request];
 }
 - (void)requestFailed:(__kindof BaseRequestApi *)request {
-    self.failureBlock(request);
+    if (self.failureBlock!=nil) {
+        self.failureBlock(request);
+    }
     [self pritfReturnCodeStatus:request];
 }
 #pragma mark - 批量网络请求处理
@@ -103,14 +108,21 @@ static id _instance;
     YTKBatchRequest *batchRequest = [[YTKBatchRequest alloc] initWithRequestArray:apiArray];
     [batchRequest startWithCompletionBlockWithSuccess:^(YTKBatchRequest *batchRequest) {
         NSArray *requests = batchRequest.requestArray;
-        successBlock(requests);
+        [MBProgressHUD hideHUDForView:keyWindow animated:YES];
+        if (successBlock!=nil) {
+            successBlock(requests);
+        }
         BaseRequestApi * lastRequest = requests.lastObject;
         [self pritfReturnCodeStatus:lastRequest];
     } failure:^(YTKBatchRequest *batchRequest) {
         NSArray *requests = batchRequest.requestArray;
-        failureBlock(requests);
+        if (failureBlock!=nil) {
+            failureBlock(requests);
+        }
         __kindof YTKRequest *failedRq = batchRequest.failedRequest;
-        failedRequestBlock(failedRq);
+        if (failedRequestBlock!=nil) {
+            failedRequestBlock(failedRq);
+        }
         [self pritfReturnCodeStatus:failedRq];
     }];
 }
@@ -129,7 +141,9 @@ static id _instance;
             
             [chainRequest addRequest:secondReq callback:^(YTKChainRequest * _Nonnull chainRequest,__kindof YTKBaseRequest * _Nonnull baseRequest) {
                 @StrongObj(self);
-                blockSecond(baseRequest);
+                if (blockSecond!=nil) {
+                    blockSecond(baseRequest);
+                }
                 [self pritfReturnCodeStatus:baseRequest];
             }];
         }else{
@@ -148,7 +162,7 @@ static id _instance;
     [chainReq addRequest:baseApi callback:^(YTKChainRequest * _Nonnull chainRequest,__kindof YTKBaseRequest * _Nonnull baseRequest) {
         hud.labelText = @"初级请求成功";
         NSArray <__kindof BaseRequestApi *> *arrRequest = blockthenApiArray(baseRequest);
-        if (arrRequest!=nil) {            
+        if (arrRequest!=nil) {
             [arrRequest enumerateObjectsUsingBlock:^(__kindof BaseRequestApi * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 [chainRequest addRequest:obj callback:nil];
             }];
@@ -169,7 +183,9 @@ static id _instance;
         }
     }];
     __kindof YTKBaseRequest *lastApi = chainRequest.requestArray.lastObject;
-    self.chainArrayBlock(arrayM);
+    if (self.chainArrayBlock!=nil) {
+        self.chainArrayBlock(arrayM);
+    }
     [self pritfReturnCodeStatus:lastApi];
 }
 
@@ -180,8 +196,12 @@ static id _instance;
             [arrayM addObject:obj];
         }
     }];
-    self.chainFailedArrayBlock(arrayM);
-    self.chainFailedBlck(request);
+    if (self.chainFailedArrayBlock!=nil) {
+        self.chainFailedArrayBlock(arrayM);
+    }
+    if (self.chainFailedBlck!=nil) {
+        self.chainFailedBlck(request);
+    }
     [self pritfReturnCodeStatus:request];
     // some one of request is failed
 }
@@ -189,15 +209,21 @@ static id _instance;
 #pragma 显示上次缓存的内容
 - (void)loadCacheDataWith:(BaseRequestApi *)api dataWithCache:(RequestBlock)cacheBlock success:(RequestBlock)successBlock failure:(RequestBlock)failureBlock{
     if ([api loadCacheWithError:nil]) {
-        cacheBlock(api);
+        if (cacheBlock!=nil) {
+            cacheBlock(api);
+        }
     }
     UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
     [MBProgressHUD showHUDAddedTo:keyWindow animated:YES];
     [api startWithCompletionBlockWithSuccess:^(__kindof YTKBaseRequest *request) {
-        successBlock(request);
+        if (successBlock!=nil) {
+            successBlock(request);
+        }
         [self pritfReturnCodeStatus:request];
     } failure:^(__kindof YTKBaseRequest *request) {
-        failureBlock(request);
+        if (failureBlock!=nil) {
+            failureBlock(request);
+        }
         [self pritfReturnCodeStatus:request];
     }];
 }
@@ -221,7 +247,7 @@ static id _instance;
         [MBProgressHUD showHUDAddedTo:keyWindow animated:YES].labelText = errorStr;
         self.isFirst = NO;
     }
-
+    
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.5 * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         // Do something...
