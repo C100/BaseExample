@@ -1,4 +1,3 @@
-ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO
 FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/UMengAnalytics-NO-IDFA/umsdk_IOS_analyics_no-idfa_v4.2.5" "${PODS_ROOT}/UMengUShare/UShareSDK/UMSocialSDK" "${PODS_ROOT}/UMengUShare/UShareSDK/SocialLibraries/QQ" "${PODS_ROOT}/UMengUShare/UShareSDK/UMSocialUI"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
 HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AFNetworking" "${PODS_ROOT}/Headers/Public/JSONModel" "${PODS_ROOT}/Headers/Public/MBProgressHUD" "${PODS_ROOT}/Headers/Public/MJRefresh" "${PODS_ROOT}/Headers/Public/Masonry" "${PODS_ROOT}/Headers/Public/QMUIKit" "${PODS_ROOT}/Headers/Public/SDWebImage" "${PODS_ROOT}/Headers/Public/UMengAnalytics-NO-IDFA" "${PODS_ROOT}/Headers/Public/UMengUShare" "${PODS_ROOT}/Headers/Public/YTKNetwork" "${PODS_ROOT}/Headers/Public/pop"
