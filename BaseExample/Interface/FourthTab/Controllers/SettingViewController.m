@@ -13,7 +13,9 @@
 @end
 
 @implementation SettingViewController
-
+- (BOOL)isMain{
+    return NO;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.

@@ -1,29 +1,24 @@
 //
-//  LoginViewController.m
+//  RootNavigationController.m
 //  BaseExample
 //
-//  Created by 朱林峰 on 2017/4/6.
+//  Created by 朱林峰 on 2017/4/28.
 //  Copyright © 2017年 james. All rights reserved.
 //
 
-#import "LoginViewController.h"
+#import "RootNavigationController.h"
 
-@interface LoginViewController ()
+@interface RootNavigationController ()
 
 @end
 
-@implementation LoginViewController
-- (LoginView *)baseView{
-    if (_baseView == nil) {
-        _baseView = [[LoginView alloc] init];
-    }
-    return _baseView;
-}
+@implementation RootNavigationController
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    
+    self.navigationBarHidden=true;
+    self.navigationBar.hidden=true;
 }
 
 - (void)didReceiveMemoryWarning {

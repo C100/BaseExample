@@ -10,5 +10,5 @@
 #import "FirstTabView.h"
 #import "UMShare.h"
 @interface FirstTabViewController:BaseViewController
-@property (nonatomic) FirstTabView *firstTabView;
+@property (null_resettable,nonatomic,strong) FirstTabView *baseView;
 @end

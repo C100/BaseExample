@@ -10,10 +10,6 @@
 #define Macro______h
 
 
-#pragma mark - 定义返回请求数据的block类型
-/**定义返回请求数据的block类型*/
-typedef void (^ReturnValueBlock) (id returnValue);
-typedef void (^FailureBlock)(id returnValue);
 
 ///*weak和strong*/
 //#define WeakObj(o) __weak typeof(o) o##Weak = o;

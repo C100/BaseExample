@@ -17,6 +17,7 @@
     Method method1 = class_getInstanceMethod([self class], NSSelectorFromString(@"dealloc"));
     Method method2 = class_getInstanceMethod([self class], @selector(deallocSwizzle));
     method_exchangeImplementations(method1, method2);
+    
 }
 
 - (void)deallocSwizzle

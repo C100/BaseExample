@@ -19,14 +19,16 @@ typedef NS_ENUM(NSUInteger,CellPostNoteType){
     CellPostNoteTypeWithkeyBoardHiden = 2
 };
 @interface BaseSettingViewController : BaseViewController <UITableViewDataSource,UITableViewDelegate>
+
+@property (null_resettable,nonatomic,strong)UIView *baseView;
 /**
  *描述控制器有多少组
  */
-@property (nonatomic, strong)NSMutableArray *groups;
+@property (nonatomic, strong,nullable)NSMutableArray *groups;
 
-@property (nonatomic, strong)UITableView *tableView;
+@property (nonatomic, strong,nonnull)UITableView *tableView;
 
-@property(nonatomic)TopBarView *topbarview;
+@property(nonatomic,nullable)TopBarView *topbarview;
 
 /**
  描述点击cell时是否发送结束编辑

@@ -7,7 +7,7 @@
 //
 
 #import "BaseSettingViewController.h"
-#import "FourthTabView.h"
+//#import "FourthTabView.h"
 @interface FourthTabViewController : BaseSettingViewController
-@property (nonatomic) FourthTabView *fourthTabView;
+//@property (nonatomic) FourthTabView *fourthTabView;
 @end

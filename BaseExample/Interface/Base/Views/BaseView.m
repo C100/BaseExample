@@ -26,6 +26,7 @@
         [_topbarview setTopBarView_backgroundColor:COLOR_MAIN];
         [self addSubview:_topbarview];
         
+        
     }
     return self;
 }

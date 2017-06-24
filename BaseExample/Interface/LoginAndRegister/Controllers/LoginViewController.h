@@ -9,5 +9,5 @@
 #import "BaseViewController.h"
 #import "LoginView.h"
 @interface LoginViewController : BaseViewController
-@property (nonatomic) LoginView *loginView;
+@property (null_resettable,nonatomic,strong)LoginView *baseView;
 @end

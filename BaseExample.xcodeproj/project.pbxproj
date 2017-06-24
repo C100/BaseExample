@@ -23,7 +23,6 @@
 		1A8E7D391E66666B0044AC48 /* BaseExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8E7D381E66666B0044AC48 /* BaseExampleTests.m */; };
 		1A8E7D441E66666C0044AC48 /* BaseExampleUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8E7D431E66666C0044AC48 /* BaseExampleUITests.m */; };
 		1A8E7D601E66679B0044AC48 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8E7D531E66679B0044AC48 /* AppDelegate.m */; };
-		1A8E7D671E666E8A0044AC48 /* TabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8E7D661E666E8A0044AC48 /* TabBarController.m */; };
 		1A8E7D6A1E666E9A0044AC48 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8E7D691E666E9A0044AC48 /* BaseViewController.m */; };
 		1A8E7D6D1E666EC60044AC48 /* BaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8E7D6C1E666EC60044AC48 /* BaseView.m */; };
 		1A8E7D701E666F1A0044AC48 /* BaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8E7D6F1E666F1A0044AC48 /* BaseModel.m */; };
@@ -53,7 +52,6 @@
 		1AC44C971E7D0E1800620A7A /* CommonUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC44C961E7D0E1800620A7A /* CommonUtil.m */; };
 		1AC44C991E7D190A00620A7A /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC44C981E7D190A00620A7A /* WebKit.framework */; };
 		1ADB805B1EAB2EDB00F952ED /* ExpandableTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ADB805A1EAB2EDB00F952ED /* ExpandableTableView.m */; };
-		1ADB80A01EB3205000F952ED /* RootNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ADB809F1EB3205000F952ED /* RootNavigationController.m */; };
 		1ADB80A31EB326A200F952ED /* QMUIConfigurationTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ADB80A21EB326A200F952ED /* QMUIConfigurationTemplate.m */; };
 		1ADB80AA1EB3271300F952ED /* QDCommonUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ADB80A51EB3271300F952ED /* QDCommonUI.m */; };
 		1ADB80AB1EB3271300F952ED /* QDUIHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ADB80A71EB3271300F952ED /* QDUIHelper.m */; };
@@ -83,6 +81,9 @@
 		8A13C09E1EF4F738000D43C5 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A13C09D1EF4F738000D43C5 /* libc++.tbd */; };
 		8A27CA4C1EFA1F9C00793755 /* AlipaySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A27CA4B1EFA1F9C00793755 /* AlipaySDK.framework */; };
 		8A27CA4E1EFA1FA100793755 /* AlipaySDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8A27CA4D1EFA1FA100793755 /* AlipaySDK.bundle */; };
+		8D4916261EFD0EE500D2BF18 /* RootNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4916251EFD0EE500D2BF18 /* RootNavigationController.m */; };
+		8D4916291EFD0F2600D2BF18 /* TabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D4916281EFD0F2600D2BF18 /* TabBarController.m */; };
+		8D49162C1EFD205900D2BF18 /* HomeRequestApi.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D49162B1EFD205900D2BF18 /* HomeRequestApi.m */; };
 		8D660DEC1EEC3AC4002AC348 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D660DEB1EEC3AC4002AC348 /* SettingViewController.m */; };
 		8D660E081EEC3D80002AC348 /* BaseSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D660DF01EEC3D80002AC348 /* BaseSettingViewController.m */; };
 		8D660E091EEC3D80002AC348 /* ZXXArrowItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D660DF31EEC3D80002AC348 /* ZXXArrowItem.m */; };
@@ -104,7 +105,6 @@
 		8D660E2B1EF11785002AC348 /* Test2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D660E2A1EF11785002AC348 /* Test2ViewController.m */; };
 		8D660E2E1EF13B6B002AC348 /* ZXXScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D660E2D1EF13B6B002AC348 /* ZXXScrollView.m */; };
 		8D660E3D1EF2F419002AC348 /* YTKUrlArgumentsFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D660E3C1EF2F419002AC348 /* YTKUrlArgumentsFilter.m */; };
-		8D660E461EF3F1AF002AC348 /* ApiReqestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D660E451EF3F1AF002AC348 /* ApiReqestManager.m */; };
 		8D660E491EF3F29D002AC348 /* BaseRequestApi.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D660E481EF3F29D002AC348 /* BaseRequestApi.m */; };
 		8D660E4B1EF3F715002AC348 /* ErrorInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D660E4A1EF3F715002AC348 /* ErrorInfo.plist */; };
 		8DF3B3EE1EE65C2C0066C8C3 /* UIView+Layout.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DF3B3EB1EE65C2C0066C8C3 /* UIView+Layout.m */; };
@@ -168,8 +168,6 @@
 		1A8E7D451E66666C0044AC48 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1A8E7D521E66679B0044AC48 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		1A8E7D531E66679B0044AC48 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		1A8E7D651E666E8A0044AC48 /* TabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarController.h; sourceTree = "<group>"; };
-		1A8E7D661E666E8A0044AC48 /* TabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBarController.m; sourceTree = "<group>"; };
 		1A8E7D681E666E9A0044AC48 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		1A8E7D691E666E9A0044AC48 /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		1A8E7D6B1E666EC60044AC48 /* BaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseView.h; sourceTree = "<group>"; };
@@ -226,8 +224,6 @@
 		1ADB805A1EAB2EDB00F952ED /* ExpandableTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExpandableTableView.m; sourceTree = "<group>"; };
 		1ADB805C1EAEF9A500F952ED /* RACEXTScope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RACEXTScope.h; sourceTree = "<group>"; };
 		1ADB805D1EAEF9A500F952ED /* RACmetamacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RACmetamacros.h; sourceTree = "<group>"; };
-		1ADB809E1EB3205000F952ED /* RootNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootNavigationController.h; sourceTree = "<group>"; };
-		1ADB809F1EB3205000F952ED /* RootNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootNavigationController.m; sourceTree = "<group>"; };
 		1ADB80A11EB326A200F952ED /* QMUIConfigurationTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMUIConfigurationTemplate.h; sourceTree = "<group>"; };
 		1ADB80A21EB326A200F952ED /* QMUIConfigurationTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMUIConfigurationTemplate.m; sourceTree = "<group>"; };
 		1ADB80A41EB3271300F952ED /* QDCommonUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QDCommonUI.h; sourceTree = "<group>"; };
@@ -273,6 +269,12 @@
 		8A13C09D1EF4F738000D43C5 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		8A27CA4B1EFA1F9C00793755 /* AlipaySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlipaySDK.framework; sourceTree = "<group>"; };
 		8A27CA4D1EFA1FA100793755 /* AlipaySDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AlipaySDK.bundle; sourceTree = "<group>"; };
+		8D4916241EFD0EE500D2BF18 /* RootNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootNavigationController.h; sourceTree = "<group>"; };
+		8D4916251EFD0EE500D2BF18 /* RootNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootNavigationController.m; sourceTree = "<group>"; };
+		8D4916271EFD0F2600D2BF18 /* TabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarController.h; sourceTree = "<group>"; };
+		8D4916281EFD0F2600D2BF18 /* TabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBarController.m; sourceTree = "<group>"; };
+		8D49162A1EFD205900D2BF18 /* HomeRequestApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeRequestApi.h; sourceTree = "<group>"; };
+		8D49162B1EFD205900D2BF18 /* HomeRequestApi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeRequestApi.m; sourceTree = "<group>"; };
 		8D660DEA1EEC3AC4002AC348 /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		8D660DEB1EEC3AC4002AC348 /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
 		8D660DEF1EEC3D80002AC348 /* BaseSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseSettingViewController.h; sourceTree = "<group>"; };
@@ -316,8 +318,6 @@
 		8D660E2D1EF13B6B002AC348 /* ZXXScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZXXScrollView.m; sourceTree = "<group>"; };
 		8D660E3B1EF2F419002AC348 /* YTKUrlArgumentsFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YTKUrlArgumentsFilter.h; sourceTree = "<group>"; };
 		8D660E3C1EF2F419002AC348 /* YTKUrlArgumentsFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YTKUrlArgumentsFilter.m; sourceTree = "<group>"; };
-		8D660E441EF3F1AF002AC348 /* ApiReqestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApiReqestManager.h; sourceTree = "<group>"; };
-		8D660E451EF3F1AF002AC348 /* ApiReqestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApiReqestManager.m; sourceTree = "<group>"; };
 		8D660E471EF3F29D002AC348 /* BaseRequestApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseRequestApi.h; sourceTree = "<group>"; };
 		8D660E481EF3F29D002AC348 /* BaseRequestApi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseRequestApi.m; sourceTree = "<group>"; };
 		8D660E4A1EF3F715002AC348 /* ErrorInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ErrorInfo.plist; sourceTree = "<group>"; };
@@ -531,6 +531,7 @@
 		1A8E7D561E66679B0044AC48 /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				8D4916231EFD0EE500D2BF18 /* RootNavigationController */,
 				1A8E7D571E66679B0044AC48 /* Controllers */,
 				1A8E7D581E66679B0044AC48 /* Models */,
 				1A8E7D591E66679B0044AC48 /* Views */,
@@ -541,8 +542,6 @@
 		1A8E7D571E66679B0044AC48 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				1A8E7D651E666E8A0044AC48 /* TabBarController.h */,
-				1A8E7D661E666E8A0044AC48 /* TabBarController.m */,
 				1A8E7D681E666E9A0044AC48 /* BaseViewController.h */,
 				1A8E7D691E666E9A0044AC48 /* BaseViewController.m */,
 				8D660E131EEE2338002AC348 /* ImageEditViewController.h */,
@@ -591,6 +590,8 @@
 			children = (
 				8D660E471EF3F29D002AC348 /* BaseRequestApi.h */,
 				8D660E481EF3F29D002AC348 /* BaseRequestApi.m */,
+				8D49162A1EFD205900D2BF18 /* HomeRequestApi.h */,
+				8D49162B1EFD205900D2BF18 /* HomeRequestApi.m */,
 				1A5360041E69AFD500ED0E34 /* RegisterApi.h */,
 				1A5360051E69AFD500ED0E34 /* RegisterApi.m */,
 				1AC44C531E7CD30400620A7A /* UploadFileApi.h */,
@@ -618,7 +619,6 @@
 				1A81B2581E6A6492004AF8DA /* BMChineseSort */,
 				1A81B2591E6A6492004AF8DA /* ShowBigImage */,
 				1A8E7DAA1E6904BC0044AC48 /* TopBarView */,
-				1A8E7D611E666D120044AC48 /* RootNavigationController */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -639,15 +639,6 @@
 				8A13C0641EF4E06E000D43C5 /* WeiXinPay */,
 			);
 			path = Vendors;
-			sourceTree = "<group>";
-		};
-		1A8E7D611E666D120044AC48 /* RootNavigationController */ = {
-			isa = PBXGroup;
-			children = (
-				1ADB809E1EB3205000F952ED /* RootNavigationController.h */,
-				1ADB809F1EB3205000F952ED /* RootNavigationController.m */,
-			);
-			path = RootNavigationController;
 			sourceTree = "<group>";
 		};
 		1A8E7D711E666F850044AC48 /* Frameworks */ = {
@@ -1012,6 +1003,17 @@
 			path = WeiXinPay;
 			sourceTree = "<group>";
 		};
+		8D4916231EFD0EE500D2BF18 /* RootNavigationController */ = {
+			isa = PBXGroup;
+			children = (
+				8D4916241EFD0EE500D2BF18 /* RootNavigationController.h */,
+				8D4916251EFD0EE500D2BF18 /* RootNavigationController.m */,
+				8D4916271EFD0F2600D2BF18 /* TabBarController.h */,
+				8D4916281EFD0F2600D2BF18 /* TabBarController.m */,
+			);
+			path = RootNavigationController;
+			sourceTree = "<group>";
+		};
 		8D660DED1EEC3D80002AC348 /* BaseSetting */ = {
 			isa = PBXGroup;
 			children = (
@@ -1084,8 +1086,6 @@
 			children = (
 				8D660E3B1EF2F419002AC348 /* YTKUrlArgumentsFilter.h */,
 				8D660E3C1EF2F419002AC348 /* YTKUrlArgumentsFilter.m */,
-				8D660E441EF3F1AF002AC348 /* ApiReqestManager.h */,
-				8D660E451EF3F1AF002AC348 /* ApiReqestManager.m */,
 				8D660E4A1EF3F715002AC348 /* ErrorInfo.plist */,
 			);
 			path = ApiReqestManeger;
@@ -1190,8 +1190,8 @@
 				TargetAttributes = {
 					1A8E7D1A1E66666B0044AC48 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 59G3XF5WX4;
-						ProvisioningStyle = Automatic;
+						DevelopmentTeam = 99LZ3AB7U8;
+						ProvisioningStyle = Manual;
 					};
 					1A8E7D331E66666B0044AC48 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1319,12 +1319,14 @@
 				1ADB80A31EB326A200F952ED /* QMUIConfigurationTemplate.m in Sources */,
 				8D660E091EEC3D80002AC348 /* ZXXArrowItem.m in Sources */,
 				8DF3B4A21EE90D310066C8C3 /* KxMenu.m in Sources */,
+				8D49162C1EFD205900D2BF18 /* HomeRequestApi.m in Sources */,
 				1A8E7D9D1E66C51A0044AC48 /* SecondTabView.m in Sources */,
 				1A81B25C1E6A64CF004AF8DA /* BMChineseSort.m in Sources */,
 				8A13C07D1EF4E06E000D43C5 /* payRequsestHandler.mm in Sources */,
 				8D660E491EF3F29D002AC348 /* BaseRequestApi.m in Sources */,
 				8A13C0891EF4F6BF000D43C5 /* Alipay.m in Sources */,
 				8DF3B3F71EE65E840066C8C3 /* CalculateSize.m in Sources */,
+				8D4916261EFD0EE500D2BF18 /* RootNavigationController.m in Sources */,
 				1A81B2741E6A6D7E004AF8DA /* NSString+tool.m in Sources */,
 				1A8E7D9A1E66C5090044AC48 /* FourthTabView.m in Sources */,
 				8DF3B3F21EE65D320066C8C3 /* NSDate+MJ.m in Sources */,
@@ -1348,13 +1350,11 @@
 				8DF3B3F41EE65D8F0066C8C3 /* Foundation+Log.m in Sources */,
 				1A8E7D701E666F1A0044AC48 /* BaseModel.m in Sources */,
 				8D660E2B1EF11785002AC348 /* Test2ViewController.m in Sources */,
-				1ADB80A01EB3205000F952ED /* RootNavigationController.m in Sources */,
 				1A81B25F1E6A64DE004AF8DA /* ShowBigImage.m in Sources */,
 				8D660E081EEC3D80002AC348 /* BaseSettingViewController.m in Sources */,
 				8D660E191EEE2652002AC348 /* SegmentViewControl.m in Sources */,
 				8DF3B3EF1EE65C2C0066C8C3 /* ZXXImageCropManager.m in Sources */,
 				1A5360061E69AFD500ED0E34 /* RegisterApi.m in Sources */,
-				8D660E461EF3F1AF002AC348 /* ApiReqestManager.m in Sources */,
 				8D660E1F1EEE738A002AC348 /* ZXXAttributeItem.m in Sources */,
 				1A81B2731E6A6D7E004AF8DA /* NSObject+Unicode.m in Sources */,
 				8A13C08A1EF4F6BF000D43C5 /* WeiXin.m in Sources */,
@@ -1382,7 +1382,6 @@
 				8D660E251EEF7FD2002AC348 /* TestView2.m in Sources */,
 				1AC44BBB1E7C0F6300620A7A /* UMAnalytics.m in Sources */,
 				1A8E7D971E66C4F80044AC48 /* FirstTabView.m in Sources */,
-				1A8E7D671E666E8A0044AC48 /* TabBarController.m in Sources */,
 				1A8E7D201E66666B0044AC48 /* main.m in Sources */,
 				1A81B2781E6A6D7E004AF8DA /* VDGifPlayerTool.m in Sources */,
 				1A81B2751E6A6D7E004AF8DA /* NSStringUtil.m in Sources */,
@@ -1390,6 +1389,7 @@
 				8D660E0E1EEC3D80002AC348 /* ZXXSetItem.m in Sources */,
 				1AE6F9381E852265007D96B2 /* WelComeViewController.m in Sources */,
 				1ADB80AA1EB3271300F952ED /* QDCommonUI.m in Sources */,
+				8D4916291EFD0F2600D2BF18 /* TabBarController.m in Sources */,
 				8D660E2E1EF13B6B002AC348 /* ZXXScrollView.m in Sources */,
 				8D660DEC1EEC3AC4002AC348 /* SettingViewController.m in Sources */,
 			);
@@ -1535,7 +1535,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Kai Wang (YZS9687D53)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 59G3XF5WX4;
+				DEVELOPMENT_TEAM = 99LZ3AB7U8;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1554,8 +1554,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.xiyoukeji.baotu.initProject;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "50327ce9-2805-4c1f-85ab-bf5c2ee96d76";
+				PROVISIONING_PROFILE_SPECIFIER = "XC iOS Development:com.xiyoukeji.baotu.*";
 			};
 			name = Debug;
 		};
@@ -1566,7 +1566,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Kai Wang (YZS9687D53)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 59G3XF5WX4;
+				DEVELOPMENT_TEAM = 99LZ3AB7U8;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1585,8 +1585,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.xiyoukeji.baotu.initProject;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "50327ce9-2805-4c1f-85ab-bf5c2ee96d76";
+				PROVISIONING_PROFILE_SPECIFIER = "XC iOS Development:com.xiyoukeji.baotu.*";
 			};
 			name = Release;
 		};

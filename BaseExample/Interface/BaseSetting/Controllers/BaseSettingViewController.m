@@ -14,6 +14,12 @@
 @end
 
 @implementation BaseSettingViewController
+- (UIView *)baseView{
+    if (_baseView == nil) {
+        _baseView = [[UIView alloc] init];
+    }
+    return _baseView;
+}
 - (CellPostNoteType)type{
     return CellPostNoteTypeNULL;
 }

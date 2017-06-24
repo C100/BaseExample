@@ -13,7 +13,7 @@
 static NSString* const NETWORK_ERROR = @"10000";
 
 /**api请求地址*/
-static NSString* const BASE_URL=@"http://www.yuantiku.com";
+static NSString* const BASE_URL=@"http://101.37.34.55";
 
 /**友盟appkey*/
 static NSString* const USHARE_APPKEY=@"";

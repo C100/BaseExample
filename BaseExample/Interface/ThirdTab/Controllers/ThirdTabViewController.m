@@ -13,12 +13,16 @@
 @end
 
 @implementation ThirdTabViewController
-
+- (ThirdTabView *)baseView{
+    if (_baseView == nil) {
+        _baseView = [[ThirdTabView alloc] init];
+    }
+    return _baseView;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    _thirdTabView=[[ThirdTabView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-TabBarHeight)];
-    [self.view addSubview:_thirdTabView];
+    
 }
 
 - (void)didReceiveMemoryWarning {

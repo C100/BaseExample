@@ -19,6 +19,8 @@
 #import "LoginViewController.h"
 #import "QMUIConfigurationTemplate.h"
 
+#import "YTKUrlArgumentsFilter.h"
+
 @interface AppDelegate ()<UNUserNotificationCenterDelegate>
 //@property (nonatomic) RootNavigationController *rootNavigationController;
 @property (nonatomic) TabBarController *tabbarController;
@@ -62,8 +64,14 @@
 
 /*配置YTKNetworkConfig*/
 -(void)initYTKNetWork{
+    
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    
     YTKNetworkConfig *config = [YTKNetworkConfig sharedConfig];
-    config.baseUrl = BASE_URL;
+    
+    YTKUrlArgumentsFilter *urlFilter = [YTKUrlArgumentsFilter filterWithArguments:@{@"version": appVersion}];
+    
+    [config addUrlFilter:urlFilter];
 }
 
 /*配置友盟分享*/

@@ -13,12 +13,16 @@
 @end
 
 @implementation SecondTabViewController
-
+- (SecondTabView *)baseView{
+    if (_baseView == nil) {
+        _baseView = [[SecondTabView alloc] init];
+    }
+    return _baseView;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    _secondTabView=[[SecondTabView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-TabBarHeight)];
-    [self.view addSubview:_secondTabView];
+    
     
 }
 

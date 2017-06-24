@@ -9,5 +9,5 @@
 #import "BaseViewController.h"
 #import "ThirdTabView.h"
 @interface ThirdTabViewController : BaseViewController
-@property (nonatomic) ThirdTabView *thirdTabView;
+@property (nonatomic) ThirdTabView *baseView;
 @end

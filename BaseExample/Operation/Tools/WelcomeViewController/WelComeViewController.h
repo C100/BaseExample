@@ -8,8 +8,9 @@
 
 #import "BaseViewController.h"
 
-typedef void (^lastImageClickBlock)(UIImageView *imageview);
+typedef void (^lastImageClickBlock)();
 @interface WelComeViewController : BaseViewController
+@property (null_resettable,nonatomic,strong)UIView *baseView;
 @property (copy,nonatomic) lastImageClickBlock block;
 //最后一张图片点击事件
 -(void)lastImageClick:(lastImageClickBlock)block;

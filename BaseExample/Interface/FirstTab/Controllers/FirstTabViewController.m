@@ -9,27 +9,45 @@
 #import "FirstTabViewController.h"
 #import "WebViewController.h"
 #import "UIControl+clickRepeatedly.h"
+#import "HomeRequestApi.h"
+#import "TabBarController.h"
 @interface FirstTabViewController ()
 
 @end
 
 @implementation FirstTabViewController
-
+- (FirstTabView *)baseView{
+    if (_baseView ==nil) {
+        _baseView = [[FirstTabView alloc] init];
+    }
+    return _baseView;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     // Do any additional setup after loading the view.
-    _firstTabView=[[FirstTabView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-TabBarHeight)];
-    [self.view addSubview:_firstTabView];
+//    _firstTabView=[[FirstTabView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-TabBarHeight)];
+//    ZXXLog(@"%@",[self.view class]);
+//    [self.view addSubview:_firstTabView];
+    
     UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_firstTabView addSubview:but];
+    [self.baseView addSubview:but];
     [but makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.right.equalTo(_firstTabView);
+        make.bottom.right.equalTo(self.baseView);
         make.size.sizeOffset(CGSizeMake(100, 100));
     }];
     but.backgroundColor = [UIColor blueColor];
     but.clickInterval = 5;
     [but addTarget:self action:@selector(test) forControlEvents:UIControlEventTouchUpInside];
-    
+    // api 测试
+    HomeRequestApi *api = [[HomeRequestApi alloc] init];
+    api.employeeId = @"";
+    api.action = @"main_page";
+    api.client = @"1";
+    api.token = @"c630b59bd42625f21f1ec503e0237fdf";
+    [self startWithApi:api completionBlockWithSuccess:^(BaseRequestApi * _Nonnull request) {
+        ZXXLog(@"afdsf");
+    } failure:nil];
 }
 
 - (void)test{
