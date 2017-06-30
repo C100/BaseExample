@@ -37,13 +37,21 @@
 }
 - (UIView *)baseView{
     if (_baseView == nil) {
-        _baseView = [[BaseView alloc] init];
+        _baseView = [[UIView alloc] init];
     }
     return _baseView;
+}
+- (void)didInitialized {
+    [super didInitialized];
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    }
 }
 - (void)loadCustomView{
     self.view = self.baseView;
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -59,18 +67,6 @@
     [super viewWillDisappear:animated];
     //友盟页面分析
     [UMAnalytics endLogViewController:NSStringFromClass(self.class)];
-}
-
--(void)dealloc{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-/*设置状态栏颜色*/
-- (UIStatusBarStyle)preferredStatusBarStyle{
-    //黑色
-    //return UIStatusBarStyleDefault;
-    //白色
-    return UIStatusBarStyleLightContent;
 }
 
 #pragma mark —— push下一个页面
@@ -119,32 +115,11 @@
     [self.navigationController popToRootViewControllerAnimated:true];
 }
 
-#pragma mark —— MBProgressHUB
-/*toast*/
--(void)showToast:(NSString*)text{
-    MBProgressHUD *hub=[MBProgressHUD showHUDAddedTo:self.view animated:true];
-    hub.mode=MBProgressHUDModeText;
-    hub.margin=10.f;
-    hub.removeFromSuperViewOnHide=true;
-    hub.labelText=text;
-    [hub hide:true afterDelay:1.5];
-}
-
-/*显示菊花图*/
--(void)showWaitView{
-    [MBProgressHUD showHUDAddedTo:self.view animated:true];
-}
-
-/*隐藏菊花图*/
--(void)hideWaitView{
-    [MBProgressHUD hideHUDForView:self.view animated:true];
-}
-
 #pragma mark —— 网络请求
 #pragma mark - 基本的网络请求处理
 - (void)startWithApi:(__kindof BaseRequestApi *)api completionBlockWithSuccess:(RequestBlock)successBlock failure:(RequestBlock)failureBlock {
     
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [QMUITips showLoadingInView:self.view];
     
     [api startWithCompletionBlockWithSuccess:^(__kindof YTKBaseRequest * _Nonnull request) {
         if (successBlock!=nil) {
@@ -164,7 +139,7 @@
 - (void)starApi:(__kindof BaseRequestApi *)api requestFinished:(RequestBlock)successBlock requestFailed:(RequestBlock)failureBlock{
     [api start];
     
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [QMUITips showLoadingInView:self.view];
     self.successBlock = successBlock;
     
     self.failureBlock = failureBlock;
@@ -187,7 +162,7 @@
 #pragma mark - 批量网络请求处理
 - (void)batchRequestWithRequestArray:(NSArray <BaseRequestApi *> *)apiArray startWithCompletionBlockWithSuccess:(BatchBlock)successBlock failure:(BatchBlock)failureBlock failedRequest:(RequestBlock)failedRequestBlock{
     
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [QMUITips showLoadingInView:self.view];
     
     YTKBatchRequest *batchRequest = [[YTKBatchRequest alloc] initWithRequestArray:apiArray];
     [batchRequest startWithCompletionBlockWithSuccess:^(YTKBatchRequest *batchRequest) {
@@ -214,9 +189,8 @@
 #pragma mark - 相互依赖的网络请求
 - (void)chainRequestWithBaseRequset:(BaseRequestApi *)baseApi successThenSecondRequest:(ChainBlock_returnApi)blockthenSecondApi requestFinished:(RequestBlock)blockSecond{
     YTKChainRequest *chainReq = [[YTKChainRequest alloc] init];
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [QMUITips showLoadingInView:self.view];
     [chainReq addRequest:baseApi callback:^(YTKChainRequest * _Nonnull chainRequest,__kindof YTKBaseRequest * _Nonnull baseRequest) {
-        hud.labelText = @"初级请求成功";
         @WeakObj(self);
         __kindof BaseRequestApi *secondReq = blockthenSecondApi(baseRequest);
         if(secondReq!=nil){
@@ -239,9 +213,8 @@
 - (void)chainRequestWithBaseRequset:(__kindof BaseRequestApi *)baseApi successThenRequestArray:(ChainBlock_returnArrayApi)blockthenApiArray chainRequestFinished:(BatchBlock)blockArray failed:(BatchBlock)failedblockArray failedBaseRequest:(RequestBlock)failedblock{
     
     YTKChainRequest *chainReq = [[YTKChainRequest alloc] init];
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [QMUITips showLoadingInView:self.view];
     [chainReq addRequest:baseApi callback:^(YTKChainRequest * _Nonnull chainRequest,__kindof YTKBaseRequest * _Nonnull baseRequest) {
-        hud.labelText = @"初级请求成功";
         NSArray <__kindof BaseRequestApi *> *arrRequest = blockthenApiArray(baseRequest);
         if (arrRequest!=nil) {
             [arrRequest enumerateObjectsUsingBlock:^(__kindof BaseRequestApi * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -294,7 +267,7 @@
             cacheBlock(api);
         }
     }
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [QMUITips showLoadingInView:self.view];
     [api startWithCompletionBlockWithSuccess:^(__kindof YTKBaseRequest *request) {
         if (successBlock!=nil) {
             successBlock(request);
@@ -319,13 +292,12 @@
     [self showErrorInfoOnKeyWindowHudWithString:error_dit[code]];
 }
 - (void)showErrorInfoOnKeyWindowHudWithString:(NSString *)errorStr{
-    MBProgressHUD *hud = [MBProgressHUD HUDForView:self.view];
-    hud.labelText = errorStr;
-    
+    QMUITips *hud = [QMUITips toastInView:self.view];
+    [hud showLoading:errorStr];
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.5 * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         // Do something...
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        [QMUITips hideAllToastInView:self.view animated:YES];
     });
     ZXXLog(@"%@",errorStr);
 }
@@ -335,11 +307,5 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewWillLayoutSubviews{
-    [super viewWillLayoutSubviews];
-    if ([self.navigationController.topViewController isMemberOfClass:[TabBarController class]]) {
-        self.view.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-TabBarHeight);
-    }
-}
 
 @end

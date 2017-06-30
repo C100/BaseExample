@@ -6,8 +6,8 @@
 //  Copyright © 2017年 james. All rights reserved.
 //
 
-#import "BaseView.h"
+#import <UIKit/UIKit.h>
 
-@interface FourthTabView : BaseView
+@interface FourthTabView : UIView
 
 @end

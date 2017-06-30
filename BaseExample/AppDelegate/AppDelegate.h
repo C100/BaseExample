@@ -14,6 +14,7 @@
 
 //返回支付宝支付结果是否成功（方法里的回调不会走了，自己写）
 @property (nonatomic) void(^AlipayCallBack) (BOOL isSucceed, NSDictionary *resultDic);
-
+/** 选择根控制器 */
+-(void)chooseRootViewController:(NSString *)nameOfVc;
 @end
 

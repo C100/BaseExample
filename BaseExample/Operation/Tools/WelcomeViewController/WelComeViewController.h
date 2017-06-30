@@ -11,7 +11,7 @@
 typedef void (^lastImageClickBlock)();
 @interface WelComeViewController : BaseViewController
 @property (null_resettable,nonatomic,strong)UIView *baseView;
-@property (copy,nonatomic) lastImageClickBlock block;
+@property (copy,nonatomic,nonnull) lastImageClickBlock block;
 //最后一张图片点击事件
--(void)lastImageClick:(lastImageClickBlock)block;
+-(void)lastImageClick:(lastImageClickBlock _Nullable )block;
 @end

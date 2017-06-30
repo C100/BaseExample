@@ -7,7 +7,7 @@
 //
 
 #import "LoginView.h"
-
+#import "SegmentViewControl.h"
 @implementation LoginView
 
 /*
@@ -17,12 +17,10 @@
     // Drawing code
 }
 */
--(id)initWithFrame:(CGRect)frame{
-    self=[super initWithFrame:frame];
-    if (self) {
-        //[self.topbarview setTitleLabel:@"登录" TextColor:[UIColor blackColor]];
+- (instancetype)init{
+    if (self = [super init]) {
+        
     }
     return self;
 }
-
 @end

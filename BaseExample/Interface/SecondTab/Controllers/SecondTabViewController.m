@@ -13,17 +13,27 @@
 @end
 
 @implementation SecondTabViewController
+
+- (void)setNavigationItemsIsInEditMode:(BOOL)isInEditMode animated:(BOOL)animated {
+    [super setNavigationItemsIsInEditMode:isInEditMode animated:animated];
+    self.titleView.title = SECONDTAB_TITLE;
+}
+
 - (SecondTabView *)baseView{
     if (_baseView == nil) {
         _baseView = [[SecondTabView alloc] init];
     }
     return _baseView;
 }
+
+- (void)didInitialized {
+    [super didInitialized];
+    self.hidesBottomBarWhenPushed = NO;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    
 }
 
 

@@ -39,7 +39,7 @@
 - (void)imagePickerViewController:(QMUIImagePickerViewController *)imagePickerViewController didFinishPickingImageWithImagesAssetArray:(NSMutableArray<QMUIAsset *> *)imagesAssetArray;
 
 /**
- *  image被点击时调用（先调用这个接口，然后才去走预览大图的逻辑）
+ *  cell 被点击时调用（先调用这个接口，然后才去走预览大图的逻辑），注意这并非指选中 checkbox 事件
  *
  *  @param imagePickerViewController        对应的 QMUIImagePickerViewController
  *  @param imageAsset                       被选中的图片的 QMUIAsset 对象
@@ -47,16 +47,36 @@
  */
 - (void)imagePickerViewController:(QMUIImagePickerViewController *)imagePickerViewController didSelectImageWithImagesAsset:(QMUIAsset *)imageAsset afterImagePickerPreviewViewControllerUpdate:(QMUIImagePickerPreviewViewController *)imagePickerPreviewViewController;
 
+/// 即将选中 checkbox 时调用
 - (void)imagePickerViewController:(QMUIImagePickerViewController *)imagePickerViewController willCheckImageAtIndex:(NSInteger)index;
+
+/// 选中了 checkbox 之后调用
 - (void)imagePickerViewController:(QMUIImagePickerViewController *)imagePickerViewController didCheckImageAtIndex:(NSInteger)index;
 
+/// 即将取消选中 checkbox 时调用
 - (void)imagePickerViewController:(QMUIImagePickerViewController *)imagePickerViewController willUncheckImageAtIndex:(NSInteger)index;
+
+/// 取消了 checkbox 选中之后调用
 - (void)imagePickerViewController:(QMUIImagePickerViewController *)imagePickerViewController didUncheckImageAtIndex:(NSInteger)index;
 
 /**
  *  取消选择图片后被调用
  */
 - (void)imagePickerViewControllerDidCancel:(QMUIImagePickerViewController *)imagePickerViewController;
+
+/**
+ *  即将需要显示 Loading 时调用
+ *
+ *  @see shouldShowDefaultLoadingView
+ */
+- (void)imagePickerViewControllerWillStartLoad:(QMUIImagePickerViewController *)imagePickerViewController;
+
+/**
+ *  即将需要隐藏 Loading 时调用
+ *
+ *  @see shouldShowDefaultLoadingView
+ */
+- (void)imagePickerViewControllerWillFinishLoad:(QMUIImagePickerViewController *)imagePickerViewController;
 
 @end
 
@@ -91,10 +111,16 @@
 @property(nonatomic, strong) NSMutableArray<QMUIAsset *> *selectedImageAssetArray; // 当前被选择的图片对应的 QMUIAsset 对象数组
 
 @property(nonatomic, assign) BOOL allowsMultipleSelection; // 是否允许图片多选，默认为 YES。如果为 NO，则不显示 checkbox 和底部工具栏。
-@property(nonatomic, assign) NSInteger maximumSelectImageCount; // 最多可以选择的图片数，默认为无符号整形数的最大值，相当于没有限制
-@property(nonatomic, assign) NSInteger minimumSelectImageCount; // 最少需要选择的图片数，默认为 0
+@property(nonatomic, assign) NSUInteger maximumSelectImageCount; // 最多可以选择的图片数，默认为无符号整形数的最大值，相当于没有限制
+@property(nonatomic, assign) NSUInteger minimumSelectImageCount; // 最少需要选择的图片数，默认为 0
 @property(nonatomic, copy) NSString *alertTitleWhenExceedMaxSelectImageCount; // 选择图片超出最大图片限制时 alertView 的标题
 @property(nonatomic, copy) NSString *alertButtonTitleWhenExceedMaxSelectImageCount; // 选择图片超出最大图片限制时 alertView 底部按钮的标题
+
+/**
+ *  加载相册列表时会出现 loading，若需要自定义 loading 的形式，可将该属性置为 NO，默认为 YES。
+ *  @see imagePickerViewControllerWillStartLoad: & imagePickerViewControllerWillFinishLoad:
+ */
+@property(nonatomic, assign) BOOL shouldShowDefaultLoadingView;
 
 @end
 

@@ -17,10 +17,9 @@
     // Drawing code
 }
 */
--(id)initWithFrame:(CGRect)frame{
-    self=[super initWithFrame:frame];
+-(id)init{
+    self=[super init];
     if (self) {
-        [self.topbarview setTitleLabel:FIRSTTAB_TITLE TextColor:[UIColor whiteColor]];
         UIView *bgview=[[UIView alloc] initWithFrame:CGRectMake(0, 100, 200, 200)];
         [self addSubview:bgview];
         ViewBorderRadius(bgview, 50, 2, RGBColor(0, 0, 0));

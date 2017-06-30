@@ -20,14 +20,22 @@
 - (CellPostNoteType)type{
     return CellPostNoteTypeWithkeyBoardHiden;
 }
+- (void)setNavigationItemsIsInEditMode:(BOOL)isInEditMode animated:(BOOL)animated {
+    [super setNavigationItemsIsInEditMode:isInEditMode animated:animated];
+    self.titleView.title = @"个人中心";
+}
+- (void)didInitialized {
+    [super didInitialized];
+    self.hidesBottomBarWhenPushed = NO;
+    
+    [self setUpGroup1];
+    [self setUpGroup2];
+    [self setUpGroup3];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self setNavigationData];
-    [self setUpGroup1];
-    [self setUpGroup2];
-    [self setUpGroup3];
 }
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     ZXXLog(@"%@",_item1.title);
@@ -36,9 +44,7 @@
     ZXXLog(@"%zd",_item4.on);
     ZXXLog(@"%@",_item5.rightTitle);
 }
-- (void)setNavigationData{
-    self.topbarview.titleLabel.text = @"个人中心";
-}
+
 - (void)setUpGroup1{
     @WeakObj(self);
     ZXXArrowItem *apply = [ZXXArrowItem itemWithTitle:@"第一行的测试标题"
@@ -47,6 +53,7 @@
         attribute.titleFont = [UIFont systemFontOfSize:18];
     } cellHeight:60 WithOption:^(ZXXSetItem * _Nullable item) {
         @StrongObj(self);
+        
         [self push:@"SettingViewController"];
     }];
     _item1 = apply;

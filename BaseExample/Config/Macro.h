@@ -17,11 +17,7 @@
 
 
 #pragma mark - 高度和宽度
-/**高度和宽度*/
-#define SCREEN_WIDTH [UIScreen mainScreen].bounds.size.width
-#define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
-#define PX_WIDTH [UIScreen mainScreen].bounds.size.width/375
-#define PX_HEIGHT [UIScreen mainScreen].bounds.size.height/667
+///这个QMUI宏定义已经做好了
 
 
 #pragma mark - 欢迎页图片

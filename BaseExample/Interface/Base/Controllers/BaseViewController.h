@@ -7,9 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "BaseView.h"
 
-#import <MBProgressHUD.h>
 #import "UMAnalytics.h"
 
 #import "BaseRequestApi.h"
@@ -46,28 +44,29 @@ typedef NSArray<__kindof BaseRequestApi *> *_Nullable(^ChainBlock_returnArrayApi
 
 
 
-@interface BaseViewController : QMUICommonViewController
-//接受上一个界面传过来的数据
+@interface BaseViewController : QMUICommonViewController <QMUINavigationTitleViewDelegate>
+///接受上一个界面传过来的数据
 @property (strong,nonatomic,nullable) NSDictionary *receivedDictionary;
-- (__kindof UIView*_Nonnull)baseView;
-- (void)loadCustomView;
-/*不传数据，直接push到下一个界面*/
--(void)push:(NSString*_Nonnull)controllerName;
-/*传数据到下一个界面*/
--(void)pushWithData:(NSString*_Nonnull)controllerName Data:(NSDictionary*_Nonnull)dict;
-/*关闭界面，返回上一级*/
--(void)pop;
-/*返回到固定界面*/
--(void)popToController:(NSString*_Nonnull)controllerName;
-/*返回到主界面*/
--(void)popToRoot;
-/*toast*/
--(void)showToast:(NSString*_Nullable)text;
-/*显示菊花图*/
--(void)showWaitView;
-/*隐藏菊花图*/
--(void)hideWaitView;
 
+- (__kindof UIView*_Nonnull)baseView;
+
+/**不传数据，直接push到下一个界面*/
+-(void)push:(NSString*_Nonnull)controllerName;
+
+/**传数据到下一个界面*/
+-(void)pushWithData:(NSString*_Nonnull)controllerName Data:(NSDictionary*_Nonnull)dict;
+
+/**关闭界面，返回上一级*/
+-(void)pop;
+
+/**返回到固定界面*/
+-(void)popToController:(NSString*_Nonnull)controllerName;
+
+/**返回到主界面*/
+-(void)popToRoot;
+
+
+////////////////////////////////////////////////////////////////////////////
 
 /**
  最简单的API请求调用

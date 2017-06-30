@@ -7,7 +7,7 @@
 //
 
 #import "QMUITabBarViewController.h"
-#import "QMUIConfiguration.h"
+#import "QMUICore.h"
 #import "UIViewController+QMUI.h"
 
 @implementation QMUITabBarViewController

@@ -22,13 +22,20 @@
     }
     return _baseView;
 }
+
+- (void)setNavigationItemsIsInEditMode:(BOOL)isInEditMode animated:(BOOL)animated {
+    [super setNavigationItemsIsInEditMode:isInEditMode animated:animated];
+    self.titleView.title = @"fasdfaf";
+}
+
+- (void)didInitialized {
+    [super didInitialized];
+    self.hidesBottomBarWhenPushed = NO;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     // Do any additional setup after loading the view.
-//    _firstTabView=[[FirstTabView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-TabBarHeight)];
-//    ZXXLog(@"%@",[self.view class]);
-//    [self.view addSubview:_firstTabView];
     
     UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.baseView addSubview:but];
@@ -37,7 +44,7 @@
         make.size.sizeOffset(CGSizeMake(100, 100));
     }];
     but.backgroundColor = [UIColor blueColor];
-    but.clickInterval = 5;
+    but.clickInterval = 2;
     [but addTarget:self action:@selector(test) forControlEvents:UIControlEventTouchUpInside];
     // api 测试
     HomeRequestApi *api = [[HomeRequestApi alloc] init];
@@ -48,11 +55,14 @@
     [self startWithApi:api completionBlockWithSuccess:^(BaseRequestApi * _Nonnull request) {
         ZXXLog(@"afdsf");
     } failure:nil];
+    
 }
-
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    [QMUITips showSucceed:@"fasdfasd" detailText:@"afsdfasdfa" inView:self.view hideAfterDelay:2];
+    
+}
 - (void)test{
     
-    ZXXLog(@"点击了button");
 }
 
 - (void)didReceiveMemoryWarning {

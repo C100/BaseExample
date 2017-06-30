@@ -7,6 +7,7 @@
 //
 
 #import "WelComeViewController.h"
+#import "AppDelegate.h"
 #import "CommonUtil.h"
 @interface WelComeViewController ()
 @property (nonatomic) UIScrollView *scrollView;
@@ -30,9 +31,9 @@
     [self.view addSubview:_scrollView];
     //添加图片
     [self lastImageClick:^() {
-        [CommonUtil setLoginTrue];
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [CommonUtil setFirstOpenFalse];
         
+        [(AppDelegate *)[UIApplication sharedApplication].delegate chooseRootViewController:@"TabBarController"];
     }];
     for (int i=0; i<WELCOME_IMAGECOUNT; i++) {
         UIImageView *imageview=[[UIImageView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH*i, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
@@ -43,7 +44,6 @@
             UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(lastTap:)];
             imageview.userInteractionEnabled=true;
             [imageview addGestureRecognizer:tap];
-            
         }
     }
     

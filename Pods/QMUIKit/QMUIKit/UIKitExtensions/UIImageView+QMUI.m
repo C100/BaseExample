@@ -7,8 +7,7 @@
 //
 
 #import "UIImageView+QMUI.h"
-#import "QMUICommonDefines.h"
-#import "QMUIConfiguration.h"
+#import "QMUICore.h"
 
 @implementation UIImageView (QMUI)
 

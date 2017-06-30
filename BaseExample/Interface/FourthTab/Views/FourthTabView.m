@@ -17,12 +17,5 @@
     // Drawing code
 }
 */
--(id)initWithFrame:(CGRect)frame{
-    self=[super initWithFrame:frame];
-    if (self) {
-        [self.topbarview setTitleLabel:FOURTH_TITLE TextColor:[UIColor blackColor]];
-    }
-    return self;
-}
 
 @end

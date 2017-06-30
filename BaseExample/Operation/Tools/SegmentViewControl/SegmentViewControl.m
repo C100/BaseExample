@@ -119,8 +119,7 @@ static const CGFloat padding = 15;///内边距
 }
 
 + (instancetype)segmentTitles:(NSArray *_Nonnull)titles withItem:(SegmentViewItem * _Nullable)item withViews:(NSArray * _Nonnull)views withFrame:(CGRect)rect recognizerTableCellEdit:(BOOL)rgCellEdit{
-    SegmentViewControl *segmentViewControl = [[self alloc] init];
-    segmentViewControl.frame = rect;
+    SegmentViewControl *segmentViewControl = [[self alloc] initWithFrame:rect];
     segmentViewControl.item = item;
     [segmentViewControl setupTitlesViewWithTitles:titles withItem:item];
     
@@ -128,11 +127,9 @@ static const CGFloat padding = 15;///内边距
     return segmentViewControl;
 }
 + (instancetype)segmentTitles:(NSArray *)titles withItem:(SegmentViewItem *)item withViewControllers:(NSArray *)viewControllers withFrame:(CGRect)rect loadType:(SegmentViewControlIsLazyLoadType)type recognizerTableCellEdit:(BOOL)rgCellEdit{
-    SegmentViewControl *segmentViewControl = [[self alloc] init];
-    segmentViewControl.frame = rect;
+    SegmentViewControl *segmentViewControl = [[self alloc] initWithFrame:rect];
     segmentViewControl.item = item;
     [segmentViewControl setupTitlesViewWithTitles:titles withItem:item];
-    
     [segmentViewControl setupScrollViewWithViewControllers:viewControllers withItem:item type:type recognizerTableCellEdit:rgCellEdit];
     return segmentViewControl;
 }
@@ -141,9 +138,10 @@ static const CGFloat padding = 15;///内边距
     // titleView用一个scrollView拖着，里面的尺寸随着内容的增加而增加
     UIScrollView *scrollView = [[UIScrollView alloc] init];
     scrollView.showsHorizontalScrollIndicator = NO;
+    scrollView.showsVerticalScrollIndicator = NO;
+    scrollView.bounces = NO;
     [self addSubview:scrollView];
     self.titlesScrollView = scrollView;
-    UIView *titlesView = [[UIView alloc] init];
     if (item.titlesBarHeight>0) {
         [scrollView makeConstraints:^(MASConstraintMaker *make) {
             make.left.right.top.equalTo(self);
@@ -155,6 +153,7 @@ static const CGFloat padding = 15;///内边距
             make.height.offset(titlesHeight);
         }];
     }
+    UIView *titlesView = [[UIView alloc] init];
     [scrollView addSubview:titlesView];
     [titlesView makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.bottom.and.right.equalTo(scrollView).with.insets(UIEdgeInsetsZero);
@@ -162,10 +161,8 @@ static const CGFloat padding = 15;///内边距
     }];
     titlesView.backgroundColor = [UIColor whiteColor];
     self.titlesView = titlesView;
-    
     // 标题栏按钮
     [self setupTitlesButtonsInView:titlesView withTitles:titles withItem:item];
-    
     UIView *seperateLine = [[UIView alloc] init];
     [titlesView addSubview:seperateLine];
     seperateLine.backgroundColor = SEPERATELINECOLOR;
@@ -177,8 +174,6 @@ static const CGFloat padding = 15;///内边距
     }];
     // 标题下划线
     [self setupTitleUnderlineOnView:titlesView withItem:item];
-    
-    
 }
 /**
  *  标题栏按钮
@@ -417,7 +412,7 @@ static const CGFloat padding = 15;///内边距
     scrollView.scrollsToTop = NO; // 点击状态栏的时候，这个scrollView不会滚动到最顶部
     [self addSubview:scrollView];
     [scrollView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.titlesView.bottom);
+        make.top.equalTo(self.titlesScrollView.bottom);
         make.left.right.equalTo(self);
         make.bottom.equalTo(self);
     }];
@@ -468,7 +463,6 @@ static const CGFloat padding = 15;///内边距
     if (self.previousClickedTitleButton == titleButton) {
         return;
     }
-    
     // 处理标题按钮点击
     [self dealTitleButtonClick:titleButton];
 }
@@ -590,7 +584,6 @@ static const CGFloat padding = 15;///内边距
 {
     // 求出标题按钮的索引
     NSUInteger index = scrollView.contentOffset.x / scrollView.frame.size.width;
-    
     // 点击对应的标题按钮
     UIButton *titleButton = self.titlesView.subviews[index];
     

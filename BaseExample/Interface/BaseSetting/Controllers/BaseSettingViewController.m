@@ -32,24 +32,20 @@
     }
     return _groups;
 }
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    // 添加导航栏
-    self.view.backgroundColor=COLOR_BACKGROUND;
-    _topbarview=[[TopBarView alloc] init];
-    [self.view addSubview:_topbarview];
-    
+- (void)didInitialized {
+    [super didInitialized];
     // 添加tableView
     if (self.isMain == YES) {
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, SCREEN_HEIGHT-64-49) style:UITableViewStyleGrouped];
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-64-49) style:UITableViewStyleGrouped];
     }else{
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, SCREEN_HEIGHT-64) style:UITableViewStyleGrouped];
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-64) style:UITableViewStyleGrouped];
     }
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.view addSubview:_tableView];
+}
+- (void)viewDidLoad {
+    [super viewDidLoad];
 }
 
 #pragma mark - Table view data source

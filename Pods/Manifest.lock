@@ -16,10 +16,9 @@ PODS:
     - AFNetworking/NSURLSession
   - JSONModel (1.7.0)
   - Masonry (1.0.2)
-  - MBProgressHUD (0.9.2)
   - MJRefresh (3.1.12)
-  - pop (1.0.9)
-  - QMUIKit (1.4.0)
+  - pop (1.0.10)
+  - QMUIKit (1.7.2)
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
@@ -41,10 +40,9 @@ PODS:
 DEPENDENCIES:
   - JSONModel (~> 1.7.0)
   - Masonry (~> 1.0.2)
-  - MBProgressHUD (~> 0.8)
   - MJRefresh (~> 3.1.12)
   - pop (~> 1.0.9)
-  - QMUIKit (~> 1.4.0)
+  - QMUIKit
   - SDWebImage (~> 3.8)
   - UMengAnalytics-NO-IDFA (~> 4.2.5)
   - UMengUShare/Social/QQ (~> 6.3.0)
@@ -57,15 +55,14 @@ SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   JSONModel: 840bc0fcffb24b8454d2c026bf26fea454b8e98d
   Masonry: 7c429b56da9d4ee0bbb3ed77a5ea710d6a5df39e
-  MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
   MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
-  pop: f667631a5108a2e60d9e8797c9b32ddaf2080bce
-  QMUIKit: 13960e93719ac55e2896ac6e73d80d354bbeaa58
+  pop: 82ca6b068ce9278fd350fd9dd09482a0ce9492e6
+  QMUIKit: e26a62bf4d57e8e9176a182057d787fefa3d72e4
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   UMengAnalytics-NO-IDFA: 16666e32edce5be44ae5b14aaaa7f3582e09d6ab
   UMengUShare: b208ac3bcf1f63d11a100b359990e9d77a0f2085
   YTKNetwork: c4b0c29c9d639dc050d475de69ee626d53eac598
 
-PODFILE CHECKSUM: 9c45827380ff40981423c4af5063a14d0a84f264
+PODFILE CHECKSUM: 586859c70be51cbb762da5a8a2be8a3451f14a03
 
-COCOAPODS: 1.2.0.rc.1
+COCOAPODS: 1.1.1

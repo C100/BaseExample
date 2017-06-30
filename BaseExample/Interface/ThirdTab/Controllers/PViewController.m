@@ -1,23 +1,20 @@
 //
-//  RootNavigationController.m
+//  PViewController.m
 //  BaseExample
 //
-//  Created by 朱林峰 on 2017/4/28.
+//  Created by zoekebi_Mac on 2017/6/30.
 //  Copyright © 2017年 james. All rights reserved.
 //
 
-#import "RootNavigationController.h"
+#import "PViewController.h"
 
-@interface RootNavigationController ()
+@interface PViewController ()
 
 @end
 
-@implementation RootNavigationController
+@implementation PViewController
 
-- (void)didInitialized {
-    [super didInitialized];
-    self.automaticallyAdjustsScrollViewInsets = NO;
-}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];

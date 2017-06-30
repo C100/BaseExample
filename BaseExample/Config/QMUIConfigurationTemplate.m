@@ -77,16 +77,16 @@
     
 #pragma mark - NavigationBar
     
-    //- QMUICMI.navBarHighlightedAlpha = 0.2f;                                          // NavBarHighlightedAlpha
+    QMUICMI.navBarHighlightedAlpha = 0.8f;                                          // NavBarHighlightedAlpha
     //- QMUICMI.navBarDisabledAlpha = 0.2f;                                             // NavBarDisabledAlpha
-    //- QMUICMI.navBarButtonFont = UIFontMake(17);                                      // NavBarButtonFont
+    QMUICMI.navBarButtonFont = UIFontMake(17);                                      // NavBarButtonFont
     //- QMUICMI.navBarButtonFontBold = UIFontBoldMake(17);                              // NavBarButtonFontBold
     QMUICMI.navBarBackgroundImage = [UIImageMake(@"navigationbar_background") resizableImageWithCapInsets:UIEdgeInsetsMake(0, 2, 0, 2)];                                            // NavBarBackgroundImage
     QMUICMI.navBarShadowImage = [UIImage new];                                                // NavBarShadowImage
     //- QMUICMI.navBarBarTintColor = nil;                                               // NavBarBarTintColor
-    QMUICMI.navBarTintColor = UIColorBlack;                                         // NavBarTintColor
+    QMUICMI.navBarTintColor = [UIColor blueColor];                                         // NavBarTintColor
     QMUICMI.navBarTitleColor = NavBarTintColor;                                     // NavBarTitleColor
-    //- QMUICMI.navBarTitleFont = UIFontBoldMake(17);                                   // NavBarTitleFont
+    QMUICMI.navBarTitleFont = UIFontBoldMake(17);                                   // NavBarTitleFont
     //- QMUICMI.navBarBackButtonTitlePositionAdjustment = UIOffsetZero;                 // NavBarBarBackButtonTitlePositionAdjustment
     QMUICMI.navBarBackIndicatorImage = [UIImage qmui_imageWithShape:QMUIImageShapeNavBack size:CGSizeMake(12, 20) tintColor:NavBarTintColor];    // NavBarBackIndicatorImage
     QMUICMI.navBarCloseButtonImage = [UIImage qmui_imageWithShape:QMUIImageShapeNavClose size:CGSizeMake(16, 16) tintColor:NavBarTintColor];     // NavBarCloseButtonImage
@@ -177,7 +177,7 @@
 #pragma mark - Others
     
     QMUICMI.supportedOrientationMask = UIInterfaceOrientationMaskAll;  // SupportedOrientationMask : 默认支持的横竖屏方向
-    QMUICMI.statusbarStyleLightInitially = YES;          // StatusbarStyleLightInitially : 默认的状态栏内容是否使用白色，默认为NO，也即黑色
+    QMUICMI.statusbarStyleLightInitially = NO;          // StatusbarStyleLightInitially : 默认的状态栏内容是否使用白色，默认为NO，也即黑色
     //- QMUICMI.needsBackBarButtonItemTitle = NO;           // NeedsBackBarButtonItemTitle : 全局是否需要返回按钮的title，不需要则只显示一个返回image
     //- QMUICMI.hidesBottomBarWhenPushedInitially = YES;    // HidesBottomBarWhenPushedInitially : QMUICommonViewController.hidesBottomBarWhenPushed的初始值，默认为YES
 }

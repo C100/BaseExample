@@ -7,24 +7,24 @@
 //
 
 #import "AppDelegate.h"
-#import "RootNavigationController.h"
+
 #import "WelComeViewController.h"
+#import "LoginViewController.h"
 #import "TabBarController.h"
+#import "RootNavigationController.h"
+
 #import <YTKNetwork.h>
 #import <UMSocialCore/UMSocialCore.h>
 #import "UMMobClick/MobClick.h"
 #import "UMessage.h"
 #import <UserNotifications/UserNotifications.h>
 #import "CommonUtil.h"
-#import "LoginViewController.h"
 #import "QMUIConfigurationTemplate.h"
 
 #import "YTKUrlArgumentsFilter.h"
 
 @interface AppDelegate ()<UNUserNotificationCenterDelegate>
-//@property (nonatomic) RootNavigationController *rootNavigationController;
-@property (nonatomic) TabBarController *tabbarController;
-@property (nonatomic) WelComeViewController *welcomeViewController;
+
 @end
 
 @implementation AppDelegate
@@ -39,7 +39,7 @@
     // 启动 QMUI 的样式配置模板
     [QMUIConfigurationTemplate setupConfigurationTemplate];
     // 将全局样式渲染出来
-    [QMUIConfigurationManager renderGlobalAppearances];
+    [QDCommonUI renderGlobalAppearances];
     //配置YTKNetworkConfig
     [self initYTKNetWork];
     //配置友盟分享
@@ -48,16 +48,15 @@
     [self initUMengAnalytics];
     //配置友盟推送
     [self initUMMessage:launchOptions];
-    //配置rootViewController
-    [self initRootViewController];
     
     //配置微信
     [WXApi registerApp:@"wxf52ad75c5c060b9e" withDescription:@"demo 2.0"];
     
-    
     //第一次打开app，进入欢迎页面
     if ([CommonUtil isFirstOpen]) {
-        [self.window.rootViewController presentViewController:[[RootNavigationController alloc] initWithRootViewController:self.welcomeViewController] animated:true completion:nil];
+        [self chooseRootViewController:@"WelComeViewController"];
+    }else{
+        [self chooseRootViewController:@"TabBarController"];
     }
     return YES;
 }
@@ -126,24 +125,6 @@
     }];
 }
 
-/*配置rootViewController*/
--(void)initRootViewController{
-    _tabbarController=[[TabBarController alloc] init];
-    RootNavigationController *rootNavi=[[RootNavigationController alloc] initWithRootViewController:_tabbarController];
-    self.window.rootViewController=rootNavi;
-}
-
-/*配置首次打开app欢迎页面*/
--(WelComeViewController*)welcomeViewController{
-    if (_welcomeViewController==nil) {
-        _welcomeViewController=[[WelComeViewController alloc] init];
-        [_welcomeViewController lastImageClick:^(UIImageView *imageview) {
-            [CommonUtil setFirstOpenFalse];
-        }];
-    }
-    return _welcomeViewController;
-}
-
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url{
     return [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];
 }
@@ -206,20 +187,6 @@
 {
     
     [UMessage didReceiveRemoteNotification:userInfo];
-    
-    //    self.userInfo = userInfo;
-    //    //定制自定的的弹出框
-    //    if([UIApplication sharedApplication].applicationState == UIApplicationStateActive)
-    //    {
-    //        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"标题"
-    //                                                            message:@"Test On ApplicationStateActive"
-    //                                                           delegate:self
-    //                                                  cancelButtonTitle:@"确定"
-    //                                                  otherButtonTitles:nil];
-    //
-    //        [alertView show];
-    //
-    //    }
 }
 
 //iOS10新增：处理前台收到通知的代理方法
@@ -252,6 +219,24 @@
     }
     
 }
+
+#pragma mark - 切换根控制器
+-(void)chooseRootViewController:(NSString *)nameOfVc{
+    
+    if([nameOfVc isEqualToString:@"WelComeViewController"]){
+        WelComeViewController *rootVc = [[WelComeViewController alloc] init];
+        self.window.rootViewController = rootVc;
+        
+    }else if([nameOfVc isEqualToString:@"LoginViewController"]){
+        LoginViewController *rootVc = [[LoginViewController alloc] init];
+        RootNavigationController *rootNaviVc = [[RootNavigationController alloc] initWithRootViewController:rootVc];
+        self.window.rootViewController = rootNaviVc;
+    }else if([nameOfVc isEqualToString:@"TabBarController"]){
+        TabBarController *rootTabC=[[TabBarController alloc] init];
+        self.window.rootViewController=rootTabC;
+    }
+}
+
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

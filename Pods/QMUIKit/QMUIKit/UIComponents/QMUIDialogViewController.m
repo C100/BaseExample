@@ -7,9 +7,7 @@
 //
 
 #import "QMUIDialogViewController.h"
-#import "QMUICommonDefines.h"
-#import "QMUIConfiguration.h"
-#import "QMUIHelper.h"
+#import "QMUICore.h"
 #import "QMUIButton.h"
 #import "QMUITextField.h"
 #import "QMUITableViewCell.h"

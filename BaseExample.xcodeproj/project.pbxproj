@@ -24,8 +24,6 @@
 		1A8E7D441E66666C0044AC48 /* BaseExampleUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8E7D431E66666C0044AC48 /* BaseExampleUITests.m */; };
 		1A8E7D601E66679B0044AC48 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8E7D531E66679B0044AC48 /* AppDelegate.m */; };
 		1A8E7D6A1E666E9A0044AC48 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8E7D691E666E9A0044AC48 /* BaseViewController.m */; };
-		1A8E7D6D1E666EC60044AC48 /* BaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8E7D6C1E666EC60044AC48 /* BaseView.m */; };
-		1A8E7D701E666F1A0044AC48 /* BaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8E7D6F1E666F1A0044AC48 /* BaseModel.m */; };
 		1A8E7D881E66C40D0044AC48 /* FirstTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8E7D871E66C40D0044AC48 /* FirstTabViewController.m */; };
 		1A8E7D8B1E66C42A0044AC48 /* SecondTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8E7D8A1E66C42A0044AC48 /* SecondTabViewController.m */; };
 		1A8E7D8E1E66C43A0044AC48 /* ThirdTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8E7D8D1E66C43A0044AC48 /* ThirdTabViewController.m */; };
@@ -107,6 +105,7 @@
 		8D660E3D1EF2F419002AC348 /* YTKUrlArgumentsFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D660E3C1EF2F419002AC348 /* YTKUrlArgumentsFilter.m */; };
 		8D660E491EF3F29D002AC348 /* BaseRequestApi.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D660E481EF3F29D002AC348 /* BaseRequestApi.m */; };
 		8D660E4B1EF3F715002AC348 /* ErrorInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D660E4A1EF3F715002AC348 /* ErrorInfo.plist */; };
+		8D997F1A1F064481007BF5B9 /* PViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D997F191F064481007BF5B9 /* PViewController.m */; };
 		8DF3B3EE1EE65C2C0066C8C3 /* UIView+Layout.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DF3B3EB1EE65C2C0066C8C3 /* UIView+Layout.m */; };
 		8DF3B3EF1EE65C2C0066C8C3 /* ZXXImageCropManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DF3B3ED1EE65C2C0066C8C3 /* ZXXImageCropManager.m */; };
 		8DF3B3F21EE65D320066C8C3 /* NSDate+MJ.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DF3B3F11EE65D320066C8C3 /* NSDate+MJ.m */; };
@@ -170,10 +169,6 @@
 		1A8E7D531E66679B0044AC48 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		1A8E7D681E666E9A0044AC48 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		1A8E7D691E666E9A0044AC48 /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
-		1A8E7D6B1E666EC60044AC48 /* BaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseView.h; sourceTree = "<group>"; };
-		1A8E7D6C1E666EC60044AC48 /* BaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseView.m; sourceTree = "<group>"; };
-		1A8E7D6E1E666F1A0044AC48 /* BaseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseModel.h; sourceTree = "<group>"; };
-		1A8E7D6F1E666F1A0044AC48 /* BaseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseModel.m; sourceTree = "<group>"; };
 		1A8E7D861E66C40D0044AC48 /* FirstTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstTabViewController.h; sourceTree = "<group>"; };
 		1A8E7D871E66C40D0044AC48 /* FirstTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstTabViewController.m; sourceTree = "<group>"; };
 		1A8E7D891E66C42A0044AC48 /* SecondTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecondTabViewController.h; sourceTree = "<group>"; };
@@ -321,6 +316,8 @@
 		8D660E471EF3F29D002AC348 /* BaseRequestApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseRequestApi.h; sourceTree = "<group>"; };
 		8D660E481EF3F29D002AC348 /* BaseRequestApi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseRequestApi.m; sourceTree = "<group>"; };
 		8D660E4A1EF3F715002AC348 /* ErrorInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ErrorInfo.plist; sourceTree = "<group>"; };
+		8D997F181F064481007BF5B9 /* PViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PViewController.h; sourceTree = "<group>"; };
+		8D997F191F064481007BF5B9 /* PViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PViewController.m; sourceTree = "<group>"; };
 		8DF3B3EA1EE65C2C0066C8C3 /* UIView+Layout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Layout.h"; sourceTree = "<group>"; };
 		8DF3B3EB1EE65C2C0066C8C3 /* UIView+Layout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Layout.m"; sourceTree = "<group>"; };
 		8DF3B3EC1EE65C2C0066C8C3 /* ZXXImageCropManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZXXImageCropManager.h; sourceTree = "<group>"; };
@@ -533,8 +530,6 @@
 			children = (
 				8D4916231EFD0EE500D2BF18 /* RootNavigationController */,
 				1A8E7D571E66679B0044AC48 /* Controllers */,
-				1A8E7D581E66679B0044AC48 /* Models */,
-				1A8E7D591E66679B0044AC48 /* Views */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -548,24 +543,6 @@
 				8D660E141EEE2338002AC348 /* ImageEditViewController.m */,
 			);
 			path = Controllers;
-			sourceTree = "<group>";
-		};
-		1A8E7D581E66679B0044AC48 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				1A8E7D6E1E666F1A0044AC48 /* BaseModel.h */,
-				1A8E7D6F1E666F1A0044AC48 /* BaseModel.m */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		1A8E7D591E66679B0044AC48 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				1A8E7D6B1E666EC60044AC48 /* BaseView.h */,
-				1A8E7D6C1E666EC60044AC48 /* BaseView.m */,
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		1A8E7D5A1E66679B0044AC48 /* Operation */ = {
@@ -792,6 +769,8 @@
 			children = (
 				1A8E7D8C1E66C43A0044AC48 /* ThirdTabViewController.h */,
 				1A8E7D8D1E66C43A0044AC48 /* ThirdTabViewController.m */,
+				8D997F181F064481007BF5B9 /* PViewController.h */,
+				8D997F191F064481007BF5B9 /* PViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1335,6 +1314,7 @@
 				1A81B2761E6A6D7E004AF8DA /* UIControl+clickRepeatedly.m in Sources */,
 				8DF3B3EE1EE65C2C0066C8C3 /* UIView+Layout.m in Sources */,
 				8A13C0801EF4E06E000D43C5 /* WXApiManager.m in Sources */,
+				8D997F1A1F064481007BF5B9 /* PViewController.m in Sources */,
 				7E099C8F1EF7CC09001C9AFF /* TPartyLogin.m in Sources */,
 				1A8E7D8E1E66C43A0044AC48 /* ThirdTabViewController.m in Sources */,
 				1AB9941B1EA855F2006D9B19 /* UIViewController+Example.m in Sources */,
@@ -1348,7 +1328,6 @@
 				8A13C0811EF4E06E000D43C5 /* WXApiRequestHandler.m in Sources */,
 				1AE6F9351E85224A007D96B2 /* WebViewController.m in Sources */,
 				8DF3B3F41EE65D8F0066C8C3 /* Foundation+Log.m in Sources */,
-				1A8E7D701E666F1A0044AC48 /* BaseModel.m in Sources */,
 				8D660E2B1EF11785002AC348 /* Test2ViewController.m in Sources */,
 				1A81B25F1E6A64DE004AF8DA /* ShowBigImage.m in Sources */,
 				8D660E081EEC3D80002AC348 /* BaseSettingViewController.m in Sources */,
@@ -1361,7 +1340,6 @@
 				8D660E151EEE2338002AC348 /* ImageEditViewController.m in Sources */,
 				1A81B2721E6A6D7E004AF8DA /* FileManageTool.m in Sources */,
 				8D660E281EF1177A002AC348 /* Test1ViewController.m in Sources */,
-				1A8E7D6D1E666EC60044AC48 /* BaseView.m in Sources */,
 				8D660E0B1EEC3D80002AC348 /* ZXXCheakItem.m in Sources */,
 				8D660E111EEC3D80002AC348 /* ZXXBadgeView.m in Sources */,
 				8D660E121EEC3D80002AC348 /* ZXXSettingCell.m in Sources */,

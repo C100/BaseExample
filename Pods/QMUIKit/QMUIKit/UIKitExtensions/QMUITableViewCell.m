@@ -7,8 +7,8 @@
 //
 
 #import "QMUITableViewCell.h"
-#import "QMUICommonDefines.h"
-#import "QMUIConfiguration.h"
+#import "QMUICore.h"
+#import "QMUIButton.h"
 #import "UITableView+QMUI.h"
 
 @interface QMUITableViewCell() <UIScrollViewDelegate>
@@ -16,6 +16,8 @@
 @property(nonatomic, assign, readwrite) QMUITableViewCellPosition cellPosition;
 @property(nonatomic, assign, readwrite) UITableViewCellStyle style;
 @property(nonatomic, strong) UIImageView *defaultAccessoryImageView;
+@property(nonatomic, strong) QMUIButton *defaultAccessoryButton;
+@property(nonatomic, strong) UIView *defaultDetailDisclosureView;
 @end
 
 @implementation QMUITableViewCell
@@ -27,14 +29,14 @@
     return self;
 }
 
-- (instancetype)initForTableView:(QMUITableView *)tableView withStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+- (instancetype)initForTableView:(UITableView *)tableView withStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [self initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         self.parentTableView = tableView;
     }
     return self;
 }
 
-- (instancetype)initForTableView:(QMUITableView *)tableView withReuseIdentifier:(NSString *)reuseIdentifier {
+- (instancetype)initForTableView:(UITableView *)tableView withReuseIdentifier:(NSString *)reuseIdentifier {
     return [self initForTableView:tableView withStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
 }
 
@@ -53,15 +55,19 @@
     _accessoryHitTestEdgeInsets = UIEdgeInsetsMake(-12, -12, -12, -12);
     
     self.textLabel.font = UIFontMake(16);
-    self.textLabel.textColor = TableViewCellTitleLabelColor;
     self.textLabel.backgroundColor = UIColorClear;
+    UIColor *titleLabelColor = TableViewCellTitleLabelColor;
+    if (titleLabelColor) {
+        self.textLabel.textColor = titleLabelColor;
+    }
     
     self.detailTextLabel.font = UIFontMake(15);
-    self.detailTextLabel.textColor = TableViewCellDetailLabelColor;
     self.detailTextLabel.backgroundColor = UIColorClear;
+    UIColor *detailLabelColor = TableViewCellDetailLabelColor;
+    if (detailLabelColor) {
+        self.detailTextLabel.textColor = detailLabelColor;
+    }
     
-    // iOS7下背景色默认白色，之前的版本背景色继承tableView，这里统一设置为白色
-    self.backgroundColor = TableViewCellBackgroundColor;
     UIColor *selectedBackgroundColor = TableViewCellSelectedBackgroundColor;
     if (selectedBackgroundColor) {
         UIView *selectedBackgroundView = [[UIView alloc] init];
@@ -166,12 +172,21 @@
     if (_enabled != enabled) {
         if (enabled) {
             self.userInteractionEnabled = YES;
-            self.textLabel.textColor = TableViewCellTitleLabelColor;
-            self.detailTextLabel.textColor = TableViewCellDetailLabelColor;
+            UIColor *titleLabelColor = TableViewCellTitleLabelColor;
+            if (titleLabelColor) {
+                self.textLabel.textColor = titleLabelColor;
+            }
+            UIColor *detailLabelColor = TableViewCellDetailLabelColor;
+            if (detailLabelColor) {
+                self.detailTextLabel.textColor = detailLabelColor;
+            }
         } else {
             self.userInteractionEnabled = NO;
-            self.textLabel.textColor = UIColorDisabled;
-            self.detailTextLabel.textColor = UIColorDisabled;
+            UIColor *disabledColor = UIColorDisabled;
+            if (disabledColor) {
+                self.textLabel.textColor = disabledColor;
+                self.detailTextLabel.textColor = disabledColor;
+            }
         }
         _enabled = enabled;
     }
@@ -184,6 +199,19 @@
     }
 }
 
+- (void)initDefaultAccessoryButtonIfNeeded {
+    if (!self.defaultAccessoryButton) {
+        self.defaultAccessoryButton = [[QMUIButton alloc] init];
+        [self.defaultAccessoryButton addTarget:self action:@selector(handleAccessoryButtonEvent:) forControlEvents:UIControlEventTouchUpInside];
+    }
+}
+
+- (void)initDefaultDetailDisclosureViewIfNeeded {
+    if (!self.defaultDetailDisclosureView) {
+        self.defaultDetailDisclosureView = [[UIView alloc] init];
+    }
+}
+
 // 重写accessoryType，如果是UITableViewCellAccessoryDisclosureIndicator类型的，则使用 QMUIConfigurationTemplate.m 配置表里的图片
 - (void)setAccessoryType:(UITableViewCellAccessoryType)accessoryType {
     [super setAccessoryType:accessoryType];
@@ -192,7 +220,7 @@
         UIImage *indicatorImage = TableViewCellDisclosureIndicatorImage;
         if (indicatorImage) {
             [self initDefaultAccessoryImageViewIfNeeded];
-            self.defaultAccessoryImageView.image = TableViewCellDisclosureIndicatorImage;
+            self.defaultAccessoryImageView.image = indicatorImage;
             [self.defaultAccessoryImageView sizeToFit];
             self.accessoryView = self.defaultAccessoryImageView;
             return;
@@ -203,9 +231,58 @@
         UIImage *checkmarkImage = TableViewCellCheckmarkImage;
         if (checkmarkImage) {
             [self initDefaultAccessoryImageViewIfNeeded];
-            self.defaultAccessoryImageView.image = TableViewCellCheckmarkImage;
+            self.defaultAccessoryImageView.image = checkmarkImage;
             [self.defaultAccessoryImageView sizeToFit];
             self.accessoryView = self.defaultAccessoryImageView;
+            return;
+        }
+    }
+    
+    if (accessoryType == UITableViewCellAccessoryDetailButton) {
+        UIImage *detailButtonImage = TableViewCellDetailButtonImage;
+        if (detailButtonImage) {
+            [self initDefaultAccessoryButtonIfNeeded];
+            [self.defaultAccessoryButton setImage:detailButtonImage forState:UIControlStateNormal];
+            [self.defaultAccessoryButton sizeToFit];
+            self.accessoryView = self.defaultAccessoryButton;
+            return;
+        }
+    }
+    
+    if (accessoryType == UITableViewCellAccessoryDetailDisclosureButton) {
+        UIImage *detailButtonImage = TableViewCellDetailButtonImage;
+        UIImage *indicatorImage = TableViewCellDisclosureIndicatorImage;
+        
+        if (detailButtonImage) {
+            NSAssert(!!indicatorImage, @"TableViewCellDetailButtonImage 和 TableViewCellDisclosureIndicatorImage 必须同时使用，但目前后者为 nil");
+            [self initDefaultDetailDisclosureViewIfNeeded];
+            [self initDefaultAccessoryButtonIfNeeded];
+            [self.defaultAccessoryButton setImage:detailButtonImage forState:UIControlStateNormal];
+            [self.defaultAccessoryButton sizeToFit];
+            if (self.accessoryView == self.defaultAccessoryButton) {
+                self.accessoryView = nil;
+            }
+            [self.defaultDetailDisclosureView addSubview:self.defaultAccessoryButton];
+        }
+        
+        if (indicatorImage) {
+            NSAssert(!!detailButtonImage, @"TableViewCellDetailButtonImage 和 TableViewCellDisclosureIndicatorImage 必须同时使用，但目前前者为 nil");
+            [self initDefaultDetailDisclosureViewIfNeeded];
+            [self initDefaultAccessoryImageViewIfNeeded];
+            self.defaultAccessoryImageView.image = indicatorImage;
+            [self.defaultAccessoryImageView sizeToFit];
+            if (self.accessoryView == self.defaultAccessoryImageView) {
+                self.accessoryView = nil;
+            }
+            [self.defaultDetailDisclosureView addSubview:self.defaultAccessoryImageView];
+        }
+        
+        if (indicatorImage && detailButtonImage) {
+            CGFloat spacingBetweenDetailButtonAndIndicatorImage = TableViewCellSpacingBetweenDetailButtonAndDisclosureIndicator;
+            self.defaultDetailDisclosureView.frame = CGRectFlatMake(CGRectGetMinX(self.defaultDetailDisclosureView.frame), CGRectGetMinY(self.defaultDetailDisclosureView.frame), CGRectGetWidth(self.defaultAccessoryButton.frame) + spacingBetweenDetailButtonAndIndicatorImage + CGRectGetWidth(self.defaultAccessoryImageView.frame), fmax(CGRectGetHeight(self.defaultAccessoryButton.frame), CGRectGetHeight(self.defaultAccessoryImageView.frame)));
+            self.defaultAccessoryButton.frame = CGRectSetXY(self.defaultAccessoryButton.frame, 0, CGRectGetMinYVerticallyCenterInParentRect(self.defaultDetailDisclosureView.frame, self.defaultAccessoryButton.frame));
+            self.defaultAccessoryImageView.frame = CGRectSetXY(self.defaultAccessoryImageView.frame, CGRectGetMaxX(self.defaultAccessoryButton.frame) + spacingBetweenDetailButtonAndIndicatorImage, CGRectGetMinYVerticallyCenterInParentRect(self.defaultDetailDisclosureView.frame, self.defaultAccessoryImageView.frame));
+            self.accessoryView = self.defaultDetailDisclosureView;
             return;
         }
     }
@@ -224,7 +301,7 @@
     self.accessoryView.userInteractionEnabled = YES;
 }
 
-#pragma mark - touch event
+#pragma mark - Touch Event
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
     UIView *view = [super hitTest:point withEvent:event];
@@ -251,6 +328,12 @@
         }
     }
     return view;
+}
+
+- (void)handleAccessoryButtonEvent:(QMUIButton *)detailButton {
+    if ([self.parentTableView.delegate respondsToSelector:@selector(tableView:accessoryButtonTappedForRowWithIndexPath:)]) {
+        [self.parentTableView.delegate tableView:self.parentTableView accessoryButtonTappedForRowWithIndexPath:[self.parentTableView qmui_indexPathForRowAtView:detailButton]];
+    }
 }
 
 @end

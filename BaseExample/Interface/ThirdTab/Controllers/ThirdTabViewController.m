@@ -7,18 +7,35 @@
 //
 
 #import "ThirdTabViewController.h"
-
+#import "PViewController.h"
 @interface ThirdTabViewController ()
 
 @end
 
 @implementation ThirdTabViewController
+
+- (void)setNavigationItemsIsInEditMode:(BOOL)isInEditMode animated:(BOOL)animated {
+    [super setNavigationItemsIsInEditMode:isInEditMode animated:animated];
+    self.titleView.title = THIRDTAB_TITLE;
+}
+
 - (ThirdTabView *)baseView{
     if (_baseView == nil) {
         _baseView = [[ThirdTabView alloc] init];
     }
     return _baseView;
 }
+
+- (void)didInitialized {
+    [super didInitialized];
+    self.hidesBottomBarWhenPushed = NO;
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    
+    [self push:@"PViewController"];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -29,15 +46,5 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

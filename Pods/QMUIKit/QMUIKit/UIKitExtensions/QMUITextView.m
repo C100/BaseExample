@@ -6,11 +6,11 @@
 //  Copyright (c) 2014年 QMUI Team. All rights reserved.
 //
 #import "QMUITextView.h"
-#import "QMUICommonDefines.h"
-#import "QMUIConfiguration.h"
+#import "QMUICore.h"
 #import "QMUILabel.h"
 #import "NSObject+QMUI.h"
 #import "NSString+QMUI.h"
+#import "UITextView+QMUI.h"
 
 /// 系统 textView 默认的字号大小，用于 placeholder 默认的文字大小。实测得到，请勿修改。
 const CGFloat kSystemTextViewDefaultFontPointSize = 12.0f;
@@ -21,8 +21,7 @@ const UIEdgeInsets kSystemTextViewFixTextInsets = {0, 5, 0, 5};
 @interface QMUITextView ()
 
 @property(nonatomic, assign) BOOL debug;
-@property(nonatomic, assign) BOOL textChangedBecauseOfPaste; // 标志本次触发对handleTextChange:的调用，是否因为粘贴
-@property(nonatomic, assign) BOOL callingSizeThatFitsByAutoResizable; // 标志本次调用 sizeThatFits: 是因为 handleTextChange: 里计算高度导致的
+@property(nonatomic, assign) BOOL shouldRejectSystemScroll;// 如果在 handleTextChanged: 里主动调整 contentOffset，则为了避免被系统的自动调整覆盖，会利用这个标记去屏蔽系统对 setContentOffset: 的调用
 
 @property(nonatomic, strong) UILabel *placeholderLabel;
 
@@ -38,6 +37,7 @@ const UIEdgeInsets kSystemTextViewFixTextInsets = {0, 5, 0, 5};
     self = [super initWithFrame:frame];
     if (self) {
         [self didInitialized];
+        self.tintColor = TextFieldTintColor;
     }
     return self;
 }
@@ -53,7 +53,6 @@ const UIEdgeInsets kSystemTextViewFixTextInsets = {0, 5, 0, 5};
     self.debug = NO;
     self.delegate = self;
     self.scrollsToTop = NO;
-    self.tintColor = TextFieldTintColor;
     self.placeholderColor = UIColorPlaceholder;
     self.placeholderMargins = UIEdgeInsetsZero;
     self.autoResizable = NO;
@@ -80,9 +79,17 @@ const UIEdgeInsets kSystemTextViewFixTextInsets = {0, 5, 0, 5};
     return [NSString stringWithFormat:@"%@; text.length: %@ | %@; markedTextRange: %@", [super description], @(self.text.length), @([self lengthWithString:self.text]), self.markedTextRange];
 }
 
+- (BOOL)isCurrentTextDifferentOfText:(NSString *)text {
+    NSString *textBeforeChange = self.text;// UITextView 如果文字为空，self.text 永远返回 @"" 而不是 nil（即便你设置为 nil 后立即 get 出来也是）
+    if ([textBeforeChange isEqualToString:text] || (textBeforeChange.length == 0 && !text)) {
+        return NO;
+    }
+    return YES;
+}
+
 - (void)setText:(NSString *)text {
     NSString *textBeforeChange = self.text;
-    BOOL textDifferent = ![textBeforeChange isEqualToString:text];
+    BOOL textDifferent = [self isCurrentTextDifferentOfText:text];
     
     // 如果前后文字没变化，则什么都不做
     if (!textDifferent) {
@@ -120,7 +127,7 @@ const UIEdgeInsets kSystemTextViewFixTextInsets = {0, 5, 0, 5};
 
 - (void)setAttributedText:(NSAttributedString *)attributedText {
     NSString *textBeforeChange = self.attributedText.string;
-    BOOL textDifferent = ![textBeforeChange isEqualToString:attributedText.string];
+    BOOL textDifferent = [self isCurrentTextDifferentOfText:attributedText.string];
     
     // 如果前后文字没变化，则什么都不做
     if (!textDifferent) {
@@ -158,7 +165,22 @@ const UIEdgeInsets kSystemTextViewFixTextInsets = {0, 5, 0, 5};
 
 - (void)setTypingAttributes:(NSDictionary<NSString *,id> *)typingAttributes {
     [super setTypingAttributes:typingAttributes];
-    self.placeholder = self.placeholder;// 更新文字样式
+    [self updatePlaceholderStyle];
+}
+
+- (void)setFont:(UIFont *)font {
+    [super setFont:font];
+    [self updatePlaceholderStyle];
+}
+
+- (void)setTextColor:(UIColor *)textColor {
+    [super setTextColor:textColor];
+    [self updatePlaceholderStyle];
+}
+
+- (void)setTextAlignment:(NSTextAlignment)textAlignment {
+    [super setTextAlignment:textAlignment];
+    [self updatePlaceholderStyle];
 }
 
 - (void)setPlaceholder:(NSString *)placeholder {
@@ -173,6 +195,10 @@ const UIEdgeInsets kSystemTextViewFixTextInsets = {0, 5, 0, 5};
 - (void)setPlaceholderColor:(UIColor *)placeholderColor {
     _placeholderColor = placeholderColor;
     self.placeholderLabel.textColor = _placeholderColor;
+}
+
+- (void)updatePlaceholderStyle {
+    self.placeholder = self.placeholder;// 触发文字样式的更新
 }
 
 - (void)handleTextChanged:(id)sender {
@@ -197,10 +223,7 @@ const UIEdgeInsets kSystemTextViewFixTextInsets = {0, 5, 0, 5};
         // 计算高度
         if (self.autoResizable) {
             
-            // 注意，这里 iOS 8 及以下有兼容问题，请查看文件里的 sizeThatFits:
-            self.callingSizeThatFitsByAutoResizable = YES;
             CGFloat resultHeight = [textView sizeThatFits:CGSizeMake(CGRectGetWidth(self.bounds), CGFLOAT_MAX)].height;
-            self.callingSizeThatFitsByAutoResizable = NO;
             
             if (self.debug) NSLog(@"handleTextDidChange, text = %@, resultHeight = %f", textView.text, resultHeight);
             
@@ -211,34 +234,17 @@ const UIEdgeInsets kSystemTextViewFixTextInsets = {0, 5, 0, 5};
             }
         }
         
-        // iOS7的textView在内容可滚动的情况下，最后一行输入时文字会跑到可视区域外，因此要修复一下
-        // 由于我们在文字换行的瞬间更改了输入框高度，所以即便内容不可滚动，换行瞬间contentOffset也是错的，所以这里完全接管了对contentOffset的自动调整
-        CGRect caretRect = [textView caretRectForPosition:textView.selectedTextRange.end];
-        if (self.debug) NSLog(@"调整前，caretRect.maxY = %f, contentOffset.y = %f, bounds.height = %f", CGRectGetMaxY(caretRect), textView.contentOffset.y, CGRectGetHeight(textView.bounds));
-        
-        CGFloat caretMarginBottom = self.textContainerInset.bottom;
-        if (ceil(CGRectGetMaxY(caretRect) + caretMarginBottom) >= textView.contentOffset.y + CGRectGetHeight(textView.bounds)) {
-            CGFloat contentOffsetY = MAX(0, CGRectGetMaxY(caretRect) + caretMarginBottom - CGRectGetHeight(textView.bounds));
-            if (self.debug) NSLog(@"调整后，contentOffset.y = %f", contentOffsetY);
-            
-            // 如果是粘贴导致光标掉出可视区域，则用动画去调整它（如果不用动画会不准，因为此时contentSize还是错的）
-            // 如果是普通的键入换行导致光标掉出可视区域，则不用动画，否则会跳来跳去，但这会带来的问题就是换行没动画，不优雅😂
-            [textView setContentOffset:CGPointMake(textView.contentOffset.x, contentOffsetY) animated:self.textChangedBecauseOfPaste ? YES : NO];
+        // textView 尚未被展示到界面上时，此时过早进行光标调整会计算错误
+        if (!textView.window) {
+            return;
         }
-        self.textChangedBecauseOfPaste = NO;
-    }
-}
-
-- (CGSize)sizeThatFits:(CGSize)size {
-    // iOS 8 调用 sizeThatFits: 会导致文字跳动，因此自己计算 https://github.com/QMUI/QMUI_iOS/issues/92
-    if (IOS_VERSION < 9.0 && IOS_VERSION >= 8.0 && self.callingSizeThatFitsByAutoResizable) {
-        CGFloat contentWidth = size.width - UIEdgeInsetsGetHorizontalValue(self.textContainerInset) - UIEdgeInsetsGetHorizontalValue(self.contentInset);
-        CGRect textRect = [self.attributedText boundingRectWithSize:CGSizeMake(contentWidth, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin context:nil];
-        CGSize resultSize = CGSizeMake(size.width, CGRectGetHeight(textRect) + UIEdgeInsetsGetVerticalValue(self.textContainerInset) + UIEdgeInsetsGetVerticalValue(self.contentInset));
-        resultSize.height = fmin(size.height, resultSize.height);
-        return resultSize;
-    } else {
-        return [super sizeThatFits:size];
+        
+        self.shouldRejectSystemScroll = YES;
+        // 用 dispatch 延迟一下，因为在文字发生换行时，系统自己会做一些滚动，我们要延迟一点才能避免被系统的滚动覆盖
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            self.shouldRejectSystemScroll = NO;
+            [self qmui_scrollCaretVisibleAnimated:NO];
+        });
     }
 }
 
@@ -265,11 +271,6 @@ const UIEdgeInsets kSystemTextViewFixTextInsets = {0, 5, 0, 5};
     } else {
         self.placeholderLabel.alpha = 0;// 用alpha来让placeholder隐藏，从而尽量避免因为显隐 placeholder 导致 layout
     }
-}
-
-- (void)paste:(id)sender {
-    self.textChangedBecauseOfPaste = YES;
-    [super paste:sender];
 }
 
 - (NSUInteger)lengthWithString:(NSString *)string {
@@ -402,26 +403,28 @@ const UIEdgeInsets kSystemTextViewFixTextInsets = {0, 5, 0, 5};
     }
 }
 
+- (void)setContentOffset:(CGPoint)contentOffset animated:(BOOL)animated {
+    if (!self.shouldRejectSystemScroll) {
+        [super setContentOffset:contentOffset animated:animated];
+        if (self.debug) NSLog(@"%@, contentOffset.y = %.2f", NSStringFromSelector(_cmd), contentOffset.y);
+    } else {
+        if (self.debug) NSLog(@"被屏蔽的 %@, contentOffset.y = %.2f", NSStringFromSelector(_cmd), contentOffset.y);
+    }
+}
+
+- (void)setContentOffset:(CGPoint)contentOffset {
+    if (!self.shouldRejectSystemScroll) {
+        [super setContentOffset:contentOffset];
+        if (self.debug) NSLog(@"%@, contentOffset.y = %.2f", NSStringFromSelector(_cmd), contentOffset.y);
+    } else {
+        if (self.debug) NSLog(@"被屏蔽的 %@, contentOffset.y = %.2f", NSStringFromSelector(_cmd), contentOffset.y);
+    }
+}
+
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView {
     if ([self.originalDelegate respondsToSelector:_cmd]) {
         [self.originalDelegate scrollViewDidZoom:scrollView];
     }
-}
-
-@end
-
-@implementation UITextView (QMUI)
-
-- (void)qmui_setTextKeepingSelectedRange:(NSString *)text {
-    UITextRange *selectedTextRange = self.selectedTextRange;
-    self.text = text;
-    self.selectedTextRange = selectedTextRange;
-}
-
-- (void)qmui_setAttributedTextKeepingSelectedRange:(NSAttributedString *)attributedText {
-    UITextRange *selectedTextRange = self.selectedTextRange;
-    self.attributedText = attributedText;
-    self.selectedTextRange = selectedTextRange;
 }
 
 @end

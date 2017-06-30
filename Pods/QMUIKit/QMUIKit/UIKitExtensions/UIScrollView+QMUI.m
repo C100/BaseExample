@@ -7,8 +7,7 @@
 //
 
 #import "UIScrollView+QMUI.h"
-#import "QMUICommonDefines.h"
-#import "QMUIConfiguration.h"
+#import "QMUICore.h"
 
 @implementation UIScrollView (QMUI)
 
