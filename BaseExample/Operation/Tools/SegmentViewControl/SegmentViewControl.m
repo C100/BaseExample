@@ -33,22 +33,13 @@
 
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
-
-@interface FrameObj : NSObject
-
-@property(assign,nonatomic)CGRect rect;
-
-@end
-
-@implementation FrameObj
-
-@end
-
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 
 #import "CalculateSize.h"
+
 #import "ZXXScrollView.h"
+
 #define TITLESFONT [UIFont systemFontOfSize:16]
 #define TITLESCOLOR [UIColor colorWithWhite:0.200 alpha:1.000]
 #define TITLESSELECTEDCOLOR [UIColor greenColor]
@@ -69,6 +60,10 @@ static const CGFloat padding = 15;///内边距
  标题栏
  */
 @property (weak,nonatomic)UIView *titlesView;
+/**
+ 内容栏
+ */
+@property (weak,nonatomic)UIView *contentView;
 
 /**
  指示条
@@ -95,14 +90,25 @@ static const CGFloat padding = 15;///内边距
  */
 @property (weak,nonatomic)UIScrollView *titlesScrollView;
 
+/**
+ 分割线
+ */
+@property (weak,nonatomic)UIView *seperateLine;
+
 @end
 
 @implementation SegmentViewControl{
     NSArray *_array;
-    NSArray *_arrayFrame;
+    
     SegmentViewControlIsLazyLoadType _type;
+    
     BOOL _isViewControllers;
     id _currentViewOrViewControllor;
+    
+    NSArray *_titles;// 标题
+    NSArray *_buttons;
+    
+    CGFloat _framWirth;
 }
 /*
 // Only override drawRect: if you perform custom drawing.
@@ -118,21 +124,22 @@ static const CGFloat padding = 15;///内边距
     return _currentViewOrViewControllor;
 }
 
-+ (instancetype)segmentTitles:(NSArray *_Nonnull)titles withItem:(SegmentViewItem * _Nullable)item withViews:(NSArray * _Nonnull)views withFrame:(CGRect)rect recognizerTableCellEdit:(BOOL)rgCellEdit{
-    SegmentViewControl *segmentViewControl = [[self alloc] initWithFrame:rect];
++ (instancetype)segmentTitles:(NSArray *_Nonnull)titles withItem:(SegmentViewItem * _Nullable)item withViews:(NSArray * _Nonnull)views recognizerTableCellEdit:(BOOL)rgCellEdit{
+    SegmentViewControl *segmentViewControl = [[self alloc] init];
     segmentViewControl.item = item;
     [segmentViewControl setupTitlesViewWithTitles:titles withItem:item];
     
-    [segmentViewControl setupScrollViewWithViews:views withItem:item recognizerTableCellEdit:rgCellEdit];
+    [segmentViewControl setupScrollViewWithViews:views recognizerTableCellEdit:rgCellEdit];
     return segmentViewControl;
 }
-+ (instancetype)segmentTitles:(NSArray *)titles withItem:(SegmentViewItem *)item withViewControllers:(NSArray *)viewControllers withFrame:(CGRect)rect loadType:(SegmentViewControlIsLazyLoadType)type recognizerTableCellEdit:(BOOL)rgCellEdit{
-    SegmentViewControl *segmentViewControl = [[self alloc] initWithFrame:rect];
++ (instancetype)segmentTitles:(NSArray *)titles withItem:(SegmentViewItem *)item withViewControllers:(NSArray *)viewControllers loadType:(SegmentViewControlIsLazyLoadType)type recognizerTableCellEdit:(BOOL)rgCellEdit{
+    SegmentViewControl *segmentViewControl = [[self alloc] init];
     segmentViewControl.item = item;
     [segmentViewControl setupTitlesViewWithTitles:titles withItem:item];
-    [segmentViewControl setupScrollViewWithViewControllers:viewControllers withItem:item type:type recognizerTableCellEdit:rgCellEdit];
+    [segmentViewControl setupScrollViewWithViewControllers:viewControllers type:type recognizerTableCellEdit:rgCellEdit];
     return segmentViewControl;
 }
+
 - (void)setupTitlesViewWithTitles:(NSArray *)titles withItem:(SegmentViewItem *)item
 {
     // titleView用一个scrollView拖着，里面的尺寸随着内容的增加而增加
@@ -142,85 +149,31 @@ static const CGFloat padding = 15;///内边距
     scrollView.bounces = NO;
     [self addSubview:scrollView];
     self.titlesScrollView = scrollView;
-    if (item.titlesBarHeight>0) {
-        [scrollView makeConstraints:^(MASConstraintMaker *make) {
-            make.left.right.top.equalTo(self);
-            make.height.offset(item.titlesBarHeight);
-        }];
-    }else{
-        [scrollView makeConstraints:^(MASConstraintMaker *make) {
-            make.left.right.top.equalTo(self);
-            make.height.offset(titlesHeight);
-        }];
-    }
+    
     UIView *titlesView = [[UIView alloc] init];
     [scrollView addSubview:titlesView];
-    [titlesView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.bottom.and.right.equalTo(scrollView).with.insets(UIEdgeInsetsZero);
-        make.height.equalTo(scrollView);
-    }];
-    titlesView.backgroundColor = [UIColor whiteColor];
     self.titlesView = titlesView;
+    titlesView.backgroundColor = [UIColor whiteColor];
     // 标题栏按钮
     [self setupTitlesButtonsInView:titlesView withTitles:titles withItem:item];
     UIView *seperateLine = [[UIView alloc] init];
     [titlesView addSubview:seperateLine];
+    self.seperateLine = seperateLine;
     seperateLine.backgroundColor = SEPERATELINECOLOR;
-    [seperateLine makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(titlesView);
-        make.bottom.equalTo(titlesView.bottom);
-        make.width.equalTo(titlesView);
-        make.height.offset(1);
-    }];
+    
     // 标题下划线
-    [self setupTitleUnderlineOnView:titlesView withItem:item];
+    [self setupTitleUnderlineOnView:titlesView];
 }
 /**
  *  标题栏按钮
  */
 - (void)setupTitlesButtonsInView:(UIView *)view withTitles:(NSArray *)titles withItem:(SegmentViewItem *)item
 {
-    // 计算titlesButton需要占多大的宽度
-    __block CGFloat needWith = 0.0;
-    [titles enumerateObjectsUsingBlock:^(NSString *  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        CGSize size;
-        if (item.titlesFont != nil) {
-            size = [CalculateSize sizeForNoticeTitle:obj font:item.titlesFont maxW:SCREEN_WIDTH];
-        }else{
-            size = [CalculateSize sizeForNoticeTitle:obj font:TITLESFONT maxW:SCREEN_WIDTH];
-        }
-        if (item.padding>=0) {
-            needWith += size.width+item.padding*2;
-        }else{
-            needWith += size.width+padding*2;
-        }
-    }];
-    if (item.margin>=0) {
-        needWith += item.margin*2;
-    }else{
-        needWith += margin*2;
-    }
-    
-    CGFloat realpadding;
-    if (needWith <SCREEN_WIDTH) {//不适用设置的内边距
-        CGFloat remander = SCREEN_WIDTH - needWith;
-        if (item.padding>=0) {
-            realpadding = remander/(titles.count*2)+item.padding;
-        }else{
-            realpadding = remander/(titles.count*2)+padding;
-        }
-    }else{
-        if (item.padding>=0) {
-            realpadding = item.padding;
-        }else{
-            realpadding = padding;
-        }
-    }
-    
+    _titles = titles;
     // 标题文字
     NSUInteger count = titles.count;
-    UIButton *lastButton;
     // 创建标题按钮
+    NSMutableArray *arraM = [NSMutableArray array];
     for (NSUInteger i = 0; i < count; i++) {
         UIButton *titleButton = [UIButton buttonWithType:UIButtonTypeCustom];
         titleButton.tag = i;
@@ -243,110 +196,32 @@ static const CGFloat padding = 15;///内边距
         }
         [titleButton addTarget:self action:@selector(titleButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         [view addSubview:titleButton];
-        // frame
-        CGSize size;
-        if (item.titlesFont) {
-            size = [CalculateSize sizeForNoticeTitle:titles[i] font:item.titlesFont maxW:SCREEN_WIDTH];
-        }else{
-            size = [CalculateSize sizeForNoticeTitle:titles[i] font:TITLESFONT maxW:SCREEN_WIDTH];
-        }
-        if (i == 0) {
-            if (item.margin>=0) {
-                if (item.titlesBarHeight>0) {
-                    [titleButton makeConstraints:^(MASConstraintMaker *make) {
-                        make.left.equalTo(view).offset(item.margin);
-                        make.top.equalTo(view);
-                        make.size.sizeOffset(CGSizeMake(size.width+realpadding*2, item.titlesBarHeight));
-                    }];
-                }else{
-                    [titleButton makeConstraints:^(MASConstraintMaker *make) {
-                        make.left.equalTo(view).offset(item.margin);
-                        make.top.equalTo(view);
-                        make.size.sizeOffset(CGSizeMake(size.width+realpadding*2, titlesHeight));
-                    }];
-                }
-            }else{
-                if (item.titlesBarHeight>0) {
-                    [titleButton makeConstraints:^(MASConstraintMaker *make) {
-                        make.left.equalTo(view).offset(margin);
-                        make.top.equalTo(view);
-                        make.size.sizeOffset(CGSizeMake(size.width+realpadding*2, item.titlesBarHeight));
-                    }];
-                }else{
-                    [titleButton makeConstraints:^(MASConstraintMaker *make) {
-                        make.left.equalTo(view).offset(margin);
-                        make.top.equalTo(view);
-                        make.size.sizeOffset(CGSizeMake(size.width+realpadding*2, titlesHeight));
-                    }];
-                }
-            }
-            lastButton = titleButton;
-        }else{
-            if (item.titlesBarHeight>0) {
-                [titleButton makeConstraints:^(MASConstraintMaker *make) {
-                    make.left.equalTo(lastButton.right);
-                    make.top.equalTo(view);
-                    make.size.sizeOffset(CGSizeMake(size.width+realpadding*2, item.titlesBarHeight));
-                }];
-            }else{
-                [titleButton makeConstraints:^(MASConstraintMaker *make) {
-                    make.left.equalTo(lastButton.right);
-                    make.top.equalTo(view);
-                    make.size.sizeOffset(CGSizeMake(size.width+realpadding*2, titlesHeight));
-                }];
-            }
-            lastButton = titleButton;
-        }
+        [arraM addObject:titleButton];
     }
-    if (item.margin>=0) {
-        [view makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(lastButton.right).offset(item.margin);
-        }];
-    }else{
-        [view makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(lastButton.right).offset(margin);
-        }];
-    }
+    _buttons = arraM;
 }
 /**
  *  标题下划线
  */
-- (void)setupTitleUnderlineOnView:(UIView *)view withItem:(SegmentViewItem *)item
+- (void)setupTitleUnderlineOnView:(UIView *)view
 {
     // 标题按钮
     UIButton *firstTitleButton = view.subviews.firstObject;
-    
     // 下划线
     UIView *titleUnderline = [[UIView alloc] init];
     
     titleUnderline.backgroundColor = [firstTitleButton titleColorForState:UIControlStateSelected];
     [view addSubview:titleUnderline];
     _titleUnderline = titleUnderline;
-    
     // 切换按钮状态
     firstTitleButton.selected = YES;
     self.previousClickedTitleButton = firstTitleButton;
-    if (item.lineIndicator_percent>0&&item.lineIndicator_percent<1) {
-        [titleUnderline makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(view.bottom);
-            make.height.offset(2);
-            make.centerX.equalTo(firstTitleButton);
-            make.width.equalTo(firstTitleButton.width).multipliedBy(item.lineIndicator_percent);
-        }];
-    }else{
-        [titleUnderline makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(view.bottom);
-            make.height.offset(2);
-            make.centerX.equalTo(firstTitleButton);
-            make.width.equalTo(firstTitleButton);
-        }];
-    }
 }
 
 /**
  *  scrollView 创建子视图
  */
-- (void)setupScrollViewWithViews:(NSArray *)views withItem:(SegmentViewItem *)item recognizerTableCellEdit:(BOOL)rgCellEdit
+- (void)setupScrollViewWithViews:(NSArray *)views recognizerTableCellEdit:(BOOL)rgCellEdit
 {
     _isViewControllers = NO;
     UIScrollView *scrollView;
@@ -362,28 +237,20 @@ static const CGFloat padding = 15;///内边距
     scrollView.delegate = self;
     scrollView.scrollsToTop = NO; // 点击状态栏的时候，这个scrollView不会滚动到最顶部
     [self addSubview:scrollView];
-    [scrollView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.titlesView.bottom);
-        make.left.right.equalTo(self);
-        make.bottom.equalTo(self);
-    }];
     self.scrollView = scrollView;
-    // 如果没有设置默认为这个尺寸
-    CGRect rect = self.bounds;
-    CGFloat realHeight;
-    if (item.titlesBarHeight>0) {
-        scrollView.contentSize = CGSizeMake(views.count*rect.size.width, rect.size.height-item.titlesBarHeight);
-        realHeight = rect.size.height-item.titlesBarHeight;
-    }else{
-        scrollView.contentSize = CGSizeMake(views.count*rect.size.width, rect.size.height-titlesHeight);
-        realHeight = rect.size.height-titlesHeight;
-    }
+    
+    UIView *contentView = [[UIView alloc] init];
+    [scrollView addSubview:contentView];
+    self.contentView = contentView;
+    contentView.userInteractionEnabled = YES;
+    contentView.backgroundColor = [UIColor whiteColor];
+    
     // 创建zi视图
     NSMutableArray *arrayM = [NSMutableArray array];
     [views enumerateObjectsUsingBlock:^(NSString *  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         Class class=NSClassFromString(obj);
-        id view=[[class alloc] initWithFrame:CGRectMake(idx*rect.size.width, 0, rect.size.width, realHeight)];
-        [scrollView addSubview:view];
+        id view=[[class alloc] init];
+        [contentView addSubview:view];
         [arrayM addObject:view];
         if (idx == 0) {
             _currentViewOrViewControllor = view;
@@ -391,10 +258,9 @@ static const CGFloat padding = 15;///内边距
     }];
     _array = arrayM;
 }
-/**
- *  scrollView 创建子控制器
+/** *  scrollView 创建子控制器
  */
-- (void)setupScrollViewWithViewControllers:(NSArray *)viewControllers withItem:(SegmentViewItem *)item type:(SegmentViewControlIsLazyLoadType)type recognizerTableCellEdit:(BOOL)rgCellEdit
+- (void)setupScrollViewWithViewControllers:(NSArray *)viewControllers type:(SegmentViewControlIsLazyLoadType)type recognizerTableCellEdit:(BOOL)rgCellEdit
 {
     _type = type;
     _isViewControllers = YES;
@@ -411,46 +277,31 @@ static const CGFloat padding = 15;///内边距
     scrollView.delegate = self;
     scrollView.scrollsToTop = NO; // 点击状态栏的时候，这个scrollView不会滚动到最顶部
     [self addSubview:scrollView];
-    [scrollView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.titlesScrollView.bottom);
-        make.left.right.equalTo(self);
-        make.bottom.equalTo(self);
-    }];
     self.scrollView = scrollView;
-    // 如果没有设置默认为这个尺寸
-    CGRect rect = self.bounds;
-    CGFloat realHeight;
-    if (item.titlesBarHeight>0) {
-        scrollView.contentSize = CGSizeMake(viewControllers.count*rect.size.width, rect.size.height-item.titlesBarHeight);
-        realHeight = rect.size.height-item.titlesBarHeight;
-    }else{
-        scrollView.contentSize = CGSizeMake(viewControllers.count*rect.size.width, rect.size.height-titlesHeight);
-        realHeight = rect.size.height-titlesHeight;
-    }
+    
+    UIView *contentView = [[UIView alloc] init];
+    [scrollView addSubview:contentView];
+    self.contentView = contentView;
+    
+    contentView.backgroundColor = [UIColor whiteColor];
+    
     // 创建zi视图控制器
     NSMutableArray *arrayM = [NSMutableArray array];
-    NSMutableArray *arrayMFrame = [NSMutableArray array];
     [viewControllers enumerateObjectsUsingBlock:^(NSString *  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         Class class=NSClassFromString(obj);
         __kindof UIViewController *controller=[[class alloc] init];
-        FrameObj *framObj = [[FrameObj alloc] init];
-        CGRect rct = CGRectMake(idx*rect.size.width, 0, rect.size.width, realHeight);
-        framObj.rect = rct;
-        [arrayMFrame addObject:framObj];
+
         if (idx==0) {
-            controller.view.frame = rct;
-            [scrollView addSubview:controller.view];
+            [contentView addSubview:controller.view];
             
             _currentViewOrViewControllor = controller;
         }else{
             if (type == SegmentViewControlNotLazyLoad) {
-                controller.view.frame = rct;
-                [scrollView addSubview:controller.view];
+                [contentView addSubview:controller.view];
             }
         }
         [arrayM addObject:controller];
     }];
-    _arrayFrame = arrayMFrame;
     _array = arrayM;
 }
 #pragma mark - 监听
@@ -471,6 +322,7 @@ static const CGFloat padding = 15;///内边距
  */
 - (void)dealTitleButtonClick:(UIButton *)titleButton
 {
+    
     // 切换按钮状态
     self.previousClickedTitleButton.selected = NO;
     titleButton.selected = YES;
@@ -480,14 +332,27 @@ static const CGFloat padding = 15;///内边距
     // 滚动scrollView
     CGFloat offsetX = self.scrollView.frame.size.width * index;
     [UIView animateWithDuration:0.25 animations:^{
-        if (titleButton.center.x>self.center.x&&self.titlesView.frame.size.width - titleButton.center.x>self.center.x) {
-            CGFloat offsetx = titleButton.center.x - self.center.x;
-            self.titlesScrollView.contentOffset = CGPointMake(offsetx, self.scrollView.contentOffset.y);
+        
+        if(self.titlesView.frame.size.width>self.frame.size.width){
+            if (titleButton.center.x>self.center.x+self.titlesScrollView.contentOffset.x&&self.titlesView.frame.size.width - self.titlesScrollView.contentOffset.x>self.frame.size.width) {
+                CGFloat offsetx = titleButton.center.x - self.titlesScrollView.contentOffset.x - self.center.x;
+                if (offsetx<=self.titlesView.frame.size.width - self.titlesScrollView.contentOffset.x-self.frame.size.width) {
+                    self.titlesScrollView.contentOffset = CGPointMake(offsetx+self.titlesScrollView.contentOffset.x, self.titlesScrollView.contentOffset.y);
+                }else{
+                    self.titlesScrollView.contentOffset = CGPointMake(self.titlesView.frame.size.width-self.frame.size.width, self.titlesScrollView.contentOffset.y);
+                }
+            }else if(titleButton.center.x<self.center.x+self.titlesScrollView.contentOffset.x&&self.titlesScrollView.contentOffset.x!=0){
+                CGFloat offsetx = self.titlesScrollView.contentOffset.x + self.center.x - titleButton.center.x;
+                if (offsetx>self.titlesScrollView.contentOffset.x) {
+                    self.titlesScrollView.contentOffset = CGPointMake(0, self.titlesScrollView.contentOffset.y);
+                }else{
+                    self.titlesScrollView.contentOffset = CGPointMake(self.titlesScrollView.contentOffset.x-offsetx, self.titlesScrollView.contentOffset.y);
+                }
+            }
         }else{
-            if (titleButton.center.x<self.center.x&&self.titlesScrollView.contentOffset.x!=0) {
-                self.titlesScrollView.contentOffset = CGPointMake(0, self.scrollView.contentOffset.y);
-            }else if (self.titlesView.frame.size.width - titleButton.center.x<self.center.x&&self.titlesScrollView.contentOffset.x<self.titlesView.frame.size.width-self.frame.size.width){
-                self.titlesScrollView.contentOffset = CGPointMake(self.titlesView.frame.size.width-self.frame.size.width, self.scrollView.contentOffset.y);
+            ZXXLog(@"%f",self.titlesScrollView.contentOffset.x);
+            if (self.titlesScrollView.contentOffset.x != 0) {
+                self.titlesScrollView.contentOffset = CGPointMake(0, self.titlesScrollView.contentOffset.y);
             }
         }
         CGPoint center = self.titleUnderline.center;
@@ -507,8 +372,11 @@ static const CGFloat padding = 15;///内边距
         if (_isViewControllers==YES && _type == SegmentViewControlIsLazyLoad) {///数值是视图控制器
             __kindof UIViewController *vc = _array[index];
             if(![self.scrollView.subviews containsObject:vc.view]){
-                FrameObj *framObj = _arrayFrame[index];
-                vc.view.frame = framObj.rect;
+                [vc.view makeConstraints:^(MASConstraintMaker *make) {
+                    make.left.offset(index*self.frame.size.width);
+                    make.top.bottom.equalTo(self.contentView);
+                    make.width.offset(self.frame.size.width);
+                }];
                 [self.scrollView addSubview:vc.view];
             }
         }
@@ -539,7 +407,6 @@ static const CGFloat padding = 15;///内边距
     _lastPosition = scrollView.contentOffset.x;
 }
 - (void)dealTitleButton:(UIButton *)titleButton{
-    
     // 切换按钮状态
     self.previousClickedTitleButton.selected = NO;
     titleButton.selected = YES;
@@ -547,16 +414,29 @@ static const CGFloat padding = 15;///内边距
     NSUInteger index = titleButton.tag;
     _currentViewOrViewControllor = _array[index];
     [UIView animateWithDuration:0.25 animations:^{
-        if (titleButton.center.x>self.center.x&&self.titlesView.frame.size.width - titleButton.center.x>self.center.x) {
-            CGFloat offsetx = titleButton.center.x - self.center.x;
-            self.titlesScrollView.contentOffset = CGPointMake(offsetx, self.scrollView.contentOffset.y);
+        if(self.titlesView.frame.size.width>self.frame.size.width){
+            if (titleButton.center.x>self.center.x+self.titlesScrollView.contentOffset.x&&self.titlesView.frame.size.width - self.titlesScrollView.contentOffset.x>self.frame.size.width) {
+                CGFloat offsetx = titleButton.center.x - self.titlesScrollView.contentOffset.x - self.center.x;
+                if (offsetx<=self.titlesView.frame.size.width - self.titlesScrollView.contentOffset.x-self.frame.size.width) {
+                    self.titlesScrollView.contentOffset = CGPointMake(offsetx+self.titlesScrollView.contentOffset.x, self.titlesScrollView.contentOffset.y);
+                }else{
+                    self.titlesScrollView.contentOffset = CGPointMake(self.titlesView.frame.size.width-self.frame.size.width, self.titlesScrollView.contentOffset.y);
+                }
+            }else if(titleButton.center.x<self.center.x+self.titlesScrollView.contentOffset.x&&self.titlesScrollView.contentOffset.x!=0){
+                CGFloat offsetx = self.titlesScrollView.contentOffset.x + self.center.x - titleButton.center.x;
+                if (offsetx>self.titlesScrollView.contentOffset.x) {
+                    self.titlesScrollView.contentOffset = CGPointMake(0, self.titlesScrollView.contentOffset.y);
+                }else{
+                    self.titlesScrollView.contentOffset = CGPointMake(self.titlesScrollView.contentOffset.x-offsetx, self.titlesScrollView.contentOffset.y);
+                }
+            }
         }else{
-            if (titleButton.center.x<self.center.x&&self.titlesScrollView.contentOffset.x!=0) {
-                self.titlesScrollView.contentOffset = CGPointMake(0, self.scrollView.contentOffset.y);
-            }else if (self.titlesView.frame.size.width - titleButton.center.x<self.center.x&&self.titlesScrollView.contentOffset.x<self.titlesView.frame.size.width-self.frame.size.width){
-                self.titlesScrollView.contentOffset = CGPointMake(self.titlesView.frame.size.width-self.frame.size.width, self.scrollView.contentOffset.y);
+            ZXXLog(@"%f",self.titlesScrollView.contentOffset.x);
+            if (self.titlesScrollView.contentOffset.x != 0) {
+                self.titlesScrollView.contentOffset = CGPointMake(0, self.titlesScrollView.contentOffset.y);
             }
         }
+        ZXXLog(@"%f",self.titlesScrollView.contentOffset.x);
         CGPoint center = self.titleUnderline.center;
         center.x = titleButton.center.x;
         self.titleUnderline.center = center;
@@ -573,8 +453,11 @@ static const CGFloat padding = 15;///内边距
         if (_isViewControllers==YES && _type == SegmentViewControlIsLazyLoad) {///数值是视图控制器
             __kindof UIViewController *vc = _array[index];
             if(![self.scrollView.subviews containsObject:vc.view]){
-                FrameObj *framObj = _arrayFrame[index];
-                vc.view.frame = framObj.rect;
+                [vc.view makeConstraints:^(MASConstraintMaker *make) {
+                    make.left.offset(index*self.frame.size.width);
+                    make.top.bottom.equalTo(self.contentView);
+                    make.width.offset(self.frame.size.width);
+                }];
                 [self.scrollView addSubview:vc.view];
             }
         }
@@ -598,6 +481,215 @@ static const CGFloat padding = 15;///内边距
     } completion:^(BOOL finished) {
         
     }];
+}
+
+- (void)layoutSubviews{
+    
+    // 布局titlesScrollView
+    if (self.item.titlesBarHeight>0) {
+//        [self.titlesScrollView makeConstraints:^(MASConstraintMaker *make) {
+//            make.left.right.top.equalTo(self);
+//            make.height.offset(self.item.titlesBarHeight);
+//        }];
+        self.titlesScrollView.frame = CGRectMake(0, 0, self.frame.size.width, self.item.titlesBarHeight);
+    }else{
+//        [self.titlesScrollView makeConstraints:^(MASConstraintMaker *make) {
+//            make.left.right.top.equalTo(self);
+//            make.height.offset(titlesHeight);
+//        }];
+        self.titlesScrollView.frame = CGRectMake(0, 0, self.frame.size.width, titlesHeight);
+    }
+    // 布局titlesView
+    [self.titlesView makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.and.right.equalTo(self.titlesScrollView).with.insets(UIEdgeInsetsZero);
+        make.height.equalTo(self.titlesScrollView);
+    }];
+    
+    [self.seperateLine makeConstraints:^(MASConstraintMaker *make) {
+        make.left.width.bottom.equalTo(self.titlesView);
+        make.height.offset(1);
+    }];
+    // 计算titlesButton需要占多大的宽度
+    __block CGFloat needWith = 0.0;
+    [_titles enumerateObjectsUsingBlock:^(NSString *  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        CGSize size;
+        if (self.item.titlesFont != nil) {
+            size = [CalculateSize sizeForNoticeTitle:obj font:self.item.titlesFont maxW:SCREEN_WIDTH];
+        }else{
+            size = [CalculateSize sizeForNoticeTitle:obj font:TITLESFONT maxW:SCREEN_WIDTH];
+        }
+        if (self.item.padding>=0) {
+            needWith += size.width+self.item.padding*2;
+        }else{
+            needWith += size.width+padding*2;
+        }
+    }];
+    if (self.item.margin>=0) {
+        needWith += self.item.margin*2;
+    }else{
+        needWith += margin*2;
+    }
+    CGFloat realpadding;
+    if (needWith < self.frame.size.width) {//不适用设置的内边距
+        CGFloat remander = self.frame.size.width - needWith;
+        if (self.item.padding>=0) {
+            realpadding = remander/(_titles.count*2)+self.item.padding;
+        }else{
+            realpadding = remander/(_titles.count*2)+padding;
+        }
+    }else{
+        if (self.item.padding>=0) {
+            realpadding = self.item.padding;
+        }else{
+            realpadding = padding;
+        }
+    }
+    __block UIButton *lastButton;
+    
+    [_buttons enumerateObjectsUsingBlock:^(UIButton * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        // frame
+        CGSize size;
+        if (self.item.titlesFont) {
+            size = [CalculateSize sizeForNoticeTitle:obj.titleLabel.text font:self.item.titlesFont maxW:SCREEN_WIDTH];
+        }else{
+            size = [CalculateSize sizeForNoticeTitle:obj.titleLabel.text font:TITLESFONT maxW:SCREEN_WIDTH];
+        }
+        if (idx == 0) {
+            ZXXLog(@"size%f",size.width+realpadding*2);
+            if (self.item.margin>=0) {
+//                [obj remakeConstraints:^(MASConstraintMaker *make) {
+//                    make.left.equalTo(self.titlesView).offset(self.item.margin);
+//                    make.top.bottom.equalTo(self.titlesView);
+//                    make.width.offset(size.width+realpadding*2);
+//                }];
+                obj.frame = CGRectMake(self.item.margin, 0, size.width+realpadding*2, self.titlesView.frame.size.height);
+            }else{
+//                [obj remakeConstraints:^(MASConstraintMaker *make) {
+//                    make.left.equalTo(self.titlesView).offset(margin);
+//                    make.top.bottom.equalTo(self.titlesView);
+//                    make.width.offset(size.width+realpadding*2);
+//                }];
+                obj.frame = CGRectMake(margin, 0, size.width+realpadding*2, self.titlesView.frame.size.height);
+            }
+            lastButton = obj;
+        }else{
+//            [obj remakeConstraints:^(MASConstraintMaker *make) {
+//                make.left.equalTo(lastButton.right);
+//                make.top.bottom.equalTo(self.titlesView);
+//                make.width.offset(size.width+realpadding*2);
+//            }];
+            obj.frame = CGRectMake(lastButton.frame.origin.x+lastButton.frame.size.width, 0, size.width+realpadding*2, self.titlesView.frame.size.height);
+            lastButton = obj;
+        }
+        ZXXLog(@"%f",lastButton.frame.size.width);
+        ZXXLog(@"%f",lastButton.frame.origin.x);
+    }];
+    if (self.item.margin>=0) {
+        [self.titlesView makeConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(lastButton.right).offset(self.item.margin);
+        }];
+    }else{
+        [self.titlesView makeConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(lastButton.right).offset(margin);
+        }];
+    }
+    
+    
+    if (self.item.lineIndicator_percent>0&&self.item.lineIndicator_percent<1) {
+        [self.titleUnderline remakeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.equalTo(self.titlesView.bottom);
+            make.height.offset(2);
+            make.centerX.equalTo(self.previousClickedTitleButton);
+            make.width.equalTo(self.previousClickedTitleButton.width).multipliedBy(self.item.lineIndicator_percent);
+        }];
+    }else{
+        [self.titleUnderline remakeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.equalTo(self.titlesView.bottom);
+            make.height.offset(2);
+            make.centerX.equalTo(self.previousClickedTitleButton);
+            make.width.equalTo(self.previousClickedTitleButton);
+        }];
+    }
+    ///
+//    [self.scrollView makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.titlesView.bottom);
+//        make.left.right.equalTo(self);
+//        make.bottom.equalTo(self);
+//    }];
+    self.scrollView.frame = CGRectMake(0, self.titlesScrollView.frame.size.height, self.frame.size.width, self.frame.size.height-self.titlesScrollView.frame.size.height);
+    
+    [self.contentView makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.and.right.equalTo(self.scrollView).with.insets(UIEdgeInsetsZero);
+        make.height.equalTo(self.scrollView);
+    }];
+    __block UIView *lastView;
+    if (_isViewControllers == YES) {
+        if (_type == SegmentViewControlIsLazyLoad) {
+            UIViewController *vc = (UIViewController *)_currentViewOrViewControllor;
+            [vc.view makeConstraints:^(MASConstraintMaker *make) {
+                make.left.offset(self.previousClickedTitleButton.tag*self.frame.size.width);
+                make.top.bottom.equalTo(self.contentView);
+                make.width.offset(self.frame.size.width);
+            }];
+            [self.contentView makeConstraints:^(MASConstraintMaker *make) {
+                make.width.offset(_array.count*self.frame.size.width);
+            }];
+        }else{
+            [_array enumerateObjectsUsingBlock:^(__kindof UIViewController*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                if (idx == 0) {
+                    [obj.view makeConstraints:^(MASConstraintMaker *make) {
+                        make.left.top.bottom.equalTo(self.contentView);
+                        make.width.equalTo(self.scrollView);
+                    }];
+                    lastView = obj.view;
+                    
+                }else{
+                    [obj.view makeConstraints:^(MASConstraintMaker *make) {
+                        make.left.equalTo(lastView.right);
+                        make.top.bottom.equalTo(self.contentView);
+                        make.width.equalTo(self.scrollView);
+                    }];
+                    lastView = obj.view;
+                }
+            }];
+            [self.contentView makeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(lastView.right);
+            }];
+        }
+    }else{
+        [_array enumerateObjectsUsingBlock:^(__kindof UIView*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if (idx == 0) {
+                [obj makeConstraints:^(MASConstraintMaker *make) {
+                    make.left.right.bottom.equalTo(self.contentView);
+                    make.width.offset(self.frame.size.width);
+                }];
+                lastView = obj;
+            }else{
+                [obj makeConstraints:^(MASConstraintMaker *make) {
+                    make.left.equalTo(lastView.right);
+                    make.top.bottom.equalTo(self.contentView);
+                    make.width.offset(self.frame.size.width);
+                }];
+                lastView = obj;
+            }
+        }];
+        [self.contentView makeConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(lastView.right);
+        }];
+    }
+    
+    //////////////////////////////////////////////////////////////////
+    if (_framWirth!=self.frame.size.width) {
+        ZXXLog(@"%f",self.scrollView.frame.size.width);
+        ZXXLog(@"%f",self.scrollView.contentOffset.x);
+        
+        CGFloat offsetX = self.frame.size.width * self.previousClickedTitleButton.tag;
+        ZXXLog(@"%f",offsetX);
+        if (self.scrollView.contentOffset.x!=offsetX) {
+            self.scrollView.contentOffset = CGPointMake(offsetX, self.scrollView.contentOffset.y);
+        }
+        _framWirth = self.frame.size.width;
+    }
 }
 
 @end

@@ -18,22 +18,19 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     //初始化顶栏
-    _topbarview=[[TopBarView alloc] init];
-    [self.view addSubview:_topbarview];
-    [_topbarview setTopBarView_backgroundColor:COLOR_MAIN];
     if ([[self.receivedDictionary objectForKey:@"isMain"] isEqualToString:@"true"]) {
         
     }
     else{
-        @WeakObj(self);
-        [_topbarview leftViewClick:^(UIView *view) {
-            @StrongObj(self);
-            [self popToController:@"TabBarController"];
-        }];
-        [_topbarview rightViewClick:^(UIView *view) {
-            @StrongObj(self);
-            [self push:@"WebViewController"];
-        }];
+//        @WeakObj(self);
+//        [_topbarview leftViewClick:^(UIView *view) {
+//            @StrongObj(self);
+//            [self popToController:@"TabBarController"];
+//        }];
+//        [_topbarview rightViewClick:^(UIView *view) {
+//            @StrongObj(self);
+//            [self push:@"WebViewController"];
+//        }];
     }
     //初始化webview
     [self initWKWebView];

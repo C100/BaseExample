@@ -8,6 +8,7 @@
 
 #import "FourthTabViewController.h"
 #import "SettingViewController.h"
+
 @interface FourthTabViewController ()
 @property (nonatomic,strong)ZXXSetItem *item1;
 @property (nonatomic,strong)ZXXSetItem *item2;
@@ -23,11 +24,11 @@
 - (void)setNavigationItemsIsInEditMode:(BOOL)isInEditMode animated:(BOOL)animated {
     [super setNavigationItemsIsInEditMode:isInEditMode animated:animated];
     self.titleView.title = @"个人中心";
+    
 }
 - (void)didInitialized {
     [super didInitialized];
     self.hidesBottomBarWhenPushed = NO;
-    
     [self setUpGroup1];
     [self setUpGroup2];
     [self setUpGroup3];

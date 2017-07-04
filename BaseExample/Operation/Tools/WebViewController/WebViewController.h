@@ -7,10 +7,9 @@
 //
 
 #import "BaseViewController.h"
-#import "TopBarView.h"
+
 @import WebKit;
 @interface WebViewController : BaseViewController
-@property (nonatomic) TopBarView *topbarview;
 @property (nonatomic) WKWebView *webView;
 @property (nonatomic) UIProgressView *progressView;
 

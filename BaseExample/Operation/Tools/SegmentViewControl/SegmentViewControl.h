@@ -69,12 +69,10 @@ typedef NS_ENUM(NSUInteger,SegmentViewControlIsLazyLoadType){
  @param titles 标题数组<NSString *>
  @param item 模型对象用来设置颜色样式等。。。
  @param views UIView数组
- @param rect 改控件的frame
  @param rgCellEdit 是否识别tableViewCell编辑
- @param adjustsScrollViewInsets 调整scrollview向下偏移64的问题 YES自动调整
  @return 对象本身
  */
-+ (instancetype _Nonnull)segmentTitles:(NSArray * _Nonnull)titles withItem:(SegmentViewItem * _Nullable)item withViews:(NSArray *_Nonnull)views withFrame:(CGRect)rect recognizerTableCellEdit:(BOOL)rgCellEdit;
++ (instancetype _Nonnull)segmentTitles:(NSArray * _Nonnull)titles withItem:(SegmentViewItem * _Nullable)item withViews:(NSArray *_Nonnull)views recognizerTableCellEdit:(BOOL)rgCellEdit;
 
 
 /**
@@ -83,13 +81,11 @@ typedef NS_ENUM(NSUInteger,SegmentViewControlIsLazyLoadType){
  @param titles 标题数组<NSString *>
  @param item 模型对象用来设置颜色样式等。。。
  @param viewControllers viewControllers数组
- @param rect 改控件的frame
  @param type 懒加载枚举类型
  @param rgCellEdit 是否识别tableViewCell编辑
- @param adjustsScrollViewInsets 调整scrollview向下偏移64的问题 YES自动调整
  @return 对象本身
  */
-+ (instancetype _Nonnull)segmentTitles:(NSArray * _Nonnull)titles withItem:(SegmentViewItem * _Nullable)item withViewControllers:(NSArray *_Nonnull)viewControllers withFrame:(CGRect)rect loadType:(SegmentViewControlIsLazyLoadType)type recognizerTableCellEdit:(BOOL)rgCellEdit;
++ (instancetype _Nonnull)segmentTitles:(NSArray * _Nonnull)titles withItem:(SegmentViewItem * _Nullable)item withViewControllers:(NSArray *_Nonnull)viewControllers loadType:(SegmentViewControlIsLazyLoadType)type recognizerTableCellEdit:(BOOL)rgCellEdit;
 
 /**
  将scrollView上的子视图传递出去

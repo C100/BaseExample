@@ -61,5 +61,11 @@
 @interface QDUIHelper (Calculate)
 
 + (NSString *)humanReadableFileSize:(long long)size;
+
+@end
+
+@interface QDUIHelper (Theme)
+
++ (UIImage *)navigationBarBackgroundImageWithThemeColor:(UIColor *)color;
     
 @end

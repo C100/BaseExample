@@ -8,7 +8,6 @@
 
 #import "BaseViewController.h"
 
-#import "TopBarView.h"
 
 #import "ZXXGroupItem.h"
 #import "ZXXBaseSetting.h"
@@ -28,7 +27,6 @@ typedef NS_ENUM(NSUInteger,CellPostNoteType){
 
 @property (nonatomic, strong,nonnull)UITableView *tableView;
 
-@property(nonatomic,nullable)TopBarView *topbarview;
 
 /**
  描述点击cell时是否发送结束编辑

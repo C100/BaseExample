@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class SegmentViewControl;
 @interface SecondTabView : UIView
-
+//@property (nonatomic)SegmentViewControl *segment;
 @end

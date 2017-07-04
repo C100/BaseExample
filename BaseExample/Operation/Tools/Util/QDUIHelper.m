@@ -11,10 +11,7 @@
 @implementation QDUIHelper
 
 + (void)forceInterfaceOrientationPortrait {
-    if ([[UIDevice currentDevice] orientation] != UIDeviceOrientationPortrait) {
-        NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
-        [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
-    }
+    [QMUIHelper rotateToDeviceOrientation:UIDeviceOrientationPortrait];
 }
 
 @end
@@ -128,6 +125,25 @@
         strSize = [NSString stringWithFormat:@"%.2fB", size / 1.0f];
     }
     return strSize;
+}
+
+@end
+
+@implementation QDUIHelper (Theme)
+
++ (UIImage *)navigationBarBackgroundImageWithThemeColor:(UIColor *)color {
+    CGSize size = CGSizeMake(4, 64);
+    UIImage *resultImage = nil;
+    color = color ? color : UIColorClear;
+    
+    UIGraphicsBeginImageContextWithOptions(size, YES, 0);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGGradientRef gradient = CGGradientCreateWithColors(CGColorSpaceCreateDeviceRGB(), (CFArrayRef)@[(id)color.CGColor, (id)[color qmui_colorWithAlphaAddedToWhite:.86].CGColor], NULL);
+    CGContextDrawLinearGradient(context, gradient, CGPointZero, CGPointMake(0, size.height), kCGGradientDrawsBeforeStartLocation);
+    
+    resultImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return [resultImage resizableImageWithCapInsets:UIEdgeInsetsMake(0, 1, 0, 1)];
 }
 
 @end
