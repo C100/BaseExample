@@ -1,0 +1,32 @@
+//
+//  PrefixHeader.pch
+//  IOS-example
+//
+//  Created by 朱林峰 on 2017/1/7.
+//  Copyright © 2017年 james. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+#import "Const.h"
+#import "Macro.h"
+#import "Notification.h"
+
+#define MAS_SHORTHAND
+#define MAS_SHORTHAD_GLOBALS
+#import <Masonry.h>
+#import <POP.h>
+#import <MJRefresh/MJRefresh.h>
+#import <QMUIKit/QMUIKit.h>
+
+#import <AlipaySDK/AlipaySDK.h>
+#import <WXApi.h>
+#import "WXApiManager.h"
+
+#import "QDCommonUI.h"
+#import "QDUIHelper.h"
+
+#endif /* PrefixHeader_pch */

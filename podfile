@@ -1,0 +1,17 @@
+platform :ios, ‘8.0’
+#use_frameworks
+
+target ‘BaseExample’ do
+  pod 'Masonry’,’~>1.0.2’
+  pod ’YTKNetwork’, '~> 2.0.3’
+  pod 'SDWebImage', '~>3.8'
+  pod 'MJRefresh’,’~>3.1.12’
+  pod 'pop', '~> 1.0.9'
+  pod 'JSONModel', '~> 1.7.0'
+  pod ‘UMengUShare/UI’,’~>6.3.0’
+  pod ‘UMengUShare/Social/Sina',’~>6.3.0’
+  pod ‘UMengUShare/Social/WeChat',’~>6.3.0’
+  pod ‘UMengUShare/Social/QQ',’~>6.3.0’
+  pod 'UMengAnalytics-NO-IDFA', '~> 4.2.5'
+  pod 'QMUIKit'
+end
