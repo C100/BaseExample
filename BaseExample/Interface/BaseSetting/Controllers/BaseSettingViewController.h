@@ -6,7 +6,7 @@
 //  Copyright © 2017年 james. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "BaseTableViewController.h"
 
 
 #import "ZXXGroupItem.h"
@@ -17,15 +17,11 @@ typedef NS_ENUM(NSUInteger,CellPostNoteType){
     CellPostNoteTypeNULL = 1,
     CellPostNoteTypeWithkeyBoardHiden = 2
 };
-@interface BaseSettingViewController : BaseViewController <UITableViewDataSource,UITableViewDelegate>
-
-@property (null_resettable,nonatomic,strong)UIView *baseView;
+@interface BaseSettingViewController : BaseTableViewController <UITableViewDataSource,UITableViewDelegate>
 /**
  *描述控制器有多少组
  */
 @property (nonatomic, strong,nullable)NSMutableArray *groups;
-
-@property (nonatomic, strong,nonnull)UITableView *tableView;
 
 
 /**

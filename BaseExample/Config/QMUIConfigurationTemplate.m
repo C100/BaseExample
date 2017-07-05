@@ -139,7 +139,7 @@
     //- QMUICMI.tableSectionIndexTrackingBackgroundColor = UIColorClear;                    // TableSectionIndexTrackingBackgroundColor
     QMUICMI.tableViewSeparatorColor = UIColorSeparator;                                 // TableViewSeparatorColor
     
-    QMUICMI.tableViewCellNormalHeight = 56;                                             // TableViewCellNormalHeight
+    QMUICMI.tableViewCellNormalHeight = 55;                                             // TableViewCellNormalHeight
     QMUICMI.tableViewCellTitleLabelColor = UIColorGray3;                                                // TableViewCellTitleLabelColor
     QMUICMI.tableViewCellDetailLabelColor = UIColorGray5;                                                // TableViewCellDetailLabelColor
     //- QMUICMI.tableViewCellContentDefaultPaddingLeft = 15;                                                // TableViewCellContentDefaultPaddingLeft

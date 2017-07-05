@@ -407,6 +407,9 @@ static const CGFloat padding = 15;///内边距
     _lastPosition = scrollView.contentOffset.x;
 }
 - (void)dealTitleButton:(UIButton *)titleButton{
+    if (_framWirth!=self.frame.size.width){
+        return;
+    }
     // 切换按钮状态
     self.previousClickedTitleButton.selected = NO;
     titleButton.selected = YES;
@@ -431,12 +434,10 @@ static const CGFloat padding = 15;///内边距
                 }
             }
         }else{
-            ZXXLog(@"%f",self.titlesScrollView.contentOffset.x);
             if (self.titlesScrollView.contentOffset.x != 0) {
                 self.titlesScrollView.contentOffset = CGPointMake(0, self.titlesScrollView.contentOffset.y);
             }
         }
-        ZXXLog(@"%f",self.titlesScrollView.contentOffset.x);
         CGPoint center = self.titleUnderline.center;
         center.x = titleButton.center.x;
         self.titleUnderline.center = center;
@@ -680,15 +681,34 @@ static const CGFloat padding = 15;///内边距
     
     //////////////////////////////////////////////////////////////////
     if (_framWirth!=self.frame.size.width) {
-        ZXXLog(@"%f",self.scrollView.frame.size.width);
-        ZXXLog(@"%f",self.scrollView.contentOffset.x);
-        
+        _framWirth = self.frame.size.width;
         CGFloat offsetX = self.frame.size.width * self.previousClickedTitleButton.tag;
         ZXXLog(@"%f",offsetX);
+        ZXXLog(@"%f",self.frame.size.width);
         if (self.scrollView.contentOffset.x!=offsetX) {
             self.scrollView.contentOffset = CGPointMake(offsetX, self.scrollView.contentOffset.y);
         }
-        _framWirth = self.frame.size.width;
+        if(self.titlesView.frame.size.width>self.frame.size.width){
+            if (self.previousClickedTitleButton.center.x>self.center.x+self.titlesScrollView.contentOffset.x&&self.titlesView.frame.size.width - self.titlesScrollView.contentOffset.x>self.frame.size.width) {
+                CGFloat offsetx = self.previousClickedTitleButton.center.x - self.titlesScrollView.contentOffset.x - self.center.x;
+                if (offsetx<=self.titlesView.frame.size.width - self.titlesScrollView.contentOffset.x-self.frame.size.width) {
+                    self.titlesScrollView.contentOffset = CGPointMake(offsetx+self.titlesScrollView.contentOffset.x, self.titlesScrollView.contentOffset.y);
+                }else{
+                    self.titlesScrollView.contentOffset = CGPointMake(self.titlesView.frame.size.width-self.frame.size.width, self.titlesScrollView.contentOffset.y);
+                }
+            }else if(self.previousClickedTitleButton.center.x<self.center.x+self.titlesScrollView.contentOffset.x&&self.titlesScrollView.contentOffset.x!=0){
+                CGFloat offsetx = self.titlesScrollView.contentOffset.x + self.center.x - self.previousClickedTitleButton.center.x;
+                if (offsetx>self.titlesScrollView.contentOffset.x) {
+                    self.titlesScrollView.contentOffset = CGPointMake(0, self.titlesScrollView.contentOffset.y);
+                }else{
+                    self.titlesScrollView.contentOffset = CGPointMake(self.titlesScrollView.contentOffset.x-offsetx, self.titlesScrollView.contentOffset.y);
+                }
+            }
+        }else{
+            if (self.titlesScrollView.contentOffset.x != 0) {
+                self.titlesScrollView.contentOffset = CGPointMake(0, self.titlesScrollView.contentOffset.y);
+            }
+        }
     }
 }
 

@@ -38,18 +38,19 @@
     }else{
         self.hidden = NO;
     }
-    
+    [self setBackgroundImage:[UIImage imageWithStretchableName:@"main_badge"] forState:UIControlStateNormal];
+    [self setTitle:badgeValue forState:UIControlStateNormal];
+}
+
+- (void)layoutSubviews{
+    [super layoutSubviews];
     CGSize size = [self.badgeValue sizeWithAttributes:@{@"font":BadgeViewFont}];
     if (size.width > self.frame.size.width-5) { // 文字的尺寸大于控件的宽度
-        [self setBackgroundImage:[UIImage imageWithStretchableName:@"main_badge"] forState:UIControlStateNormal];
-        [self setTitle:badgeValue forState:UIControlStateNormal];
+        
         [self makeConstraints:^(MASConstraintMaker *make) {
             make.size.sizeOffset(CGSizeMake(size.width+10, self.frame.size.height));
         }];
-    }else{
-        [self setBackgroundImage:[UIImage imageWithStretchableName:@"main_badge"] forState:UIControlStateNormal];
-        [self setTitle:badgeValue forState:UIControlStateNormal];
     }
-    
 }
+
 @end

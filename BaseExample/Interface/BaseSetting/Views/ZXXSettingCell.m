@@ -18,21 +18,10 @@
 #define ARROWLABLECOLOR [UIColor colorWithWhite:0.400 alpha:1.000]
 #define TEXTFIELDFONT [UIFont fontWithName:@"STHeitiSC-Light" size:16]
 #define TEXTFIELDCOLOR [UIColor colorWithWhite:0.400 alpha:1.000]
+
 static NSString *placeholder = @"请输入文字";
 @interface ZXXSettingCell ()<UITextFieldDelegate>
 
-/**
- 替代_imageView
- */
-@property (nonatomic,weak)UIImageView *imgView;
-/**
- 替代_textLabel
- */
-@property (nonatomic,weak)UILabel *titleLable;
-/**
- 替代_detailTextLabel
- */
-@property (nonatomic,weak)UILabel *subtitleLabel;
 /**
  右边提示数字
  */
@@ -49,48 +38,11 @@ static NSString *placeholder = @"请输入文字";
 /**
  右侧textField
  */
-@property(nonatomic,weak)UITextField *textField;
+@property(nonatomic,strong)UITextField *textField;
 
 @end
 
 @implementation ZXXSettingCell
-- (UIImageView *)imgView{
-    if (_imgView==nil) {
-        UIImageView *imgView = [[UIImageView alloc] init];
-        [self.contentView addSubview:imgView];
-        _imgView = imgView;
-    }
-    return _imgView;
-}
-/**
- 主标题
- */
-- (UILabel *)titleLable{
-    if (_titleLable==nil) {
-        UILabel *label = [[UILabel alloc] init];
-        label.font = TITLEFONT;
-        label.textColor = TITLECOLOR;
-        label.numberOfLines = 0;
-        [self.contentView addSubview:label];
-        _titleLable = label;
-    }
-    return _titleLable;
-}
-
-/**
- 副标题
- */
-- (UILabel *)subtitleLabel{
-    if (_subtitleLabel==nil) {
-        UILabel *label = [[UILabel alloc] init];
-        label.font = SUBTITLEFONT;
-        label.textColor = SUBTITLECOLOR;
-        label.numberOfLines = 0;
-        [self.contentView addSubview:label];
-        _subtitleLabel = label;
-    }
-    return _subtitleLabel;
-}
 
 - (ZXXBadgeView *)badgeView{
     if (_badgeView == nil) {
@@ -124,13 +76,12 @@ static NSString *placeholder = @"请输入文字";
     if (_arrowLabel == nil) {
         UIView *view = [[UIView alloc] init];
         UILabel *label = [[UILabel alloc] init];
-        UIImageView *imgV = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Disclosure Indicator"]];
+        UIImageView *imgV = [[UIImageView alloc] initWithImage:TableViewCellDisclosureIndicatorImage];
         [view addSubview:imgV];
         [view addSubview:label];
         [imgV makeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(view);
             make.centerY.equalTo(view);
-            make.size.sizeOffset(CGSizeMake(8, 13));
         }];
         label.font = ARROWLABLEFONT;
         label.textColor = ARROWLABLECOLOR;
@@ -186,12 +137,10 @@ static NSString *placeholder = @"请输入文字";
     
     ZXXSettingCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
     if (cell == nil) {
-        cell = [[self alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:reuseIdentifier];
+        cell = [[self alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
         cell.separatorInset = UIEdgeInsetsZero;
-        
     }
     return cell;
-    
 }
 
 - (void)setItem:(ZXXSetItem *)item{
@@ -203,10 +152,8 @@ static NSString *placeholder = @"请输入文字";
     }
     
     if (item.class == [ZXXArrowItem class]) {//
-        self.accessoryView = nil;
         self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }else if (item.class == [ZXXCheakItem class]){
-        self.accessoryView = nil;
         if (item.cheak == YES) {
             self.accessoryType = UITableViewCellAccessoryCheckmark;
         }else{
@@ -248,42 +195,49 @@ static NSString *placeholder = @"请输入文字";
     }
     
     if (item.title) {
-        self.titleLable.text = item.title;
+        self.textLabel.text = item.title;
         if (item.attribute.titleFont!=nil) {
-            self.titleLable.font = item.attribute.titleFont;
+            self.textLabel.font = item.attribute.titleFont;
         }else{
-            self.titleLable.font = TITLEFONT;
+            self.textLabel.font = TITLEFONT;
         }
         if (item.attribute.titleColor!=nil) {
-            self.titleLable.textColor = item.attribute.titleColor;
+            self.textLabel.textColor = item.attribute.titleColor;
         }else{
-            self.titleLable.textColor = TITLECOLOR;
+            self.textLabel.textColor = TITLECOLOR;
         }
     }else{
-        [self.titleLable removeFromSuperview];
+        self.textLabel.text = nil;
     }
     if (item.subTitle) {
-        self.subtitleLabel.text = item.subTitle;
+        self.detailTextLabel.text = item.subTitle;
         if (item.attribute.subTitleFont!=nil) {
-            self.subtitleLabel.font = item.attribute.subTitleFont;
+            self.detailTextLabel.font = item.attribute.subTitleFont;
         }else{
-            self.subtitleLabel.font = SUBTITLEFONT;
+            self.detailTextLabel.font = SUBTITLEFONT;
         }
         if (item.attribute.subTitleColor!=nil) {
-            self.subtitleLabel.textColor = item.attribute.subTitleColor;
+            self.detailTextLabel.textColor = item.attribute.subTitleColor;
         }else{
-            self.subtitleLabel.textColor = SUBTITLECOLOR;
+            self.detailTextLabel.textColor = SUBTITLECOLOR;
         }
     }else{
-        [self.subtitleLabel removeFromSuperview];
+        self.detailTextLabel.text = nil;
     }
     if (item.image) {
-        self.imgView.image = item.image;
+        self.imageView.image = item.image;
     }else{
-        [self.imgView removeFromSuperview];
+        self.imageView.image = nil;
     }
+    
+    self.imageEdgeInsets = item.attribute.imageEdgeInsets;
+    self.textLabelEdgeInsets = item.attribute.textLabelEdgeInsets;
+    self.detailTextLabelEdgeInsets = item.attribute.detailTextLabelEdgeInsets;
+    self.accessoryEdgeInsets = item.attribute.accessoryEdgeInsets;
+    
 }
 
+/// 在父类中已经实现了布局。只要设置相关的属性就行了
 - (void)layoutSubviews{
     [super layoutSubviews];
     if (self.item.class == [ZXXTextFieldItem class]) {
@@ -292,143 +246,6 @@ static NSString *placeholder = @"请输入文字";
             make.right.equalTo(self).offset(-20);
         }];
     }
-    // 带图片的cell
-    if ([self.reuseIdentifier containsString:CELLCOMMON] || [self.reuseIdentifier containsString:CELLCOMMON_EDIT]) {
-        BOOL isImg = self.item.image!=nil?YES:NO;
-        BOOL isTitle = self.item.title!=nil?YES:NO;
-        BOOL isSubTitle = self.item.subTitle!=nil?YES:NO;
-        [self layoutCommonWithImage:isImg WithTitle:isTitle WithSubTitle:isSubTitle];
-        
-    }
-}
-
-- (void)layoutCommonWithImage:(BOOL)isImg WithTitle:(BOOL)isTitle WithSubTitle:(BOOL)isSubTitle{
-    CGFloat height = self.frame.size.height;
-    if (isImg==YES) {
-        if(self.item.attribute.size.height>0){
-            [self.imgView remakeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self).offset(14);
-                make.centerY.equalTo(self);
-                make.size.sizeOffset(self.item.attribute.size);
-            }];
-        }else{
-            [self.imgView remakeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self).offset(14);
-                make.centerY.equalTo(self);
-                make.size.sizeOffset(CGSizeMake(height-20, height-20));
-            }];
-        }
-        if (isTitle==YES) {
-            if (isSubTitle==YES) {
-                if (self.item.attribute.topMargin>0) {
-                    [self.titleLable remakeConstraints:^(MASConstraintMaker *make) {
-                        make.left.equalTo(self.imgView.right).offset(10);
-                        make.top.equalTo(self).offset(self.item.attribute.topMargin);
-                    }];
-                }else{
-                    [self.titleLable remakeConstraints:^(MASConstraintMaker *make) {
-                        make.left.equalTo(self.imgView.right).offset(10);
-                        make.centerY.equalTo(self).offset(-height/4);
-                    }];
-                }
-                if (self.item.attribute.bottomMargin>0) {
-                    [self.subtitleLabel remakeConstraints:^(MASConstraintMaker *make) {
-                        make.left.equalTo(self.imgView.right).offset(10);
-                        make.bottom.equalTo(self).offset(-self.item.attribute.bottomMargin);
-                    }];
-                }else{
-                    [self.subtitleLabel remakeConstraints:^(MASConstraintMaker *make) {
-                        make.left.equalTo(self.imgView.right).offset(10);
-                        make.centerY.equalTo(self).offset(height/4);
-                    }];
-                }
-            }else{
-                if (self.item.attribute.topMargin>0) {
-                    [self.titleLable remakeConstraints:^(MASConstraintMaker *make) {
-                        make.left.equalTo(self.imgView.right).offset(10);
-                        make.top.equalTo(self).offset(self.item.attribute.topMargin);
-                    }];
-                }else{
-                    [self.titleLable remakeConstraints:^(MASConstraintMaker *make) {
-                        make.left.equalTo(self.imgView.right).offset(10);
-                        make.centerY.equalTo(self);
-                    }];
-                }
-            }
-        }else{
-            if (isSubTitle==YES) {
-                if (self.item.attribute.bottomMargin>0) {
-                    [self.subtitleLabel remakeConstraints:^(MASConstraintMaker *make) {
-                        make.left.equalTo(self.imgView.right).offset(10);
-                        make.bottom.equalTo(self).offset(-self.item.attribute.bottomMargin);
-                    }];
-                }else{
-                    [self.subtitleLabel remakeConstraints:^(MASConstraintMaker *make) {
-                        make.left.equalTo(self.imgView.right).offset(10);
-                        make.centerY.equalTo(self);
-                    }];
-                }
-            }
-        }
-    }else{
-        if (isTitle==YES) {
-            if (isSubTitle==YES) {
-                if (self.item.attribute.topMargin>0) {
-                    [self.titleLable remakeConstraints:^(MASConstraintMaker *make) {
-                        make.left.equalTo(self).offset(14);
-                        make.top.equalTo(self).offset(self.item.attribute.topMargin);
-                    }];
-                }else{
-                    [self.titleLable remakeConstraints:^(MASConstraintMaker *make) {
-                        make.left.equalTo(self).offset(14);
-                        make.centerY.equalTo(self).offset(-height/4);
-                    }];
-                }
-                if (self.item.attribute.bottomMargin>0) {
-                    [self.subtitleLabel remakeConstraints:^(MASConstraintMaker *make) {
-                        make.left.equalTo(self).offset(14);
-                        make.bottom.equalTo(self).offset(-self.item.attribute.bottomMargin);
-                    }];
-                }else{
-                    [self.subtitleLabel remakeConstraints:^(MASConstraintMaker *make) {
-                        make.left.equalTo(self).offset(14);
-                        make.centerY.equalTo(self).offset(height/4);
-                    }];
-                }
-            }else{
-                if (self.item.attribute.topMargin>0) {
-                    [self.titleLable remakeConstraints:^(MASConstraintMaker *make) {
-                        make.left.equalTo(self).offset(14);
-                        make.top.equalTo(self).offset(self.item.attribute.topMargin);
-                    }];
-                }else{
-                    [self.titleLable remakeConstraints:^(MASConstraintMaker *make) {
-                        make.left.equalTo(self).offset(14);
-                        make.centerY.equalTo(self);
-                    }];
-                }
-            }
-        }else{
-            if (self.item.subTitle) {
-                if (self.item.attribute.bottomMargin>0) {
-                    [self.subtitleLabel remakeConstraints:^(MASConstraintMaker *make) {
-                        make.left.equalTo(self).offset(14);
-                        make.bottom.equalTo(self).offset(self.item.attribute.bottomMargin);
-                    }];
-                }else{
-                    [self.subtitleLabel remakeConstraints:^(MASConstraintMaker *make) {
-                        make.left.equalTo(self).offset(14);
-                        make.centerY.equalTo(self);
-                    }];
-                }
-            }
-        }
-    }
-}
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-    
-    // Configure the view for the selected state
 }
 
 - (void)dealloc{

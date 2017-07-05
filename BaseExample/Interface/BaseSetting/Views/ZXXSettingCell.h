@@ -6,13 +6,12 @@
 //  Copyright © 2016年 www.iphonetrain.com. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <QMUITableViewCell.h>
 #import "ZXXBaseSetting.h"
 #import "ZXXBadgeView.h"
-//@class ZXXSetItem;
 
 
-@interface ZXXSettingCell : UITableViewCell
+@interface ZXXSettingCell : QMUITableViewCell
 
 + (instancetype)cellTableView:(UITableView *)tableView reuseIdentifier:(NSString *)reuseIdentifier;
 

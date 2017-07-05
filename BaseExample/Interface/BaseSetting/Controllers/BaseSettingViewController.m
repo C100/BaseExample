@@ -14,12 +14,7 @@
 @end
 
 @implementation BaseSettingViewController
-- (UIView *)baseView{
-    if (_baseView == nil) {
-        _baseView = [[UIView alloc] init];
-    }
-    return _baseView;
-}
+
 - (CellPostNoteType)type{
     return CellPostNoteTypeNULL;
 }
@@ -32,18 +27,15 @@
     }
     return _groups;
 }
-- (void)didInitialized {
-    [super didInitialized];
-    // 添加tableView
-    if (self.isMain == YES) {
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-64-49) style:UITableViewStyleGrouped];
-    }else{
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-64) style:UITableViewStyleGrouped];
-    }
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-    [self.view addSubview:_tableView];
+- (instancetype)init{
+    return [super initWithStyle:UITableViewStyleGrouped];
 }
+
+- (void)initTableView{
+    [super initTableView];
+    /// 在这个方法里面加载数据源
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 }
@@ -98,33 +90,13 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     ZXXGroupItem *group = self.groups[indexPath.section];
     ZXXSetItem *item = group.items[indexPath.row];
-    if (item.height) {
+    if (item.height>0) {
         return item.height;
     }else{
-        return 44;
+        return [super tableView:tableView heightForRowAtIndexPath:indexPath];
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    ZXXGroupItem *group = self.groups[section];
-    if (group.headerTitle) {
-        return 44;
-    }else{
-        if (section == 0) {
-            return 0.01;
-        }else{
-            return 10;
-        }
-    }
-}
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    ZXXGroupItem *group = self.groups[section];
-    if (group.footerTitle) {
-        return 44;
-    }else{
-        return 0.01;
-    }
-}
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     ZXXGroupItem *group = self.groups[section];
     return group.headerTitle;
