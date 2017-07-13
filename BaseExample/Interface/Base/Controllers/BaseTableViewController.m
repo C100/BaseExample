@@ -47,10 +47,10 @@
 }
 
 /*传数据到下一个界面*/
--(void)pushWithData:(NSString*)controllerName Data:(NSDictionary*)dict{
+-(void)push:(NSString*)controllerName Data:(id)data{
     Class class=NSClassFromString(controllerName);
     id controller=[[class alloc] init];
-    ((BaseTableViewController*)controller).receivedDictionary=dict;
+    ((BaseTableViewController*)controller).receivedData=data;
     [self.navigationController pushViewController:controller animated:true];
 }
 

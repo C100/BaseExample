@@ -66,7 +66,7 @@
     ZXXLabelArrowItem *award = [ZXXLabelArrowItem itemWithTitle:@"ZXXLabelArrowItem" rightTitle:@"he" WithAttribute:nil cellHeight:60 WithOption:^(ZXXLabelArrowItem * _Nullable item) {
         @StrongObj(self);
         //        [self push:@"SettingViewController"];
-        [self pushWithData:@"SettingViewController" Data:@{@"model":item,@"tableView":self.tableView}];
+        [self push:@"SettingViewController" Data:@{@"model":item,@"tableView":self.tableView}];
     }];
     _item2 = award;
     ZXXBadgeItem *badge = [ZXXBadgeItem itemWithTitle:@"ZXXBadgeItem" badgeValue:@"10"WithAttribute:nil cellHeight:50 WithOption:nil];

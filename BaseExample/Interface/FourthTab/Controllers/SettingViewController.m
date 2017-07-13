@@ -49,7 +49,7 @@
     ZXXGroupItem *group = [[ZXXGroupItem alloc]init];
     group.items = @[apply,award,badge];
     [self.groups addObject:group];
-    ZXXSetItem *item = self.receivedDictionary[@"model"];
+    ZXXSetItem *item = self.receivedData[@"model"];
     [self setItemWithTitle:item.rightTitle];
 }
 - (void)setItem:(ZXXCheakItem *)item{
@@ -57,9 +57,9 @@
     item.cheak = YES;
     _selectedCheakItem = item;
     [self.tableView reloadData];
-    ZXXSetItem *itm = self.receivedDictionary[@"model"];
+    ZXXSetItem *itm = self.receivedData[@"model"];
     itm.rightTitle = item.title;
-    UITableView *tableview = self.receivedDictionary[@"tableView"];
+    UITableView *tableview = self.receivedData[@"tableView"];
     [tableview reloadData];
 }
 - (void)setItemWithTitle:(NSString *)title{

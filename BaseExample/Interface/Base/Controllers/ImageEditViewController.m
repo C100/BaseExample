@@ -65,7 +65,7 @@
     return self;
 }
 - (void)viewDidAppear:(BOOL)animated{
-    NSString *picpath = self.receivedDictionary[@"pictureUrl"];
+    NSString *picpath = self.receivedData[@"pictureUrl"];
     _imgview.image = [UIImage imageWithContentsOfFile:picpath];
 }
 - (void)viewDidLoad {
@@ -74,7 +74,7 @@
     
 }
 - (void)viewWillDisappear:(BOOL)animated{
-    self.receivedDictionary = nil;
+    self.receivedData = nil;
 }
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView {
     CGFloat offsetX = (scrollView.bounds.size.width > scrollView.contentSize.width)?(scrollView.bounds.size.width - scrollView.contentSize.width)/2 : 0.0;

@@ -102,6 +102,7 @@
 		8D660E2B1EF11785002AC348 /* Test2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D660E2A1EF11785002AC348 /* Test2ViewController.m */; };
 		8D660E2E1EF13B6B002AC348 /* ZXXScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D660E2D1EF13B6B002AC348 /* ZXXScrollView.m */; };
 		8D660E491EF3F29D002AC348 /* BaseRequestApi.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D660E481EF3F29D002AC348 /* BaseRequestApi.m */; };
+		8D865DC91F17443E008152B4 /* QMUINavigationButton+Block.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D865DC81F17443E008152B4 /* QMUINavigationButton+Block.m */; };
 		8D997F1A1F064481007BF5B9 /* PViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D997F191F064481007BF5B9 /* PViewController.m */; };
 		8D997F1D1F069F6E007BF5B9 /* BaseTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D997F1C1F069F6E007BF5B9 /* BaseTableViewController.m */; };
 		8D997F201F06A656007BF5B9 /* UIViewController+Net.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D997F1F1F06A656007BF5B9 /* UIViewController+Net.m */; };
@@ -311,6 +312,8 @@
 		8D660E2D1EF13B6B002AC348 /* ZXXScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZXXScrollView.m; sourceTree = "<group>"; };
 		8D660E471EF3F29D002AC348 /* BaseRequestApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseRequestApi.h; sourceTree = "<group>"; };
 		8D660E481EF3F29D002AC348 /* BaseRequestApi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseRequestApi.m; sourceTree = "<group>"; };
+		8D865DC71F17443E008152B4 /* QMUINavigationButton+Block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMUINavigationButton+Block.h"; sourceTree = "<group>"; };
+		8D865DC81F17443E008152B4 /* QMUINavigationButton+Block.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "QMUINavigationButton+Block.m"; sourceTree = "<group>"; };
 		8D997F181F064481007BF5B9 /* PViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PViewController.h; sourceTree = "<group>"; };
 		8D997F191F064481007BF5B9 /* PViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PViewController.m; sourceTree = "<group>"; };
 		8D997F1B1F069F6E007BF5B9 /* BaseTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseTableViewController.h; sourceTree = "<group>"; };
@@ -407,6 +410,8 @@
 				8DF3B3F11EE65D320066C8C3 /* NSDate+MJ.m */,
 				1ADB80A41EB3271300F952ED /* QDCommonUI.h */,
 				1ADB80A51EB3271300F952ED /* QDCommonUI.m */,
+				8D865DC71F17443E008152B4 /* QMUINavigationButton+Block.h */,
+				8D865DC81F17443E008152B4 /* QMUINavigationButton+Block.m */,
 				1ADB80A61EB3271300F952ED /* QDUIHelper.h */,
 				1ADB80A71EB3271300F952ED /* QDUIHelper.m */,
 				1ADB80A81EB3271300F952ED /* UIImageEffects.h */,
@@ -1345,6 +1350,7 @@
 				1AC44BBB1E7C0F6300620A7A /* UMAnalytics.m in Sources */,
 				8D997F201F06A656007BF5B9 /* UIViewController+Net.m in Sources */,
 				1A8E7D971E66C4F80044AC48 /* FirstTabView.m in Sources */,
+				8D865DC91F17443E008152B4 /* QMUINavigationButton+Block.m in Sources */,
 				1A8E7D201E66666B0044AC48 /* main.m in Sources */,
 				1A81B2781E6A6D7E004AF8DA /* VDGifPlayerTool.m in Sources */,
 				1A81B2751E6A6D7E004AF8DA /* NSStringUtil.m in Sources */,

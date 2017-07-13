@@ -17,27 +17,33 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    //初始化顶栏
-    if ([[self.receivedDictionary objectForKey:@"isMain"] isEqualToString:@"true"]) {
-        
-    }
-    else{
-//        @WeakObj(self);
-//        [_topbarview leftViewClick:^(UIView *view) {
-//            @StrongObj(self);
-//            [self popToController:@"TabBarController"];
-//        }];
-//        [_topbarview rightViewClick:^(UIView *view) {
-//            @StrongObj(self);
-//            [self push:@"WebViewController"];
-//        }];
-    }
-    //初始化webview
+}
+
+- (void)initSubviews {
+    [super initSubviews];
     [self initWKWebView];
     //初始化进度条
     [self initProgressView];
 }
-
+- (void)setNavigationItemsIsInEditMode:(BOOL)isInEditMode animated:(BOOL)animated {
+    [super setNavigationItemsIsInEditMode:isInEditMode animated:animated];
+    self.navigationItem.leftBarButtonItem = [QMUINavigationButton backBarButtonItemWithTarget:self handler:^(id sender) {
+        ZXXLog(@"%@",sender);
+        if ([self.webView canGoBack]) {
+            [self.webView goBack];
+        }else{
+            [self pop];
+        }
+    }];
+}
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.configuration.userContentController addScriptMessageHandler:self name:@"ScanAction"];
+}
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [self.configuration.userContentController removeScriptMessageHandlerForName:@"ScanAction"];
+}
 //初始化webview
 - (void)initWKWebView
 {
@@ -45,34 +51,25 @@
     _configuration = [[WKWebViewConfiguration alloc] init];
     //实例化对象
     _configuration.userContentController = [WKUserContentController new];
-    
     //调用JS方法
-    [_configuration.userContentController addScriptMessageHandler:self name:@"ScanAction"];
-
-    
     WKPreferences *preferences = [WKPreferences new];
     preferences.javaScriptCanOpenWindowsAutomatically = YES;
     _configuration.preferences = preferences;
-    //判断是否是首页的webview，如果是首页的webview，需要减去顶栏和底栏的高度；如果不是首页的webview，只需要减去顶栏的高度
-    if ([[self.receivedDictionary objectForKey:@"isMain"] isEqualToString:@"true"]) {
-        self.webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, SCREEN_HEIGHT-114) configuration:_configuration];
-    }
-    else{
-        self.webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, SCREEN_HEIGHT-64) configuration:_configuration];
-    }
+    _webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-64) configuration:_configuration];
     //添加KVO监听网页加载进度
-    [self.webView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew context:nil];
-    
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[self.receivedDictionary objectForKey:@"strUrl"]]];
+    [self.webView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew context:NULL];
+    [self.webView addObserver:self forKeyPath:@"title" options:NSKeyValueObservingOptionNew context:NULL];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:self.receivedData]];
     [self.webView loadRequest:request];
     
     self.webView.UIDelegate = self;
+    self.webView.navigationDelegate = self;
     [self.view addSubview:self.webView];
 }
 
 //初始化进度条
 -(void)initProgressView{
-    _progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 62, SCREEN_WIDTH, 2)];
+    _progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 2)];
     self.progressView.tintColor = [UIColor colorWithRed:22.f / 255.f green:126.f / 255.f blue:251.f / 255.f alpha:1.0];;
     //self.progressView.trackTintColor = [UIColor whiteColor];
     [self.view addSubview:self.progressView];
@@ -89,6 +86,8 @@
             self.progressView.hidden = NO;
             [self.progressView setProgress:newprogress animated:YES];
         }
+    }else if (object == self.webView && [keyPath isEqualToString:@"title"]){
+        self.titleView.title = self.webView.title;
     }
 }
 
@@ -111,28 +110,56 @@
     NSLog(@"body:%@",message.body);
 }
 
-
--(void)viewDidDisappear:(BOOL)animated{
-    [_configuration.userContentController removeScriptMessageHandlerForName:@"ScanAction"];
+/////////////////////////////////////////////////////////////////////////
+#pragma mark - WKNavigationDelegate 页面跳转
+#pragma mark 在发送请求之前，决定是否跳转
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
+    ZXXLog(@"%@",navigationAction.request);
+    decisionHandler(WKNavigationActionPolicyAllow);
 }
+#pragma mark 身份验证
+- (void)webView:(WKWebView *)webView didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *__nullable credential))completionHandler {
+    /// 不要证书验证
+    completionHandler(NSURLSessionAuthChallengeUseCredential, nil);
+}
+#pragma mark 在收到响应后，决定是否跳转
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
+    decisionHandler(WKNavigationResponsePolicyAllow);
+}
+#pragma mark 接收到服务器跳转请求之后调用
+- (void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(null_unspecified WKNavigation *)navigation {
+}
+#pragma mark WKNavigation导航错误
+- (void)webView:(WKWebView *)webView didFailNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error {
+}
+#pragma mark WKWebView终止
+- (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView {
+}
+
+#pragma mark - WKNavigationDelegate 页面加载
+#pragma mark 页面开始加载时调用
+- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(null_unspecified WKNavigation *)navigation {
+}
+#pragma mark 当内容开始返回时调用
+- (void)webView:(WKWebView *)webView didCommitNavigation:(null_unspecified WKNavigation *)navigation {
+}
+#pragma mark 页面加载完成之后调用
+- (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation {
+}
+#pragma mark 页面加载失败时调用
+- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error {
+}
+
 // 记得取消监听
 - (void)dealloc {
+    ZXXLog(@"fasdfadf");
     [self.webView removeObserver:self forKeyPath:@"estimatedProgress"];
+    [self.webView removeObserver:self forKeyPath:@"title"];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

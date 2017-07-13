@@ -63,6 +63,7 @@
 }
 - (void)test{
     
+    [self push:@"WebViewController" Data:@"http://www.baidu.com"];
 }
 
 - (void)didReceiveMemoryWarning {

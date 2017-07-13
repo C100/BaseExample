@@ -13,6 +13,6 @@
 @property (nonatomic) WKWebView *webView;
 @property (nonatomic) UIProgressView *progressView;
 
-//receivedDictionay 包含isMain：判断是否是首页的BOOL值；strUrl：webview需要打开的网址
+//receivedData 为字符串类型，表示需要打开的网址
 
 @end

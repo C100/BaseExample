@@ -7,17 +7,18 @@
 //
 
 #import "UIViewController+Net.h"
+#import "QMUINavigationButton+Block.h"
 #import "UMAnalytics.h"
 
 @interface BaseTableViewController : QMUICommonTableViewController <QMUINavigationTitleViewDelegate>
 ///接受上一个界面传过来的数据
-@property (strong,nonatomic,nullable) NSDictionary *receivedDictionary;
+@property (strong,nonatomic,nullable) id receivedData;
 
 /**不传数据，直接push到下一个界面*/
 -(void)push:(NSString*_Nonnull)controllerName;
 
 /**传数据到下一个界面*/
--(void)pushWithData:(NSString*_Nonnull)controllerName Data:(NSDictionary*_Nonnull)dict;
+-(void)push:(NSString*_Nonnull)controllerName Data:(id _Nonnull)data;
 
 /**关闭界面，返回上一级*/
 -(void)pop;
