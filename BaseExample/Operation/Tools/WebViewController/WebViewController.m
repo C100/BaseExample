@@ -28,7 +28,6 @@
 - (void)setNavigationItemsIsInEditMode:(BOOL)isInEditMode animated:(BOOL)animated {
     [super setNavigationItemsIsInEditMode:isInEditMode animated:animated];
     self.navigationItem.leftBarButtonItem = [QMUINavigationButton backBarButtonItemWithTarget:self handler:^(id sender) {
-        ZXXLog(@"%@",sender);
         if ([self.webView canGoBack]) {
             [self.webView goBack];
         }else{
@@ -55,7 +54,7 @@
     WKPreferences *preferences = [WKPreferences new];
     preferences.javaScriptCanOpenWindowsAutomatically = YES;
     _configuration.preferences = preferences;
-    _webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-64) configuration:_configuration];
+    _webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:_configuration];
     //添加KVO监听网页加载进度
     [self.webView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew context:NULL];
     [self.webView addObserver:self forKeyPath:@"title" options:NSKeyValueObservingOptionNew context:NULL];
@@ -89,6 +88,11 @@
     }else if (object == self.webView && [keyPath isEqualToString:@"title"]){
         self.titleView.title = self.webView.title;
     }
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    self.webView.frame = self.view.bounds;
 }
 
 #pragma mark - WKUIDelegate
@@ -152,7 +156,6 @@
 
 // 记得取消监听
 - (void)dealloc {
-    ZXXLog(@"fasdfadf");
     [self.webView removeObserver:self forKeyPath:@"estimatedProgress"];
     [self.webView removeObserver:self forKeyPath:@"title"];
 }

@@ -77,7 +77,7 @@
     _item5 = tesfield;
     ZXXGroupItem *group = [[ZXXGroupItem alloc]init];
     group.items = @[apply,award,badge,alientTeam,tesfield];
-    group.headerTitle = @"第一个头标题";
+    group.headerTitle = @"第一组头标题";
     [self.groups addObject:group];
 }
 
@@ -99,8 +99,7 @@
     ZXXTextFieldItem *tesfield = [ZXXTextFieldItem itemWithImage:[UIImage imageNamed:@"home_icon_travel"] title:@"ZXXTextFieldItem" rightTitle:@"righttextField" WithAttribute:nil cellHeight:0 WithOption:nil];
     ZXXGroupItem *group = [[ZXXGroupItem alloc]init];
     group.items = @[apply,bedage,award,alientTeam,tesfield];
-    group.headerTitle = @"第二个头标题";
-    group.footerTitle = @"第二个头标题";
+    group.headerTitle = @"第二组头标题";
     [self.groups addObject:group];
 }
 - (void)setUpGroup3{
@@ -124,8 +123,18 @@
     ZXXTextFieldItem *tesfield = [ZXXTextFieldItem itemWithImage:[UIImage imageNamed:@"home_icon_travel"] subtitle:@"ZXXTextFieldItemsubTitle" title:@"ZXXTextFieldItemtitle" rightTitle:@"rightTitle" WithAttribute:nil cellHeight:55 WithOption:nil];
     ZXXGroupItem *group = [[ZXXGroupItem alloc]init];
     group.items = @[apply,award,badge,alientTeam,tesfield];
+    group.headerTitle = @"第三组头标题";
     [self.groups addObject:group];
 }
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    if (section==0) {
+        return 0;
+    }else{
+        return [super tableView:tableView heightForHeaderInSection:section];
+    }
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

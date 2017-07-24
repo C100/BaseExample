@@ -8,7 +8,12 @@
 
 #import "BaseViewController.h"
 typedef void (^PushImageBlock)(UIImage *);
+/**
+ push这个控制器的时候需要传入图片的路径，receivedData为一个图片路径的字符串
+ */
 @interface ImageEditViewController : BaseViewController
 @property (copy,nonatomic)PushImageBlock block;
-- (instancetype)initWithSize:(CGSize)size;
+
+@property (assign,nonatomic)CGSize *size;
+
 @end
