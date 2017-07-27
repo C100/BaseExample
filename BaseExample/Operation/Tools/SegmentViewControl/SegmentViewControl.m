@@ -661,15 +661,15 @@ static const CGFloat padding = 15;///内边距
         [_array enumerateObjectsUsingBlock:^(__kindof UIView*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             if (idx == 0) {
                 [obj makeConstraints:^(MASConstraintMaker *make) {
-                    make.left.right.bottom.equalTo(self.contentView);
-                    make.width.offset(self.frame.size.width);
+                    make.left.top.bottom.equalTo(self.contentView);
+                    make.width.equalTo(self.scrollView);
                 }];
                 lastView = obj;
             }else{
                 [obj makeConstraints:^(MASConstraintMaker *make) {
                     make.left.equalTo(lastView.right);
                     make.top.bottom.equalTo(self.contentView);
-                    make.width.offset(self.frame.size.width);
+                    make.width.equalTo(self.scrollView);
                 }];
                 lastView = obj;
             }

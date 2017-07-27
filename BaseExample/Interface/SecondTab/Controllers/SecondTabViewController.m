@@ -48,7 +48,10 @@
 - (void)initSubviews {
     [super initSubviews];
     SegmentViewItem *item = [SegmentViewItem segmentViewItemFont:nil color:nil selectedColor:[UIColor redColor] titlesBarHeight:0 margin:14 padding:15 lineIndicator_percent:2];
-    SegmentViewControl *segmentView = [SegmentViewControl segmentTitles:@[@"京东",@"天猫",@"淘宝",@"亚马逊",@"京东2",@"天猫2",@"淘宝2",@"亚马逊2"] withItem:item withViewControllers:@[@"Test1ViewController",@"Test2ViewController",@"Test1ViewController",@"Test2ViewController",@"Test1ViewController",@"Test2ViewController",@"Test1ViewController",@"Test2ViewController"] loadType:SegmentViewControlNotLazyLoad recognizerTableCellEdit:NO];
+    SegmentViewControl *segmentView = [SegmentViewControl segmentTitles:@[@"京东",@"天猫",@"淘宝",@"亚马逊",@"京东2",@"天猫2",@"淘宝2",@"亚马逊2"] withItem:item withViews:@[@"TestView1",@"TestView2",@"TestView1",@"TestView2",@"TestView1",@"TestView2",@"TestView1",@"TestView2"] recognizerTableCellEdit:NO];
+//    [SegmentViewControl segmentTitles:@[@"京东",@"天猫",@"淘宝",@"亚马逊",@"京东2",@"天猫2",@"淘宝2",@"亚马逊2"] withItem:item withViewControllers:@[@"Test1ViewController",@"Test2ViewController",@"Test1ViewController",@"Test2ViewController",@"Test1ViewController",@"Test2ViewController",@"Test1ViewController",@"Test2ViewController"] loadType:SegmentViewControlNotLazyLoad recognizerTableCellEdit:NO];
+    
+    
     [self.view addSubview:segmentView];
     [segmentView makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
