@@ -21,6 +21,7 @@
 #import <POP.h>
 #import <MJRefresh/MJRefresh.h>
 #import <QMUIKit/QMUIKit.h>
+#import <ReactiveObjC/ReactiveObjC.h>
 
 #import <AlipaySDK/AlipaySDK.h>
 #import <WXApi.h>

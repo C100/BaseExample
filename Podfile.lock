@@ -19,6 +19,7 @@ PODS:
   - MJRefresh (3.1.12)
   - pop (1.0.10)
   - QMUIKit (1.7.2)
+  - ReactiveObjC (3.0.0)
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
@@ -43,6 +44,7 @@ DEPENDENCIES:
   - MJRefresh (~> 3.1.12)
   - pop (~> 1.0.9)
   - QMUIKit
+  - ReactiveObjC (~> 3.0.0)
   - SDWebImage (~> 3.8)
   - UMengAnalytics-NO-IDFA (~> 4.2.5)
   - UMengUShare/Social/QQ (~> 6.3.0)
@@ -58,11 +60,12 @@ SPEC CHECKSUMS:
   MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
   pop: 82ca6b068ce9278fd350fd9dd09482a0ce9492e6
   QMUIKit: e26a62bf4d57e8e9176a182057d787fefa3d72e4
+  ReactiveObjC: ce79989e8684b9086b5f8d0c74bc7b81a8729c9e
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   UMengAnalytics-NO-IDFA: 16666e32edce5be44ae5b14aaaa7f3582e09d6ab
   UMengUShare: b208ac3bcf1f63d11a100b359990e9d77a0f2085
   YTKNetwork: c4b0c29c9d639dc050d475de69ee626d53eac598
 
-PODFILE CHECKSUM: 586859c70be51cbb762da5a8a2be8a3451f14a03
+PODFILE CHECKSUM: c89dbd014a81b6e229508ed9e3b4a7b531d9657e
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.2.0.rc.1

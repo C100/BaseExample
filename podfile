@@ -14,4 +14,5 @@ target ‘BaseExample’ do
   pod ‘UMengUShare/Social/QQ',’~>6.3.0’
   pod 'UMengAnalytics-NO-IDFA', '~> 4.2.5'
   pod 'QMUIKit'
+  pod 'ReactiveObjC', '~> 3.0.0'
 end
