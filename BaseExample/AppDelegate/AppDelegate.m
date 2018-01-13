@@ -36,8 +36,6 @@
     self.window.backgroundColor=[UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
-    // 启动 QMUI 的样式配置模板
-    [QMUIConfigurationTemplate setupConfigurationTemplate];
     // 将全局样式渲染出来
     [QDCommonUI renderGlobalAppearances];
     //配置YTKNetworkConfig

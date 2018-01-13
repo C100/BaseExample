@@ -14,12 +14,10 @@
 
 - (BOOL)qmui_hasOverrideMethod:(SEL)selector ofSuperclass:(Class)superclass {
     if (![[self class] isSubclassOfClass:superclass]) {
-//        NSLog(@"%s, %@ 并非 %@ 的父类", __func__, NSStringFromClass(superclass), NSStringFromClass([self class]));
         return NO;
     }
     
     if (![superclass instancesRespondToSelector:selector]) {
-//        NSLog(@"%s, 父类 %@ 自己本来就无法响应 %@ 方法", __func__, NSStringFromClass(superclass), NSStringFromSelector(selector));
         return NO;
     }
     
@@ -47,6 +45,44 @@
     
     id (*objc_superAllocTyped)(struct objc_super *, SEL, ...) = (void *)&objc_msgSendSuper;
     return (*objc_superAllocTyped)(&mySuper, aSelector, object);
+}
+
+- (void)qmui_performSelector:(SEL)selector {
+    [self qmui_performSelector:selector withReturnValue:NULL arguments:NULL];
+}
+
+- (void)qmui_performSelector:(SEL)selector withArguments:(void *)firstArgument, ... {
+    [self qmui_performSelector:selector withReturnValue:NULL arguments:firstArgument, NULL];
+}
+
+- (void)qmui_performSelector:(SEL)selector withReturnValue:(void *)returnValue {
+    [self qmui_performSelector:selector withReturnValue:returnValue arguments:NULL];
+}
+
+- (void)qmui_performSelector:(SEL)selector withReturnValue:(void *)returnValue arguments:(void *)firstArgument, ... {
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[self methodSignatureForSelector:selector]];
+    [invocation setTarget:self];
+    [invocation setSelector:selector];
+    
+    if (firstArgument) {
+        [invocation setArgument:firstArgument atIndex:2];
+        
+        va_list args;
+        va_start(args, firstArgument);
+        void *currentArgument;
+        NSInteger index = 3;
+        while ((currentArgument = va_arg(args, void *))) {
+            [invocation setArgument:currentArgument atIndex:index];
+            index++;
+        }
+        va_end(args);
+    }
+    
+    [invocation invoke];
+    
+    if (returnValue) {
+        [invocation getReturnValue:returnValue];
+    }
 }
 
 - (void)qmui_enumrateInstanceMethodsUsingBlock:(void (^)(SEL))block {

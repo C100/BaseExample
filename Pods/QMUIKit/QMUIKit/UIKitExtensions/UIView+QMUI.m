@@ -12,6 +12,7 @@
 #import "UIColor+QMUI.h"
 #import "NSObject+QMUI.h"
 #import "UIImage+QMUI.h"
+#import <objc/runtime.h>
 
 @interface UIView ()
 
@@ -25,50 +26,45 @@
 
 @implementation UIView (QMUI)
 
-- (void)qmui_setWidth:(CGFloat)width height:(CGFloat)height {
-    CGRect frame = self.frame;
-    frame.size.height = height;
-    frame.size.width = width;
-    self.frame = frame;
++ (void)load {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        
+        if (@available(iOS 11, *)) {
+            ReplaceMethod([self class], @selector(safeAreaInsetsDidChange), @selector(qmui_safeAreaInsetsDidChange));
+        }
+        
+        // 检查调用这系列方法的两个 view 是否存在共同的父 view，不存在则可能导致转换结果错误
+        ReplaceMethod([self class], @selector(convertPoint:toView:), @selector(qmui_convertPoint:toView:));
+        ReplaceMethod([self class], @selector(convertPoint:fromView:), @selector(qmui_convertPoint:fromView:));
+        ReplaceMethod([self class], @selector(convertRect:toView:), @selector(qmui_convertRect:toView:));
+        ReplaceMethod([self class], @selector(convertRect:fromView:), @selector(qmui_convertRect:fromView:));
+    });
 }
 
-- (void)qmui_setWidth:(CGFloat)width {
-    CGRect frame = self.frame;
-    frame.size.width = width;
-    self.frame = frame;
+- (instancetype)qmui_initWithSize:(CGSize)size {
+    return [self initWithFrame:CGRectMakeWithSize(size)];
 }
 
-- (void)qmui_setHeight:(CGFloat)height {
-    CGRect frame = self.frame;
-    frame.size.height = height;
-    self.frame = frame;
+- (UIEdgeInsets)qmui_safeAreaInsets {
+    if (@available(iOS 11.0, *)) {
+        return self.safeAreaInsets;
+    }
+    return UIEdgeInsetsZero;
 }
 
-- (void)qmui_setOriginX:(CGFloat)x y:(CGFloat)y {
-    CGRect frame = self.frame;
-    frame.origin.x = x;
-    frame.origin.y = y;
-    self.frame = frame;
+static char kAssociatedObjectKey_safeAreaInsetsBeforeChange;
+- (void)setQmui_safeAreaInsetsBeforeChange:(UIEdgeInsets)qmui_safeAreaInsetsBeforeChange {
+    objc_setAssociatedObject(self, &kAssociatedObjectKey_safeAreaInsetsBeforeChange, [NSValue valueWithUIEdgeInsets:qmui_safeAreaInsetsBeforeChange], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void)qmui_setOriginX:(CGFloat)x {
-    CGRect frame = self.frame;
-    frame.origin.x = x;
-    self.frame = frame;
+- (UIEdgeInsets)qmui_safeAreaInsetsBeforeChange {
+    return [((NSValue *)objc_getAssociatedObject(self, &kAssociatedObjectKey_safeAreaInsetsBeforeChange)) UIEdgeInsetsValue];
 }
 
-- (void)qmui_setOriginY:(CGFloat)y {
-    CGRect frame = self.frame;
-    frame.origin.y = y;
-    self.frame = frame;
-}
-
-- (CGFloat)qmui_minXWhenCenterInSuperview {
-    return CGFloatGetCenter(CGRectGetWidth(self.superview.bounds), CGRectGetWidth(self.frame));
-}
-
-- (CGFloat)qmui_minYWhenCenterInSuperview {
-    return CGFloatGetCenter(CGRectGetHeight(self.superview.bounds), CGRectGetHeight(self.frame));
+- (void)qmui_safeAreaInsetsDidChange {
+    [self qmui_safeAreaInsetsDidChange];
+    self.qmui_safeAreaInsetsBeforeChange = self.qmui_safeAreaInsets;
 }
 
 - (void)qmui_removeAllSubviews {
@@ -109,6 +105,58 @@
             animations();
         }
     }
+}
+
+- (BOOL)hasSharedAncestorViewWithView:(UIView *)view {
+    UIView *sharedAncestorView = self;
+    if (!view) {
+        return YES;
+    }
+    while (sharedAncestorView && ![view isDescendantOfView:sharedAncestorView]) {
+        sharedAncestorView = sharedAncestorView.superview;
+    }
+    return !!sharedAncestorView;
+}
+
+- (BOOL)isUIKitPrivateView {
+    // 系统有些东西本身也存在不合理，但我们不关心这种，所以过滤掉
+    if ([self isKindOfClass:[UIWindow class]]) return YES;
+    
+    __block BOOL isPrivate = NO;
+    NSString *classString = NSStringFromClass(self.class);
+    [@[@"LayoutContainer", @"NavigationItemButton", @"NavigationItemView", @"SelectionGrabber", @"InputViewContent"] enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (([classString hasPrefix:@"UI"] || [classString hasPrefix:@"_UI"]) && [classString containsString:obj]) {
+            isPrivate = YES;
+            *stop = YES;
+        }
+    }];
+    return isPrivate;
+}
+
+- (void)alertConvertValueWithView:(UIView *)view {
+    if (IS_DEBUG && ![self isUIKitPrivateView] && ![self hasSharedAncestorViewWithView:view]) {
+        QMUILogWarn(@"进行坐标系转换运算的 %@ 和 %@ 不存在共同的父 view，可能导致运算结果不准确（特别是在横屏状态下）", self, view);
+    }
+}
+
+- (CGPoint)qmui_convertPoint:(CGPoint)point toView:(nullable UIView *)view {
+    [self alertConvertValueWithView:view];
+    return [self qmui_convertPoint:point toView:view];
+}
+
+- (CGPoint)qmui_convertPoint:(CGPoint)point fromView:(nullable UIView *)view {
+    [self alertConvertValueWithView:view];
+    return [self qmui_convertPoint:point fromView:view];
+}
+
+- (CGRect)qmui_convertRect:(CGRect)rect toView:(nullable UIView *)view {
+    [self alertConvertValueWithView:view];
+    return [self qmui_convertRect:rect toView:view];
+}
+
+- (CGRect)qmui_convertRect:(CGRect)rect fromView:(nullable UIView *)view {
+    [self alertConvertValueWithView:view];
+    return [self qmui_convertRect:rect fromView:view];
 }
 
 @end
@@ -173,9 +221,9 @@
 + (void)load {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        ReplaceMethod([self class], @selector(layoutSubviews), @selector(qmui_layoutSubviews));
-        ReplaceMethod([self class], @selector(addSubview:), @selector(qmui_addSubview:));
-        ReplaceMethod([self class], @selector(becomeFirstResponder), @selector(qmui_becomeFirstResponder));
+        ReplaceMethod([self class], @selector(layoutSubviews), @selector(qmui_debug_layoutSubviews));
+        ReplaceMethod([self class], @selector(addSubview:), @selector(qmui_debug_addSubview:));
+        ReplaceMethod([self class], @selector(becomeFirstResponder), @selector(qmui_debug_becomeFirstResponder));
     });
 }
 
@@ -209,8 +257,8 @@ static char kAssociatedObjectKey_hasDebugColor;
     return flag;
 }
 
-- (void)qmui_layoutSubviews {
-    [self qmui_layoutSubviews];
+- (void)qmui_debug_layoutSubviews {
+    [self qmui_debug_layoutSubviews];
     if (self.qmui_shouldShowDebugColor) {
         self.qmui_hasDebugColor = YES;
         self.backgroundColor = [self debugColor];
@@ -239,23 +287,22 @@ static char kAssociatedObjectKey_hasDebugColor;
     }
 }
 
-- (void)qmui_addSubview:(UIView *)view {
+- (void)qmui_debug_addSubview:(UIView *)view {
     if (view == self) {
         NSAssert(NO, @"把自己作为 subview 添加到自己身上！\n%@", [NSThread callStackSymbols]);
     }
-    [self qmui_addSubview:view];
+    [self qmui_debug_addSubview:view];
 }
 
-- (BOOL)qmui_becomeFirstResponder {
+- (BOOL)qmui_debug_becomeFirstResponder {
     if (IS_SIMULATOR && ![self isKindOfClass:[UIWindow class]] && self.window && !self.window.keyWindow) {
         [self QMUISymbolicUIViewBecomeFirstResponderWithoutKeyWindow];
     }
-    return [self qmui_becomeFirstResponder];
+    return [self qmui_debug_becomeFirstResponder];
 }
 
 - (void)QMUISymbolicUIViewBecomeFirstResponderWithoutKeyWindow {
-    NSLog(@"尝试让一个处于非 keyWindow 上的 %@ becomeFirstResponder，请添加 '%@' 的 Symbolic Breakpoint 以捕捉此类错误", NSStringFromClass(self.class), NSStringFromSelector(_cmd));
-    NSLog(@"%@", [NSThread callStackSymbols]);
+    QMUILog(@"尝试让一个处于非 keyWindow 上的 %@ becomeFirstResponder，可能导致界面显示异常，请添加 '%@' 的 Symbolic Breakpoint 以捕捉此类信息\n%@", NSStringFromClass(self.class), NSStringFromSelector(_cmd), [NSThread callStackSymbols]);
 }
 
 @end
@@ -396,7 +443,7 @@ static char kAssociatedObjectKey_dashPattern;
 }
 
 - (NSArray *)qmui_dashPattern {
-    return (NSArray *)objc_getAssociatedObject(self, &kAssociatedObjectKey_dashPattern);
+    return (NSArray<NSNumber *> *)objc_getAssociatedObject(self, &kAssociatedObjectKey_dashPattern);
 }
 
 static char kAssociatedObjectKey_borderLayer;
@@ -406,6 +453,103 @@ static char kAssociatedObjectKey_borderLayer;
 
 - (CAShapeLayer *)qmui_borderLayer {
     return (CAShapeLayer *)objc_getAssociatedObject(self, &kAssociatedObjectKey_borderLayer);
+}
+
+@end
+
+
+@implementation UIView (QMUI_Layout)
+
+- (CGFloat)qmui_top {
+    return CGRectGetMinY(self.frame);
+}
+
+- (void)setQmui_top:(CGFloat)top {
+    self.frame = CGRectSetY(self.frame, top);
+}
+
+- (CGFloat)qmui_left {
+    return CGRectGetMinX(self.frame);
+}
+
+- (void)setQmui_left:(CGFloat)left {
+    self.frame = CGRectSetX(self.frame, left);
+}
+
+- (CGFloat)qmui_bottom {
+    return CGRectGetMaxY(self.frame);
+}
+
+- (void)setQmui_bottom:(CGFloat)bottom {
+    self.frame = CGRectSetY(self.frame, bottom - CGRectGetHeight(self.frame));
+}
+
+- (CGFloat)qmui_right {
+    return CGRectGetMaxX(self.frame);
+}
+
+- (void)setQmui_right:(CGFloat)right {
+    self.frame = CGRectSetX(self.frame, right - CGRectGetWidth(self.frame));
+}
+
+- (CGFloat)qmui_width {
+    return CGRectGetWidth(self.frame);
+}
+
+- (void)setQmui_width:(CGFloat)width {
+    self.frame = CGRectSetWidth(self.frame, width);
+}
+
+- (CGFloat)qmui_height {
+    return CGRectGetHeight(self.frame);
+}
+
+- (void)setQmui_height:(CGFloat)height {
+    self.frame = CGRectSetHeight(self.frame, height);
+}
+
+- (CGFloat)qmui_extendToTop {
+    return self.qmui_top;
+}
+
+- (void)setQmui_extendToTop:(CGFloat)qmui_extendToTop {
+    self.qmui_height = self.qmui_bottom - qmui_extendToTop;
+    self.qmui_top = qmui_extendToTop;
+}
+
+- (CGFloat)qmui_extendToLeft {
+    return self.qmui_left;
+}
+
+- (void)setQmui_extendToLeft:(CGFloat)qmui_extendToLeft {
+    self.qmui_width = self.qmui_right - qmui_extendToLeft;
+    self.qmui_left = qmui_extendToLeft;
+}
+
+- (CGFloat)qmui_extendToBottom {
+    return self.qmui_bottom;
+}
+
+- (void)setQmui_extendToBottom:(CGFloat)qmui_extendToBottom {
+    self.qmui_height = qmui_extendToBottom - self.qmui_top;
+    self.qmui_bottom = qmui_extendToBottom;
+}
+
+- (CGFloat)qmui_extendToRight {
+    return self.qmui_right;
+}
+
+- (void)setQmui_extendToRight:(CGFloat)qmui_extendToRight {
+    self.qmui_width = qmui_extendToRight - self.qmui_left;
+    self.qmui_right = qmui_extendToRight;
+}
+
+- (CGFloat)qmui_leftWhenCenterInSuperview {
+    return CGFloatGetCenter(CGRectGetWidth(self.superview.bounds), CGRectGetWidth(self.frame));
+}
+
+- (CGFloat)qmui_topWhenCenterInSuperview {
+    return CGFloatGetCenter(CGRectGetHeight(self.superview.bounds), CGRectGetHeight(self.frame));
 }
 
 @end
