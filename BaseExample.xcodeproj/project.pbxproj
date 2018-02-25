@@ -382,6 +382,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1A0DB5542042C538002C9789 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		1A81B2581E6A6492004AF8DA /* BMChineseSort */ = {
 			isa = PBXGroup;
 			children = (
@@ -828,9 +835,9 @@
 		1AB925291E9616EE00A52F66 /* LoginAndRegister */ = {
 			isa = PBXGroup;
 			children = (
+				1A0DB5542042C538002C9789 /* Models */,
 				1AB9252C1E96170900A52F66 /* Controllers */,
 				1AB9252A1E96170900A52F66 /* Views */,
-				1AB9252B1E96170900A52F66 /* Models */,
 			);
 			path = LoginAndRegister;
 			sourceTree = "<group>";
@@ -842,13 +849,6 @@
 				1AB925311E96176600A52F66 /* LoginView.m */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		1AB9252B1E96170900A52F66 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 		1AB9252C1E96170900A52F66 /* Controllers */ = {

@@ -8,7 +8,7 @@
 
 #import "WebViewController.h"
 
-@interface WebViewController ()<WKUIDelegate,WKNavigationDelegate,WKScriptMessageHandler>
+@interface WebViewController ()<WKUIDelegate,WKNavigationDelegate,WKScriptMessageHandler,UINavigationControllerBackButtonHandlerProtocol>
 @property (nonatomic) WKWebViewConfiguration *configuration;
 @end
 
@@ -17,6 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    [self.configuration.userContentController addScriptMessageHandler:self name:@"ScanAction"];
 }
 
 - (void)initSubviews {
@@ -37,7 +38,7 @@
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.configuration.userContentController addScriptMessageHandler:self name:@"ScanAction"];
+    
 }
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
@@ -154,10 +155,18 @@
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error {
 }
 
-// 记得取消监听
-- (void)dealloc {
+#pragma mark - UINavigationControllerBackButtonHandlerProtocol
+
+- (BOOL)shouldHoldBackButtonEvent {
+    return YES;
+}
+
+- (BOOL)canPopViewController {
+    // 这里不要做一些费时的操作，否则可能会卡顿。
     [self.webView removeObserver:self forKeyPath:@"estimatedProgress"];
     [self.webView removeObserver:self forKeyPath:@"title"];
+    [self.configuration.userContentController removeScriptMessageHandlerForName:@"ScanAction"];
+    return true;
 }
 
 - (void)didReceiveMemoryWarning {
