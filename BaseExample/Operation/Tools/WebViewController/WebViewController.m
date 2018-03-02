@@ -155,6 +155,19 @@
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error {
 }
 
+// 记得取消监听
+- (void)dealloc {
+    @try{
+        [self.webView removeObserver:self forKeyPath:@"estimatedProgress"];
+        [self.webView removeObserver:self forKeyPath:@"title"];
+    }
+    @catch(NSException *e){
+        
+    }
+    @finally{
+        
+    }
+}
 #pragma mark - UINavigationControllerBackButtonHandlerProtocol
 
 - (BOOL)shouldHoldBackButtonEvent {
@@ -163,11 +176,19 @@
 
 - (BOOL)canPopViewController {
     // 这里不要做一些费时的操作，否则可能会卡顿。
-    [self.webView removeObserver:self forKeyPath:@"estimatedProgress"];
-    [self.webView removeObserver:self forKeyPath:@"title"];
-    [self.configuration.userContentController removeScriptMessageHandlerForName:@"ScanAction"];
+    @try{
+        [self.configuration.userContentController removeScriptMessageHandlerForName:@"ScanAction"];
+    }
+    @catch(NSException *e){
+        
+    }
+    @finally{
+        
+    }
+    
     return true;
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
